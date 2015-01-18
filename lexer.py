@@ -18,8 +18,23 @@ reserved={
 	'next':'NEXT',
 	'last':'LAST',
 	'continue':'CONTINUE'
+	'redo':'REDO'
+	'goto':'GOTO'
+	'and':'AND_OP'
+	'or':'OR_OP'
+	'not':'NOT_OP'
+	'use':'USE'
+	'sub':'SUB'
+	'my':'PRIVATE'
+	'local':'LOCAL'
+	'format':'FORMAT'
+	'write':'WRITE'
+	'select':'SELECT'
 }
 # I am bored avikalp please complete the list
+# completed the list from the list of reserved words as in the file reserved.txt
+# I have given 'and', 'or' and 'not' the same name as the tokens below
+# 'my' ko especially PRIVATE  naam diya hai... dont ask why :P
 
 #some tokens we are gonna use 
 tokens=[
