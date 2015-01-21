@@ -213,10 +213,18 @@ lexer=lex.lex()
 def runlexer(inputfile):
 	program=open(inputfile).read()
 	lexer.input(program)
-	print "Type \t\t\t\t\t Value"
+	line1 = ""
+	line2 = "#"
+	LineNum = 2;
+	# print "Type \t\t\t\t\t Value"
 	for tok in iter(lexer.token, None):
-		print "%s \t\t\t\t\t %s" %(repr(tok.type),repr(tok.value))
-	
+		if tok.lineno!=LineNum:
+		 	LineNum+=1
+			print "%s\n%s" %(line1, line2)
+			line1 = ""
+			line2 = "#"
+		line1 += " %s" %(tok.value)
+		line2 += " %s" %(repr(tok.type))
 
 if __name__=="__main__":
 	from sys import argv 
