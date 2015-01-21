@@ -43,12 +43,15 @@ tokens=[
 		"NUMBER",
 		"PLUS_OP",
 		"MINUS_OP",
-		"MULTIPLACATION_OP",
+		"MULTIPLICATION_OP",
 		"DIVISION_OP",
 		"MODULUS_OP",
+		"EXPONENT_OP",
+		"FLOOR_DIVISION_OP",
 		"NOT_OP",
 		"AND_OP",
 		"OR_OP",
+		"COMPARE_OP",
 		"NOT_EQUALS_OP",
 		"EQUALS_OP",
 		"GREATER_EQUAL_OP",
@@ -64,9 +67,8 @@ tokens=[
 		"OPEN_PARANTHESIS",
 		"CLOSE_PARANTHESIS",
 		"COMMA",
-		"SEMICOLON",
 		"IDENTIFIER",
-		"WHITEAPACE",
+		"WHITESPACE",
 		"COMMENT"
 		] + list(reserved.values())
 
@@ -87,6 +89,10 @@ def t_NUMBER(t):
     r"\d+"
     t.value = int(t.value)
     return t
+
+def t_EXPONENT_OP(t):
+	r"\*\*"
+	return t
 
 def t_PLUS_OP(t):
 	r"\+"
@@ -140,7 +146,45 @@ def t_COMMA(t):
 	r","
 	return t
 
+def t_EQUALS_OP(t):
+	r"=="
+	return t
 
+def t_NOT_EQUALS_OP(t):
+	r"\!="
+	return t
+
+def t_NOT_OP(t):
+	r"\!"
+	return t
+
+def t_COMPARE_OP(t):
+	r"<=>"
+	return t
+
+def t_GREATER_EQUAL_OP(t):
+	r">="
+	return t
+
+def t_LESS_EQUAL_OP(t):				#I have no clue why is this not working
+	r"<="
+	return t
+
+def t_GREATER_OP(t):				# No clue  why this is not working
+	r">"
+	return t
+
+def t_LESS_OP(t):
+	r"<"
+	return t
+
+def t_AND_OP(t):
+	r"&&"
+	return t
+
+def t_OR_OP(t):
+	r"\|\|"
+	return t
 
 def t_ASSIGNMENT_OP(t):
 	r"=|"r"\+=|"r"-=|"r"\*=|"r"/=|"r"%="
@@ -151,7 +195,7 @@ def t_ignore_COMMENT(t):
 	
 #newline
 def t_newline(t):
-	r"\n+"
+	r"(\n)+"
 	t.lexer.lineno+=len(t.value)
 
 #error	
