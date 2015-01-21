@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from ply import lex
+import lex
 
 
 #reserved words
@@ -17,18 +17,18 @@ reserved={
 	'do':'DO',
 	'next':'NEXT',
 	'last':'LAST',
-	'continue':'CONTINUE'
-	'redo':'REDO'
-	'goto':'GOTO'
-	'and':'AND_OP'
-	'or':'OR_OP'
-	'not':'NOT_OP'
-	'use':'USE'
-	'sub':'SUB'
-	'my':'PRIVATE'
-	'local':'LOCAL'
-	'format':'FORMAT'
-	'write':'WRITE'
+	'continue':'CONTINUE',
+	'redo':'REDO',
+	'goto':'GOTO',
+	'and':'AND_OP',
+	'or':'OR_OP',
+	'not':'NOT_OP',
+	'use':'USE',
+	'sub':'SUB',
+	'my':'PRIVATE',
+	'local':'LOCAL',
+	'format':'FORMAT',
+	'write':'WRITE',
 	'select':'SELECT'
 }
 # I am bored avikalp please complete the list
@@ -39,6 +39,7 @@ reserved={
 #some tokens we are gonna use 
 tokens=[
 		"STRING",
+		"RES_STRING",
 		"NUMBER",
 		"PLUS_OP",
 		"MINUS_OP",
@@ -75,7 +76,11 @@ t_ignore_WHITESPACE=r"\s"
 
 
 def t_STRING(t):
-	r"\"(\\.|[^"])*\""
+	r"\'(\\.|[^\'])*\'"
+	return t
+
+def t_RES_STRING(t):
+	r"\"(\\.|[^\"])*\""
 	return t
 	
 def t_NUMBER(t):

@@ -2,7 +2,8 @@
 {
 $a=10;
 @b=(1,2,3);
-print
+	print ("er\tror\n")
+print ('er\tror\n')
 19a 
 }
 
