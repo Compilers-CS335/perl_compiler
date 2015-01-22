@@ -8,7 +8,7 @@ $a=10;
 print ('er\tror\n')
 19a 
 $a = $b * $c;
-if ($a>=1 or $b) {
+if ($a>1 or $b) {
 	# body...
 }
 }

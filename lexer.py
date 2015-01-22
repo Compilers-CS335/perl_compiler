@@ -1,6 +1,6 @@
 #!/usr/bin/python
-import lex
-
+#import lex
+from ply import lex
 
 #reserved words
 reserved={
@@ -20,9 +20,6 @@ reserved={
 	'continue':'CONTINUE',
 	'redo':'REDO',
 	'goto':'GOTO',
-	'and':'AND_OP',
-	'or':'OR_OP',
-	'not':'NOT_OP',
 	'use':'USE',
 	'sub':'SUB',
 	'my':'PRIVATE',
@@ -55,7 +52,7 @@ tokens=[
 		"NOT_EQUALS_OP",
 		"EQUALS_OP",
 		"GREATER_EQUAL_OP",
-		"GREATER_OP"
+		"GREATER_OP",
 		"LESS_EQUAL_OP",
 		"LESS_OP",
 		"ASSIGNMENT_OP",
