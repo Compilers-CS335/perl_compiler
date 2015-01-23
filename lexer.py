@@ -1,6 +1,6 @@
 #!/usr/bin/python
-#import lex
-from ply import lex
+import lex
+#from ply import lex
 
 #reserved words
 reserved={
@@ -163,11 +163,11 @@ def t_GREATER_EQUAL_OP(t):
 	r">="
 	return t
 
-def t_LESS_EQUAL_OP(t):				#I have no clue why is this not working
+def t_LESS_EQUAL_OP(t):				
 	r"<="
 	return t
 
-def t_GREATER_OP(t):				# No clue  why this is not working
+def t_GREATER_OP(t):				
 	r">"
 	return t
 
