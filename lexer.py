@@ -66,7 +66,14 @@ tokens=[
 		"COMMA",
 		"IDENTIFIER",
 		"WHITESPACE",
-		"COMMENT"
+		"COMMENT",
+		"BIT_AND",
+		"BIT_OR",
+		"BIT_XOR",
+		"BIT_FLIP",
+		"BIT_LEFT_SHIFT",
+		"BIT_RIGHT_SHIFT",
+		"CONCATENATE"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -86,6 +93,10 @@ def t_NUMBER(t):
     r"\d+"
     t.value = int(t.value)
     return t
+
+def t_ASSIGNMENT_OP(t):
+	r"=|"r"\+=|"r"-=|"r"\*=|"r"/=|"r"%=|"r"\*\*="
+	return t
 
 def t_EXPONENT_OP(t):
 	r"\*\*"
@@ -143,6 +154,14 @@ def t_COMMA(t):
 	r","
 	return t
 
+def t_BIT_LEFT_SHIFT(t):
+	r"<<"
+	return t
+
+def t_BIT_RIGHT_SHIFT(t):
+	r">>"
+	return t
+
 def t_EQUALS_OP(t):
 	r"=="
 	return t
@@ -179,12 +198,24 @@ def t_AND_OP(t):
 	r"&&"
 	return t
 
-def t_OR_OP(t):
-	r"\|\|"
+def t_BIT_AND(t):
+	r"&"
 	return t
 
-def t_ASSIGNMENT_OP(t):
-	r"=|"r"\+=|"r"-=|"r"\*=|"r"/=|"r"%="
+def t_BIT_OR(t):
+	r"\|"
+	return t
+
+def t_BIT_XOR(t):
+	r"\^"
+	return t
+
+def t_BIT_FLIP(t):
+	r"~"
+	return t
+
+def t_CONCATENATE(t):
+	r"\."
 	return t
 
 def t_ignore_COMMENT(t):
@@ -215,7 +246,7 @@ def runlexer(inputfile):
 	LineNum = 2;
 	# print "Type \t\t\t\t\t Value"
 	for tok in iter(lexer.token, None):
-		if tok.lineno!=LineNum:
+		while tok.lineno!=LineNum:
 		 	LineNum+=1
 			print "%s\n%s\n" %(line1, line2)
 			line1 = ""
