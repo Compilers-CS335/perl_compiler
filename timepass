@@ -6,10 +6,19 @@
 	@b=(1,2,3);
 		print ("er\tror\n")
 	print ('er\tror\n')
-	19a 
+	$b = -19.123e2;
+	$c = 10E-3.3;
 	$a = $b * $c;
 	if (~$a>>1 ^ $b**=1) {
 		# body...
 		$c = $a.$b
+		$d = 024
+		$d = 24
+		$d = 087
+		$d = 87
+		$d = 0xa3
+		$d = 0xA123
+		$d = 0xFF
+		$d = 0xGF
 	}
 }

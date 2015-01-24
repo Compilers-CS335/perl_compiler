@@ -37,7 +37,11 @@ reserved={
 tokens=[
 		"STRING",
 		"RES_STRING",
+		"SCI_NOT",
 		"NUMBER",
+		"FLOAT",
+		"OCTAL",
+		"HEXADECIMAL",
 		"PLUS_OP",
 		"MINUS_OP",
 		"MULTIPLICATION_OP",
@@ -88,9 +92,29 @@ def t_STRING(t):
 def t_RES_STRING(t):
 	r"\"(\\.|[^\"])*\""
 	return t
+
+def t_SCI_NOT(t):
+    r"(-)?(\d+\.\d+|\d+)[eE](-)?\d+"
+    # t.value = float(t.value)
+    return t
 	
+def t_FLOAT(t):
+    r"(-)?\d+\.\d+"
+    t.value = float(t.value)
+    return t
+
+def t_HEXADECIMAL(t):
+    r"(-)?[0][x][a-fA-F0-9]+"
+    # t.value = float.hex(t.value)
+    return t
+	
+def t_OCTAL(t):
+    r"(-)?[0][0-7]+"
+    t.value = int(t.value)
+    return t	
+
 def t_NUMBER(t):
-    r"\d+"
+    r"(-)?\d+"
     t.value = int(t.value)
     return t
 
