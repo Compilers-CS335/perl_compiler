@@ -28,7 +28,6 @@ reserved={
 	'write':'WRITE',
 	'select':'SELECT'
 }
-# I am bored avikalp please complete the list
 # completed the list from the list of reserved words as in the file reserved.txt
 # I have given 'and', 'or' and 'not' the same name as the tokens below
 # 'my' ko especially PRIVATE  naam diya hai... dont ask why :P
@@ -83,6 +82,11 @@ tokens=[
 		"SEARCH_MODIFY",		#the operator used to search in and/or modify strings
 		"SEARCH_MODIFY_NEG",	#same as above but returns the negation
 		"RANGE_OP",				#the one used in 2..6
+		"USER_INPUT_OP",
+		"MATCH",				# http://affy.blogspot.in/p5be/ch10.htm
+		"SUBSTITUTE",
+		"TRANSLATION",
+		"SYSTEM_COMMAND"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -96,6 +100,10 @@ def t_STRING(t):
 
 def t_RES_STRING(t):
 	r"\"(\\.|[^\"])*\""
+	return t
+
+def t_USER_INPUT_OP(t):
+	r"<([A-Z\*]+)?>"
 	return t
 
 def t_SCI_NOT(t):
@@ -131,6 +139,18 @@ def t_EXPONENT_OP(t):
 	r"\*\*"
 	return t
 
+def t_MATCH(t):							# This definition is not complete as match can also be used without 'm'
+	r"m/(\\.|[^/])*/([gimosx])?"
+	return t
+
+def t_SUBSTITUTE(t):
+	r"s/(\\.|[^/])*/(\\.|[^/])*/([egimosx])?"
+	return t
+
+def t_TRANSLATION(t):
+	r"(tr|y)/(\\.|[^/])*/(\\.|[^/])*/([cds])?"
+	return t
+
 def t_PLUS_OP(t):
 	r"\+"
 	return t
@@ -154,6 +174,12 @@ def t_MODULUS_OP(t):
 def t_REP_OP(t):
 	r"x"
 	return t
+
+#identifier
+def t_IDENTIFIER(t):
+    r"[\$@%]?[a-zA-Z$_][\w$]*"
+    t.type = reserved.get(t.value,'IDENTIFIER')    
+    return t
 
 def t_SEMICOLON(t):
 	r";"
@@ -263,10 +289,14 @@ def t_CONCATENATE(t):
 	r"\."
 	return t
 
+def t_SYSTEM_COMMAND(t):
+	r"\`([^\`])*\`"
+	return t
+
 def t_ASSIGNMENT_OP(t):
 	r"="
 	return t
-	
+
 def t_ignore_COMMENT(t):
 	r"\#.*"
 	
@@ -280,19 +310,13 @@ def t_error(t):
 	print "Illegal character %s" % t.value[0]
 	t.lexer.skip(1)
 
-#identifier
-def t_IDENTIFIER(t):
-    r"[\$@%]?[a-zA-Z$_][\w$]*"
-    t.type = reserved.get(t.value,'IDENTIFIER')    
-    return t
-
 lexer=lex.lex()
 def runlexer(inputfile):
 	program=open(inputfile).read()
 	lexer.input(program)
 	line1 = ""
 	line2 = "#"
-	LineNum = 2;
+	LineNum = 0;
 	# print "Type \t\t\t\t\t Value"
 	for tok in iter(lexer.token, None):
 		while tok.lineno!=LineNum:
