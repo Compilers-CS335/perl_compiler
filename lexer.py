@@ -36,9 +36,9 @@ reserved={
 #some tokens we are gonna use 
 tokens=[
 		"STRING",
-		"RES_STRING",
-		"SCI_NOT",
-		"NUMBER",
+		"RES_STRING",			#responsive strings
+		"SCI_NOT",				#numbers in scientific notation
+		"NUMBER",				#positive or negative integers
 		"FLOAT",
 		"OCTAL",
 		"HEXADECIMAL",
@@ -48,7 +48,8 @@ tokens=[
 		"DIVISION_OP",
 		"MODULUS_OP",
 		"EXPONENT_OP",
-		"FLOOR_DIVISION_OP",
+		"REP_OP",				#the repetition operator 'x'
+		"FLOOR_DIVISION_OP",	#---------------------------------------why is this here????
 		"NOT_OP",
 		"AND_OP",
 		"OR_OP",
@@ -59,6 +60,7 @@ tokens=[
 		"GREATER_OP",
 		"LESS_EQUAL_OP",
 		"LESS_OP",
+		"ADV_ASSIGNMENT_OP",	#those which do an operation before assignment
 		"ASSIGNMENT_OP",
 		"SEMICOLON",
 		"BLOCK_BEGIN",
@@ -77,7 +79,10 @@ tokens=[
 		"BIT_FLIP",
 		"BIT_LEFT_SHIFT",
 		"BIT_RIGHT_SHIFT",
-		"CONCATENATE"
+		"CONCATENATE",
+		"SEARCH_MODIFY",		#the operator used to search in and/or modify strings
+		"SEARCH_MODIFY_NEG",	#same as above but returns the negation
+		"RANGE_OP",				#the one used in 2..6
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -105,12 +110,12 @@ def t_FLOAT(t):
 
 def t_HEXADECIMAL(t):
     r"(-)?[0][x][a-fA-F0-9]+"
-    # t.value = float.hex(t.value)
+    # t.value = int(t.value, 16)
     return t
 	
 def t_OCTAL(t):
     r"(-)?[0][0-7]+"
-    t.value = int(t.value)
+    # t.value = int(t.value)
     return t	
 
 def t_NUMBER(t):
@@ -118,8 +123,8 @@ def t_NUMBER(t):
     t.value = int(t.value)
     return t
 
-def t_ASSIGNMENT_OP(t):
-	r"=|"r"\+=|"r"-=|"r"\*=|"r"/=|"r"%=|"r"\*\*="
+def t_ADV_ASSIGNMENT_OP(t):
+	r"\+=|"r"-=|"r"\*=|"r"/=|"r"%=|"r"\*\*=|"r"\.=|"r"x="
 	return t
 
 def t_EXPONENT_OP(t):
@@ -144,6 +149,10 @@ def t_DIVISION_OP(t):
 
 def t_MODULUS_OP(t):
 	r"%"
+	return t
+
+def t_REP_OP(t):
+	r"x"
 	return t
 
 def t_SEMICOLON(t):
@@ -187,39 +196,47 @@ def t_BIT_RIGHT_SHIFT(t):
 	return t
 
 def t_EQUALS_OP(t):
-	r"=="
+	r"==|"r"eq"
 	return t
 
 def t_NOT_EQUALS_OP(t):
-	r"\!="
-	return t
-
-def t_NOT_OP(t):
-	r"\!"
+	r"\!=|"r"ne"
 	return t
 
 def t_COMPARE_OP(t):
-	r"<=>"
+	r"<=>|"r"cmp"
 	return t
 
 def t_GREATER_EQUAL_OP(t):
-	r">="
+	r">=|"r"ge"
 	return t
 
 def t_LESS_EQUAL_OP(t):				
-	r"<="
+	r"<=|"r"le"
 	return t
 
 def t_GREATER_OP(t):				
-	r">"
+	r">|"r"gt"
 	return t
 
 def t_LESS_OP(t):
-	r"<"
+	r"<|"r"lt"
 	return t
 
 def t_AND_OP(t):
-	r"&&"
+	r"&&|"r"and"
+	return t
+
+def t_SEARCH_MODIFY(t):
+	r"=~"
+	return t
+
+def t_SEARCH_MODIFY_NEG(t):
+	r"\!~"
+	return t
+
+def t_NOT_OP(t):
+	r"\!|"r"not"
 	return t
 
 def t_BIT_AND(t):
@@ -238,10 +255,18 @@ def t_BIT_FLIP(t):
 	r"~"
 	return t
 
+def t_RANGE_OP(t):
+	r"\.\."
+	return t
+
 def t_CONCATENATE(t):
 	r"\."
 	return t
 
+def t_ASSIGNMENT_OP(t):
+	r"="
+	return t
+	
 def t_ignore_COMMENT(t):
 	r"\#.*"
 	
