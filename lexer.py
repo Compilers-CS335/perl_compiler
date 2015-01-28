@@ -48,7 +48,6 @@ tokens=[
 		"MODULUS_OP",
 		"EXPONENT_OP",
 		"REP_OP",				#the repetition operator 'x'
-		"FLOOR_DIVISION_OP",	#---------------------------------------why is this here????
 		"NOT_OP",
 		"AND_OP",
 		"OR_OP",
@@ -110,27 +109,27 @@ def t_USER_INPUT_OP(t):
 	return t
 
 def t_SCI_NOT(t):
-    r"(-)?(\d+\.\d+|\d+)[eE](-)?\d+"
+    r"(\d+\.\d+|\d+)[eE](-)?\d+"
     # t.value = float(t.value)
     return t
 	
 def t_FLOAT(t):
-    r"(-)?\d+\.\d+"
+    r"\d+\.\d+"
     t.value = float(t.value)
     return t
 
 def t_HEXADECIMAL(t):
-    r"(-)?[0][x][a-fA-F0-9]+"
+    r"[0][x][a-fA-F0-9]+"
     # t.value = int(t.value, 16)
     return t
 	
 def t_OCTAL(t):
-    r"(-)?[0][0-7]+"
+    r"[0][0-7]+"
     # t.value = int(t.value)
     return t	
 
 def t_NUMBER(t):
-    r"(-)?\d+"
+    r"\d+"
     t.value = int(t.value)
     return t
 
@@ -143,15 +142,15 @@ def t_EXPONENT_OP(t):
 	return t
 
 def t_MATCH(t):							# This definition is not complete as match can also be used without 'm'
-	r"m/(\\.|[^/])*/([gimosx])?"
+	r"m([ \t]*)?/(\\.|[^/])*/([gimosx])?"
 	return t
 
 def t_SUBSTITUTE(t):
-	r"s/(\\.|[^/])*/(\\.|[^/])*/([egimosx])?"
+	r"s([ \t]*)?/(\\.|[^/])*/(\\.|[^/])*/([egimosx])?"
 	return t
 
 def t_TRANSLATION(t):
-	r"(tr|y)/(\\.|[^/])*/(\\.|[^/])*/([cds])?"
+	r"(tr|y)([ \t]*)?/(\\.|[^/])*/(\\.|[^/])*/([cds])?"
 	return t
 
 def t_PLUS_OP(t):
