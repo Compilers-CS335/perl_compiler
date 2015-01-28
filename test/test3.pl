@@ -14,7 +14,7 @@ sub expand {
     my ($line) = @_;
     my ($left, $right);   # Parens needed so my applies to both.
 
-    while($line =~ /\t/) {
+    while($line =~ m	 /\t/) {
         ($left, $right) = split (/\t/, $line, 2);
 
         my($tabamt) = 8 - length($left) % 8;
