@@ -94,7 +94,7 @@ t_ignore_WHITESPACE=r"\s"
 
 
 def t_STRING(t):
-	r"\'(\\.|[^\'])*\'"
+	r"\'([^\'])*\'"
 	#t.replace("\t","	")
 	return t
 
