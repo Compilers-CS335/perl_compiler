@@ -86,7 +86,10 @@ tokens=[
 		"MATCH",				# http://affy.blogspot.in/p5be/ch10.htm
 		"SUBSTITUTE",
 		"TRANSLATION",
-		"SYSTEM_COMMAND"
+		"SYSTEM_COMMAND",
+		"VARIABLE",
+		"ARRAY",
+		"HASH"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -95,7 +98,7 @@ t_ignore_WHITESPACE=r"\s"
 
 
 def t_STRING(t):
-	r"\'(\\.|[^\'])*\'"
+	r"\'([^\'])*\'"
 	return t
 
 def t_RES_STRING(t):
@@ -176,8 +179,28 @@ def t_REP_OP(t):
 	return t
 
 #identifier
+# def t_IDENTIFIER(t):
+#     r"[\$@%]?[a-zA-Z$_][\w$]*"
+#     t.type = reserved.get(t.value,'IDENTIFIER')    
+#     return t
+
+def t_VARIABLE(t):
+    r"[\$][a-zA-Z$_][\w$]*"							# not considering $#
+    t.type = reserved.get(t.value,'VARIABLE')    
+    return t
+
+def t_HASH(t):
+    r"[%][a-zA-Z$_][\w$]*"
+    t.type = reserved.get(t.value,'HASH')    
+    return t
+
+def t_ARRAY(t):
+    r"[@][a-zA-Z$_][\w$]*"
+    t.type = reserved.get(t.value,'ARRAY')    
+    return t
+
 def t_IDENTIFIER(t):
-    r"[\$@%]?[a-zA-Z$_][\w$]*"
+    r"[&]?[a-zA-Z$_][\w$]*"
     t.type = reserved.get(t.value,'IDENTIFIER')    
     return t
 

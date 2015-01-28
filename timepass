@@ -5,8 +5,7 @@
 	($a == $b) ? $a = 1 : $b = 1;			# http://affy.blogspot.in/p5be/ch04.htm
 	#I am just writing some comment
 	@b=(1,2,3);
-		print ("er\tror\n")
-	print ('er\tror\n')
+
 	$b = -19.123e2;
 	$c = 10E-3.3;
 	$a = $b * $c;
@@ -22,4 +21,7 @@
 		$d = 0xFF
 		$d = 0xGF
 	}
+
+			print ("er\tror\n")
+	print ('er\tror\n')
 }
