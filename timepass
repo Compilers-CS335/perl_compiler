@@ -2,7 +2,7 @@
 {
 	$a=10;
 	# These these have not yet been included
-	($a == $b) ? $a = 1 : $b = 1;			# http://affy.blogspot.in/p5be/ch04.htm
+	($a == $b) ? {$a = 1; print "\$a = 1";} : {$b = 1; print "changes to \$b";}			# http://affy.blogspot.in/p5be/ch04.htm
 	#I am just writing some comment
 	@b=(1,2,3);
 
@@ -13,17 +13,16 @@
 	$a = $b * $c;
 	if (~$a>>1 ^ $b**=1 || $b == $c) {
 		# body...
-		# $c = $a.$b
-		# $d = 024
-		# $d = 24
-		# $d = 087
-		# $d = 87
-		# $d = 0x
-		# $d = 0xA123
-		# $d = 0xFF
-		# $d = 0xGF
+		 $c = $a.$b
+		 $d = 024
+		 $d = 24
+		 $d = 087
+		 $d = 87
+		 $d = 0x
+		 $d = 0xA123
+		 $d = 0xFF
+		 $d = 0xGF
 	}
-
-			print ("er\tror\n")
-	print ('er\tror\n')
+			print ("er\tror\n");
+	print ('er\tror\n');
 }

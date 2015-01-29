@@ -88,7 +88,9 @@ tokens=[
 		"SYSTEM_COMMAND",
 		"VARIABLE",
 		"ARRAY",
-		"HASH"
+		"HASH",
+		"QUESTION_MARK",
+		"COLON"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -317,6 +319,14 @@ def t_SYSTEM_COMMAND(t):
 
 def t_ASSIGNMENT_OP(t):
 	r"="
+	return t
+
+def t_QUESTION_MARK(t):
+	r"\?"
+	return t
+
+def t_COLON(t):
+	r"\:"
 	return t
 
 def t_ignore_COMMENT(t):
