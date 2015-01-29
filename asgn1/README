@@ -1,0 +1,17 @@
+Lexer of Perl using python.
+
+Run:-
+
+python src/lexer.py <file_name>
+
+To run the test files:-
+
+python src/lexer.py test/test1.pl  (to execute the first test file test1.pl)
+
+
+
+resources used:-
+1. ply.lex documentation
+2. perl documentation
+
+
