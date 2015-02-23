@@ -375,6 +375,7 @@ def runlexer(inputfile):
 			line2 = "#"
 		line1 += " %s" %(tok.value)
 		line2 += " %s" %(repr(tok.type))
+	print "%s\n%s\n" %(line1, line2)
 
 if __name__=="__main__":
 	from sys import argv 
