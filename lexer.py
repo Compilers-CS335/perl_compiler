@@ -90,7 +90,10 @@ tokens=[
 		"ARRAY",
 		"HASH",
 		"QUESTION_MARK",
-		"COLON"
+		"COLON",
+		"INCREMENT_OP",
+		"DECREMENT_OP",
+		"FILE_HANDLING_OPTIONS"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -136,7 +139,7 @@ def t_NUMBER(t):
     return t
 
 def t_ADV_ASSIGNMENT_OP(t):
-	r"\+=|"r"-=|"r"\*=|"r"/=|"r"%=|"r"\*\*=|"r"\.=|"r"x="
+	r"\+=|"r"-=|"r"\*=|"r"/=|"r"%=|"r"\*\*=|"r"\.=|"r"x=|"r"=>"
 	return t
 
 def t_EXPONENT_OP(t):
@@ -155,8 +158,20 @@ def t_TRANSLATION(t):
 	r"(tr|y)([ \t]*)?/(\\.|[^/])*/(\\.|[^/])*/([cds])?"
 	return t
 
+def t_INCREMENT_OP(t):
+	r"\+\+"
+	return t
+
+def t_DECREMENT_OP(t):
+	r"--"
+	return t
+
 def t_PLUS_OP(t):
 	r"\+"
+	return t
+
+def t_FILE_HANDLING_OPTIONS(t):
+	r"-[ABCMORSTWXbcdefghklmnoprstuwxz]"
 	return t
 
 def t_MINUS_OP(t):
@@ -170,40 +185,6 @@ def t_MULTIPLICATION_OP(t):
 def t_DIVISION_OP(t):
 	r"/"
 	return t
-
-def t_MODULUS_OP(t):
-	r"%"
-	return t
-
-def t_REP_OP(t):
-	r"x"
-	return t
-
-#identifier
-# def t_IDENTIFIER(t):
-#     r"[\$@%]?[a-zA-Z$_][\w$]*"
-#     t.type = reserved.get(t.value,'IDENTIFIER')    
-#     return t
-
-def t_VARIABLE(t):
-    r"[\$][a-zA-Z$_][\w$]*"							# not considering $#
-    t.type = reserved.get(t.value,'VARIABLE')    
-    return t
-
-def t_HASH(t):
-    r"[%][a-zA-Z$_][\w$]*"
-    t.type = reserved.get(t.value,'HASH')    
-    return t
-
-def t_ARRAY(t):
-    r"[@][a-zA-Z$_][\w$]*"
-    t.type = reserved.get(t.value,'ARRAY')    
-    return t
-
-def t_IDENTIFIER(t):
-    r"[&]?[a-zA-Z$_][\w$]*"
-    t.type = reserved.get(t.value,'IDENTIFIER')    
-    return t
 
 def t_SEMICOLON(t):
 	r";"
@@ -289,6 +270,40 @@ def t_NOT_OP(t):
 	r"\!|"r"not"
 	return t
 
+#identifier
+# def t_IDENTIFIER(t):
+#     r"[\$@%]?[a-zA-Z$_][\w$]*"
+#     t.type = reserved.get(t.value,'IDENTIFIER')    
+#     return t
+
+def t_VARIABLE(t):
+    r"[\$][a-zA-Z$_][\w$]*"							# not considering $#
+    t.type = reserved.get(t.value,'VARIABLE')    
+    return t
+
+def t_HASH(t):
+    r"[%][a-zA-Z$_][\w$]*"
+    t.type = reserved.get(t.value,'HASH')    
+    return t
+
+def t_ARRAY(t):
+    r"[@][a-zA-Z$_][\w$]*"
+    t.type = reserved.get(t.value,'ARRAY')    
+    return t
+
+def t_IDENTIFIER(t):
+    r"[&]?[a-zA-Z$_][\w$]*"
+    t.type = reserved.get(t.value,'IDENTIFIER')    
+    return t
+
+def t_MODULUS_OP(t):
+	r"%"
+	return t
+
+def t_REP_OP(t):
+	r"x"
+	return t
+
 def t_BIT_AND(t):
 	r"&"
 	return t
@@ -349,16 +364,18 @@ def runlexer(inputfile):
 	line1 = ""
 	line2 = "#"
 	LineNum = 0;
-	# print "Type \t\t\t\t\t Value"
 	for tok in iter(lexer.token, None):
 		while tok.lineno!=LineNum:
 		 	LineNum+=1
 		 	if (line1 != ""):
 				print "%s\n%s\n" %(line1, line2)
+			else:
+				print "\n"
 			line1 = ""
 			line2 = "#"
 		line1 += " %s" %(tok.value)
 		line2 += " %s" %(repr(tok.type))
+	print "%s\n%s\n" %(line1, line2)
 
 if __name__=="__main__":
 	from sys import argv 

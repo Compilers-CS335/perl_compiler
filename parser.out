@@ -1,0 +1,239 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CLOSE_BRACKET
+    LESS_EQUAL_OP
+    USE
+    OPEN_PARANTHESIS
+    MINUS_OP
+    COMPARE_OP
+    RES_STRING
+    ARRAY
+    SUBSTITUTE
+    EXPONENT_OP
+    DO
+    VARIABLE
+    DIVISION_OP
+    COLON
+    UNLESS
+    PRIVATE
+    IF
+    CONTINUE
+    NOT_OP
+    HEXADECIMAL
+    RANGE_OP
+    BIT_XOR
+    SELECT
+    SUB
+    COMMENT
+    CASE
+    LAST
+    EQUALS_OP
+    SYSTEM_COMMAND
+    QUESTION_MARK
+    NEXT
+    OPEN_BRACKET
+    OR_OP
+    FOR
+    LESS_OP
+    NOT_EQUALS_OP
+    SWITCH
+    USER_INPUT_OP
+    COMMA
+    MODULUS_OP
+    FORMAT
+    BIT_FLIP
+    ASSIGNMENT_OP
+    IDENTIFIER
+    BLOCK_ENDS
+    GREATER_EQUAL_OP
+    FILE_HANDLING_OPTIONS
+    GOTO
+    HASH
+    STRING
+    CLOSE_PARANTHESIS
+    BIT_AND
+    MULTIPLICATION_OP
+    DECREMENT_OP
+    LOCAL
+    SEARCH_MODIFY
+    SCI_NOT
+    ELSE
+    WRITE
+    AND_OP
+    BLOCK_BEGIN
+    ELSIF
+    OCTAL
+    BIT_LEFT_SHIFT
+    TRANSLATION
+    MATCH
+    REP_OP
+    CONCATENATE
+    UNTIL
+    WHITESPACE
+    INCREMENT_OP
+    WHILE
+    FLOAT
+    ADV_ASSIGNMENT_OP
+    BIT_OR
+    SEARCH_MODIFY_NEG
+    REDO
+    GREATER_OP
+    BIT_RIGHT_SHIFT
+    FOREACH
+
+Grammar
+
+Rule 0     S' -> expression
+Rule 1     expression -> term PLUS_OP term SEMICOLON
+Rule 2     term -> NUMBER
+
+Terminals, with rules where they appear
+
+ADV_ASSIGNMENT_OP    : 
+AND_OP               : 
+ARRAY                : 
+ASSIGNMENT_OP        : 
+BIT_AND              : 
+BIT_FLIP             : 
+BIT_LEFT_SHIFT       : 
+BIT_OR               : 
+BIT_RIGHT_SHIFT      : 
+BIT_XOR              : 
+BLOCK_BEGIN          : 
+BLOCK_ENDS           : 
+CASE                 : 
+CLOSE_BRACKET        : 
+CLOSE_PARANTHESIS    : 
+COLON                : 
+COMMA                : 
+COMMENT              : 
+COMPARE_OP           : 
+CONCATENATE          : 
+CONTINUE             : 
+DECREMENT_OP         : 
+DIVISION_OP          : 
+DO                   : 
+ELSE                 : 
+ELSIF                : 
+EQUALS_OP            : 
+EXPONENT_OP          : 
+FILE_HANDLING_OPTIONS : 
+FLOAT                : 
+FOR                  : 
+FOREACH              : 
+FORMAT               : 
+GOTO                 : 
+GREATER_EQUAL_OP     : 
+GREATER_OP           : 
+HASH                 : 
+HEXADECIMAL          : 
+IDENTIFIER           : 
+IF                   : 
+INCREMENT_OP         : 
+LAST                 : 
+LESS_EQUAL_OP        : 
+LESS_OP              : 
+LOCAL                : 
+MATCH                : 
+MINUS_OP             : 
+MODULUS_OP           : 
+MULTIPLICATION_OP    : 
+NEXT                 : 
+NOT_EQUALS_OP        : 
+NOT_OP               : 
+NUMBER               : 2
+OCTAL                : 
+OPEN_BRACKET         : 
+OPEN_PARANTHESIS     : 
+OR_OP                : 
+PLUS_OP              : 1
+PRIVATE              : 
+QUESTION_MARK        : 
+RANGE_OP             : 
+REDO                 : 
+REP_OP               : 
+RES_STRING           : 
+SCI_NOT              : 
+SEARCH_MODIFY        : 
+SEARCH_MODIFY_NEG    : 
+SELECT               : 
+SEMICOLON            : 1
+STRING               : 
+SUB                  : 
+SUBSTITUTE           : 
+SWITCH               : 
+SYSTEM_COMMAND       : 
+TRANSLATION          : 
+UNLESS               : 
+UNTIL                : 
+USE                  : 
+USER_INPUT_OP        : 
+VARIABLE             : 
+WHILE                : 
+WHITESPACE           : 
+WRITE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 0
+term                 : 1 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expression
+    (1) expression -> . term PLUS_OP term SEMICOLON
+    (2) term -> . NUMBER
+
+    NUMBER          shift and go to state 3
+
+    term                           shift and go to state 1
+    expression                     shift and go to state 2
+
+state 1
+
+    (1) expression -> term . PLUS_OP term SEMICOLON
+
+    PLUS_OP         shift and go to state 4
+
+
+state 2
+
+    (0) S' -> expression .
+
+
+
+state 3
+
+    (2) term -> NUMBER .
+
+    SEMICOLON       reduce using rule 2 (term -> NUMBER .)
+    PLUS_OP         reduce using rule 2 (term -> NUMBER .)
+
+
+state 4
+
+    (1) expression -> term PLUS_OP . term SEMICOLON
+    (2) term -> . NUMBER
+
+    NUMBER          shift and go to state 3
+
+    term                           shift and go to state 5
+
+state 5
+
+    (1) expression -> term PLUS_OP term . SEMICOLON
+
+    SEMICOLON       shift and go to state 6
+
+
+state 6
+
+    (1) expression -> term PLUS_OP term SEMICOLON .
+
+    $end            reduce using rule 1 (expression -> term PLUS_OP term SEMICOLON .)
+
