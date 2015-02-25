@@ -55,7 +55,7 @@ def p_statment(p):
 
 
 def p_return(p):
-    'returnStatement : RETURN type SEMICOLON'
+    'returnStatement : RETURN expression SEMICOLON'
 
 
 def p_assignment(p):
