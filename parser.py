@@ -1,4 +1,4 @@
-import ply.yacc as yacc
+import yacc
 
 #get the token map from the lexer
 from lexer import tokens

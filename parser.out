@@ -9,15 +9,12 @@ Unused terminals:
     MINUS_OP
     COMPARE_OP
     RES_STRING
-    ARRAY
     SUBSTITUTE
     EXPONENT_OP
     DO
-    VARIABLE
     DIVISION_OP
     COLON
     UNLESS
-    PRIVATE
     IF
     CONTINUE
     NOT_OP
@@ -40,17 +37,13 @@ Unused terminals:
     NOT_EQUALS_OP
     SWITCH
     USER_INPUT_OP
-    COMMA
     MODULUS_OP
     FORMAT
     BIT_FLIP
-    ASSIGNMENT_OP
     IDENTIFIER
-    BLOCK_ENDS
     GREATER_EQUAL_OP
     FILE_HANDLING_OPTIONS
     GOTO
-    HASH
     STRING
     CLOSE_PARANTHESIS
     BIT_AND
@@ -62,7 +55,6 @@ Unused terminals:
     ELSE
     WRITE
     AND_OP
-    BLOCK_BEGIN
     ELSIF
     OCTAL
     BIT_LEFT_SHIFT
@@ -75,8 +67,8 @@ Unused terminals:
     INCREMENT_OP
     WHILE
     FLOAT
-    ADV_ASSIGNMENT_OP
     BIT_OR
+    PLUS_OP
     SEARCH_MODIFY_NEG
     REDO
     GREATER_OP
@@ -85,29 +77,49 @@ Unused terminals:
 
 Grammar
 
-Rule 0     S' -> expression
-Rule 1     expression -> term PLUS_OP term SEMICOLON
-Rule 2     term -> NUMBER
+Rule 0     S' -> start
+Rule 1     start -> block
+Rule 2     start -> statements
+Rule 3     block -> BLOCK_BEGIN statements BLOCK_ENDS
+Rule 4     statements -> statement statements
+Rule 5     statements -> statement empty
+Rule 6     empty -> <empty>
+Rule 7     statement -> assignment
+Rule 8     statement -> declaration
+Rule 9     statement -> returnStatement
+Rule 10    returnStatement -> RETURN type SEMICOLON
+Rule 11    assignment -> lefthandside assignmenttype expression SEMICOLON
+Rule 12    assignmenttype -> ADV_ASSIGNMENT_OP
+Rule 13    assignmenttype -> ASSIGNMENT_OP
+Rule 14    lefthandside -> PRIVATE type
+Rule 15    lefthandside -> type
+Rule 16    type -> ARRAY
+Rule 17    type -> HASH
+Rule 18    type -> VARIABLE
+Rule 19    declaration -> lefthandside decList SEMICOLON
+Rule 20    decList -> COMMA type decList
+Rule 21    decList -> empty
+Rule 22    expression -> NUMBER
 
 Terminals, with rules where they appear
 
-ADV_ASSIGNMENT_OP    : 
+ADV_ASSIGNMENT_OP    : 12
 AND_OP               : 
-ARRAY                : 
-ASSIGNMENT_OP        : 
+ARRAY                : 16
+ASSIGNMENT_OP        : 13
 BIT_AND              : 
 BIT_FLIP             : 
 BIT_LEFT_SHIFT       : 
 BIT_OR               : 
 BIT_RIGHT_SHIFT      : 
 BIT_XOR              : 
-BLOCK_BEGIN          : 
-BLOCK_ENDS           : 
+BLOCK_BEGIN          : 3
+BLOCK_ENDS           : 3
 CASE                 : 
 CLOSE_BRACKET        : 
 CLOSE_PARANTHESIS    : 
 COLON                : 
-COMMA                : 
+COMMA                : 20
 COMMENT              : 
 COMPARE_OP           : 
 CONCATENATE          : 
@@ -127,7 +139,7 @@ FORMAT               :
 GOTO                 : 
 GREATER_EQUAL_OP     : 
 GREATER_OP           : 
-HASH                 : 
+HASH                 : 17
 HEXADECIMAL          : 
 IDENTIFIER           : 
 IF                   : 
@@ -143,23 +155,24 @@ MULTIPLICATION_OP    :
 NEXT                 : 
 NOT_EQUALS_OP        : 
 NOT_OP               : 
-NUMBER               : 2
+NUMBER               : 22
 OCTAL                : 
 OPEN_BRACKET         : 
 OPEN_PARANTHESIS     : 
 OR_OP                : 
-PLUS_OP              : 1
-PRIVATE              : 
+PLUS_OP              : 
+PRIVATE              : 14
 QUESTION_MARK        : 
 RANGE_OP             : 
 REDO                 : 
 REP_OP               : 
 RES_STRING           : 
+RETURN               : 10
 SCI_NOT              : 
 SEARCH_MODIFY        : 
 SEARCH_MODIFY_NEG    : 
 SELECT               : 
-SEMICOLON            : 1
+SEMICOLON            : 10 11 19
 STRING               : 
 SUB                  : 
 SUBSTITUTE           : 
@@ -170,7 +183,7 @@ UNLESS               :
 UNTIL                : 
 USE                  : 
 USER_INPUT_OP        : 
-VARIABLE             : 
+VARIABLE             : 18
 WHILE                : 
 WHITESPACE           : 
 WRITE                : 
@@ -178,62 +191,436 @@ error                :
 
 Nonterminals, with rules where they appear
 
-expression           : 0
-term                 : 1 1
+assignment           : 7
+assignmenttype       : 11
+block                : 1
+decList              : 19 20
+declaration          : 8
+empty                : 5 21
+expression           : 11
+lefthandside         : 11 19
+returnStatement      : 9
+start                : 0
+statement            : 4 5
+statements           : 2 3 4
+type                 : 10 14 15 20
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . expression
-    (1) expression -> . term PLUS_OP term SEMICOLON
-    (2) term -> . NUMBER
+    (0) S' -> . start
+    (1) start -> . block
+    (2) start -> . statements
+    (3) block -> . BLOCK_BEGIN statements BLOCK_ENDS
+    (4) statements -> . statement statements
+    (5) statements -> . statement empty
+    (7) statement -> . assignment
+    (8) statement -> . declaration
+    (9) statement -> . returnStatement
+    (11) assignment -> . lefthandside assignmenttype expression SEMICOLON
+    (19) declaration -> . lefthandside decList SEMICOLON
+    (10) returnStatement -> . RETURN type SEMICOLON
+    (14) lefthandside -> . PRIVATE type
+    (15) lefthandside -> . type
+    (16) type -> . ARRAY
+    (17) type -> . HASH
+    (18) type -> . VARIABLE
 
-    NUMBER          shift and go to state 3
+    BLOCK_BEGIN     shift and go to state 4
+    RETURN          shift and go to state 13
+    PRIVATE         shift and go to state 8
+    ARRAY           shift and go to state 15
+    HASH            shift and go to state 12
+    VARIABLE        shift and go to state 5
 
-    term                           shift and go to state 1
-    expression                     shift and go to state 2
+    statements                     shift and go to state 1
+    lefthandside                   shift and go to state 2
+    assignment                     shift and go to state 3
+    start                          shift and go to state 6
+    type                           shift and go to state 7
+    block                          shift and go to state 9
+    statement                      shift and go to state 10
+    declaration                    shift and go to state 11
+    returnStatement                shift and go to state 14
 
 state 1
 
-    (1) expression -> term . PLUS_OP term SEMICOLON
+    (2) start -> statements .
 
-    PLUS_OP         shift and go to state 4
+    $end            reduce using rule 2 (start -> statements .)
 
 
 state 2
 
-    (0) S' -> expression .
+    (11) assignment -> lefthandside . assignmenttype expression SEMICOLON
+    (19) declaration -> lefthandside . decList SEMICOLON
+    (12) assignmenttype -> . ADV_ASSIGNMENT_OP
+    (13) assignmenttype -> . ASSIGNMENT_OP
+    (20) decList -> . COMMA type decList
+    (21) decList -> . empty
+    (6) empty -> .
 
+    ADV_ASSIGNMENT_OP shift and go to state 18
+    ASSIGNMENT_OP   shift and go to state 20
+    COMMA           shift and go to state 19
+    SEMICOLON       reduce using rule 6 (empty -> .)
 
+    assignmenttype                 shift and go to state 16
+    decList                        shift and go to state 17
+    empty                          shift and go to state 21
 
 state 3
 
-    (2) term -> NUMBER .
+    (7) statement -> assignment .
 
-    SEMICOLON       reduce using rule 2 (term -> NUMBER .)
-    PLUS_OP         reduce using rule 2 (term -> NUMBER .)
+    RETURN          reduce using rule 7 (statement -> assignment .)
+    PRIVATE         reduce using rule 7 (statement -> assignment .)
+    ARRAY           reduce using rule 7 (statement -> assignment .)
+    HASH            reduce using rule 7 (statement -> assignment .)
+    VARIABLE        reduce using rule 7 (statement -> assignment .)
+    $end            reduce using rule 7 (statement -> assignment .)
+    BLOCK_ENDS      reduce using rule 7 (statement -> assignment .)
 
 
 state 4
 
-    (1) expression -> term PLUS_OP . term SEMICOLON
-    (2) term -> . NUMBER
+    (3) block -> BLOCK_BEGIN . statements BLOCK_ENDS
+    (4) statements -> . statement statements
+    (5) statements -> . statement empty
+    (7) statement -> . assignment
+    (8) statement -> . declaration
+    (9) statement -> . returnStatement
+    (11) assignment -> . lefthandside assignmenttype expression SEMICOLON
+    (19) declaration -> . lefthandside decList SEMICOLON
+    (10) returnStatement -> . RETURN type SEMICOLON
+    (14) lefthandside -> . PRIVATE type
+    (15) lefthandside -> . type
+    (16) type -> . ARRAY
+    (17) type -> . HASH
+    (18) type -> . VARIABLE
 
-    NUMBER          shift and go to state 3
+    RETURN          shift and go to state 13
+    PRIVATE         shift and go to state 8
+    ARRAY           shift and go to state 15
+    HASH            shift and go to state 12
+    VARIABLE        shift and go to state 5
 
-    term                           shift and go to state 5
+    statements                     shift and go to state 22
+    assignment                     shift and go to state 3
+    lefthandside                   shift and go to state 2
+    type                           shift and go to state 7
+    statement                      shift and go to state 10
+    declaration                    shift and go to state 11
+    returnStatement                shift and go to state 14
 
 state 5
 
-    (1) expression -> term PLUS_OP term . SEMICOLON
+    (18) type -> VARIABLE .
 
-    SEMICOLON       shift and go to state 6
+    ADV_ASSIGNMENT_OP reduce using rule 18 (type -> VARIABLE .)
+    ASSIGNMENT_OP   reduce using rule 18 (type -> VARIABLE .)
+    COMMA           reduce using rule 18 (type -> VARIABLE .)
+    SEMICOLON       reduce using rule 18 (type -> VARIABLE .)
 
 
 state 6
 
-    (1) expression -> term PLUS_OP term SEMICOLON .
+    (0) S' -> start .
 
-    $end            reduce using rule 1 (expression -> term PLUS_OP term SEMICOLON .)
+
+
+state 7
+
+    (15) lefthandside -> type .
+
+    ADV_ASSIGNMENT_OP reduce using rule 15 (lefthandside -> type .)
+    ASSIGNMENT_OP   reduce using rule 15 (lefthandside -> type .)
+    COMMA           reduce using rule 15 (lefthandside -> type .)
+    SEMICOLON       reduce using rule 15 (lefthandside -> type .)
+
+
+state 8
+
+    (14) lefthandside -> PRIVATE . type
+    (16) type -> . ARRAY
+    (17) type -> . HASH
+    (18) type -> . VARIABLE
+
+    ARRAY           shift and go to state 15
+    HASH            shift and go to state 12
+    VARIABLE        shift and go to state 5
+
+    type                           shift and go to state 23
+
+state 9
+
+    (1) start -> block .
+
+    $end            reduce using rule 1 (start -> block .)
+
+
+state 10
+
+    (4) statements -> statement . statements
+    (5) statements -> statement . empty
+    (4) statements -> . statement statements
+    (5) statements -> . statement empty
+    (6) empty -> .
+    (7) statement -> . assignment
+    (8) statement -> . declaration
+    (9) statement -> . returnStatement
+    (11) assignment -> . lefthandside assignmenttype expression SEMICOLON
+    (19) declaration -> . lefthandside decList SEMICOLON
+    (10) returnStatement -> . RETURN type SEMICOLON
+    (14) lefthandside -> . PRIVATE type
+    (15) lefthandside -> . type
+    (16) type -> . ARRAY
+    (17) type -> . HASH
+    (18) type -> . VARIABLE
+
+    $end            reduce using rule 6 (empty -> .)
+    BLOCK_ENDS      reduce using rule 6 (empty -> .)
+    RETURN          shift and go to state 13
+    PRIVATE         shift and go to state 8
+    ARRAY           shift and go to state 15
+    HASH            shift and go to state 12
+    VARIABLE        shift and go to state 5
+
+    statements                     shift and go to state 24
+    assignment                     shift and go to state 3
+    lefthandside                   shift and go to state 2
+    type                           shift and go to state 7
+    statement                      shift and go to state 10
+    declaration                    shift and go to state 11
+    returnStatement                shift and go to state 14
+    empty                          shift and go to state 25
+
+state 11
+
+    (8) statement -> declaration .
+
+    RETURN          reduce using rule 8 (statement -> declaration .)
+    PRIVATE         reduce using rule 8 (statement -> declaration .)
+    ARRAY           reduce using rule 8 (statement -> declaration .)
+    HASH            reduce using rule 8 (statement -> declaration .)
+    VARIABLE        reduce using rule 8 (statement -> declaration .)
+    $end            reduce using rule 8 (statement -> declaration .)
+    BLOCK_ENDS      reduce using rule 8 (statement -> declaration .)
+
+
+state 12
+
+    (17) type -> HASH .
+
+    ADV_ASSIGNMENT_OP reduce using rule 17 (type -> HASH .)
+    ASSIGNMENT_OP   reduce using rule 17 (type -> HASH .)
+    COMMA           reduce using rule 17 (type -> HASH .)
+    SEMICOLON       reduce using rule 17 (type -> HASH .)
+
+
+state 13
+
+    (10) returnStatement -> RETURN . type SEMICOLON
+    (16) type -> . ARRAY
+    (17) type -> . HASH
+    (18) type -> . VARIABLE
+
+    ARRAY           shift and go to state 15
+    HASH            shift and go to state 12
+    VARIABLE        shift and go to state 5
+
+    type                           shift and go to state 26
+
+state 14
+
+    (9) statement -> returnStatement .
+
+    RETURN          reduce using rule 9 (statement -> returnStatement .)
+    PRIVATE         reduce using rule 9 (statement -> returnStatement .)
+    ARRAY           reduce using rule 9 (statement -> returnStatement .)
+    HASH            reduce using rule 9 (statement -> returnStatement .)
+    VARIABLE        reduce using rule 9 (statement -> returnStatement .)
+    $end            reduce using rule 9 (statement -> returnStatement .)
+    BLOCK_ENDS      reduce using rule 9 (statement -> returnStatement .)
+
+
+state 15
+
+    (16) type -> ARRAY .
+
+    ADV_ASSIGNMENT_OP reduce using rule 16 (type -> ARRAY .)
+    ASSIGNMENT_OP   reduce using rule 16 (type -> ARRAY .)
+    COMMA           reduce using rule 16 (type -> ARRAY .)
+    SEMICOLON       reduce using rule 16 (type -> ARRAY .)
+
+
+state 16
+
+    (11) assignment -> lefthandside assignmenttype . expression SEMICOLON
+    (22) expression -> . NUMBER
+
+    NUMBER          shift and go to state 28
+
+    expression                     shift and go to state 27
+
+state 17
+
+    (19) declaration -> lefthandside decList . SEMICOLON
+
+    SEMICOLON       shift and go to state 29
+
+
+state 18
+
+    (12) assignmenttype -> ADV_ASSIGNMENT_OP .
+
+    NUMBER          reduce using rule 12 (assignmenttype -> ADV_ASSIGNMENT_OP .)
+
+
+state 19
+
+    (20) decList -> COMMA . type decList
+    (16) type -> . ARRAY
+    (17) type -> . HASH
+    (18) type -> . VARIABLE
+
+    ARRAY           shift and go to state 15
+    HASH            shift and go to state 12
+    VARIABLE        shift and go to state 5
+
+    type                           shift and go to state 30
+
+state 20
+
+    (13) assignmenttype -> ASSIGNMENT_OP .
+
+    NUMBER          reduce using rule 13 (assignmenttype -> ASSIGNMENT_OP .)
+
+
+state 21
+
+    (21) decList -> empty .
+
+    SEMICOLON       reduce using rule 21 (decList -> empty .)
+
+
+state 22
+
+    (3) block -> BLOCK_BEGIN statements . BLOCK_ENDS
+
+    BLOCK_ENDS      shift and go to state 31
+
+
+state 23
+
+    (14) lefthandside -> PRIVATE type .
+
+    ADV_ASSIGNMENT_OP reduce using rule 14 (lefthandside -> PRIVATE type .)
+    ASSIGNMENT_OP   reduce using rule 14 (lefthandside -> PRIVATE type .)
+    COMMA           reduce using rule 14 (lefthandside -> PRIVATE type .)
+    SEMICOLON       reduce using rule 14 (lefthandside -> PRIVATE type .)
+
+
+state 24
+
+    (4) statements -> statement statements .
+
+    BLOCK_ENDS      reduce using rule 4 (statements -> statement statements .)
+    $end            reduce using rule 4 (statements -> statement statements .)
+
+
+state 25
+
+    (5) statements -> statement empty .
+
+    BLOCK_ENDS      reduce using rule 5 (statements -> statement empty .)
+    $end            reduce using rule 5 (statements -> statement empty .)
+
+
+state 26
+
+    (10) returnStatement -> RETURN type . SEMICOLON
+
+    SEMICOLON       shift and go to state 32
+
+
+state 27
+
+    (11) assignment -> lefthandside assignmenttype expression . SEMICOLON
+
+    SEMICOLON       shift and go to state 33
+
+
+state 28
+
+    (22) expression -> NUMBER .
+
+    SEMICOLON       reduce using rule 22 (expression -> NUMBER .)
+
+
+state 29
+
+    (19) declaration -> lefthandside decList SEMICOLON .
+
+    RETURN          reduce using rule 19 (declaration -> lefthandside decList SEMICOLON .)
+    PRIVATE         reduce using rule 19 (declaration -> lefthandside decList SEMICOLON .)
+    ARRAY           reduce using rule 19 (declaration -> lefthandside decList SEMICOLON .)
+    HASH            reduce using rule 19 (declaration -> lefthandside decList SEMICOLON .)
+    VARIABLE        reduce using rule 19 (declaration -> lefthandside decList SEMICOLON .)
+    $end            reduce using rule 19 (declaration -> lefthandside decList SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 19 (declaration -> lefthandside decList SEMICOLON .)
+
+
+state 30
+
+    (20) decList -> COMMA type . decList
+    (20) decList -> . COMMA type decList
+    (21) decList -> . empty
+    (6) empty -> .
+
+    COMMA           shift and go to state 19
+    SEMICOLON       reduce using rule 6 (empty -> .)
+
+    empty                          shift and go to state 21
+    decList                        shift and go to state 34
+
+state 31
+
+    (3) block -> BLOCK_BEGIN statements BLOCK_ENDS .
+
+    $end            reduce using rule 3 (block -> BLOCK_BEGIN statements BLOCK_ENDS .)
+
+
+state 32
+
+    (10) returnStatement -> RETURN type SEMICOLON .
+
+    RETURN          reduce using rule 10 (returnStatement -> RETURN type SEMICOLON .)
+    PRIVATE         reduce using rule 10 (returnStatement -> RETURN type SEMICOLON .)
+    ARRAY           reduce using rule 10 (returnStatement -> RETURN type SEMICOLON .)
+    HASH            reduce using rule 10 (returnStatement -> RETURN type SEMICOLON .)
+    VARIABLE        reduce using rule 10 (returnStatement -> RETURN type SEMICOLON .)
+    $end            reduce using rule 10 (returnStatement -> RETURN type SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 10 (returnStatement -> RETURN type SEMICOLON .)
+
+
+state 33
+
+    (11) assignment -> lefthandside assignmenttype expression SEMICOLON .
+
+    RETURN          reduce using rule 11 (assignment -> lefthandside assignmenttype expression SEMICOLON .)
+    PRIVATE         reduce using rule 11 (assignment -> lefthandside assignmenttype expression SEMICOLON .)
+    ARRAY           reduce using rule 11 (assignment -> lefthandside assignmenttype expression SEMICOLON .)
+    HASH            reduce using rule 11 (assignment -> lefthandside assignmenttype expression SEMICOLON .)
+    VARIABLE        reduce using rule 11 (assignment -> lefthandside assignmenttype expression SEMICOLON .)
+    $end            reduce using rule 11 (assignment -> lefthandside assignmenttype expression SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 11 (assignment -> lefthandside assignmenttype expression SEMICOLON .)
+
+
+state 34
+
+    (20) decList -> COMMA type decList .
+
+    SEMICOLON       reduce using rule 20 (decList -> COMMA type decList .)
 

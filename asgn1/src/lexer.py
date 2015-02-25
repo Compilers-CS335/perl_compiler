@@ -26,6 +26,7 @@ reserved={
 	'local':'LOCAL',
 	'format':'FORMAT',
 	'write':'WRITE',
+	'return':'RETURN'
 	'select':'SELECT'
 }
 # completed the list from the list of reserved words as in the file reserved.txt
