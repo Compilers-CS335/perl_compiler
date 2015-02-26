@@ -52,6 +52,10 @@ tokens=[
 		"NOT_OP",
 		"AND_OP",
 		"OR_OP",
+		"NOT_STR_OP",
+		"AND_STR_OP",
+		"OR_STR_OP",
+		"XOR_STR_OP",
 		"COMPARE_OP",
 		"NOT_EQUALS_OP",
 		"EQUALS_OP",
@@ -94,7 +98,8 @@ tokens=[
 		"COLON",
 		"INCREMENT_OP",
 		"DECREMENT_OP",
-		"FILE_HANDLING_OPTIONS"
+		"FILE_HANDLING_OPTIONS",
+		"ASSOCIATE_OP"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -140,7 +145,11 @@ def t_NUMBER(t):
     return t
 
 def t_ADV_ASSIGNMENT_OP(t):
-	r"\+=|"r"-=|"r"\*=|"r"/=|"r"%=|"r"\*\*=|"r"\.=|"r"x=|"r"=>"
+	r"\+=|"r"-=|"r"\*=|"r"/=|"r"%=|"r"\*\*=|"r"\.=|"r"x="
+	return t
+
+def t_ASSOCIATE_OP(t):
+	r"=>"
 	return t
 
 def t_EXPONENT_OP(t):
@@ -255,8 +264,24 @@ def t_LESS_OP(t):
 	r"<|"r"lt"
 	return t
 
+def t_XOR_STR_OP(t):
+	r"xor"
+	return t
+
 def t_AND_OP(t):
-	r"&&|"r"and"
+	r"&&"
+	return t
+
+def t_AND_STR_OP(t):
+	r"and"
+	return t
+
+def t_OR_OP(t):
+	r"\|\|"
+	return t
+
+def t_OR_STR_OP(t):
+	r"or"
 	return t
 
 def t_SEARCH_MODIFY(t):
@@ -268,7 +293,11 @@ def t_SEARCH_MODIFY_NEG(t):
 	return t
 
 def t_NOT_OP(t):
-	r"\!|"r"not"
+	r"\!"
+	return t
+
+def t_NOT_STR_OP(t):
+	r"not"
 	return t
 
 #identifier
