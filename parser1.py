@@ -11,20 +11,31 @@ from lexer import tokens,lexer
 # def p_block(p):
 # 	'block :BLOCK_BEGIN statements BLOCK_ENDS'
 
-
+stmts = 0
+stmt = 0
+asgn = 0
+add = ""
 
 def p_start(p):
     '''start : block
              | statements'''
+    p[0] = "\tstart -- {" + p[1] + "};"
 
 def p_block(p):
     'block : BLOCK_BEGIN  statements  BLOCK_ENDS'
+    p[0] = "block"
 
 def p_statments(p):
     '''statements : statement statements
                   | statement empty'''
+    global stmts
+    stmts = stmts + 1
+    p[0] = "statements_"+str(stmts)+" };\n statements_"+str(stmts)+" -- { " + p[1] +" " + p[2]
+
+
 def p_empty(p):
     'empty :'
+    p[0] = "empty"
     pass
 
 # def p_empty_statements(p):
@@ -53,7 +64,11 @@ def p_statment(p):
                  # | dowhileStatement
                  # | ternaryStatement 
                  # '''
-
+    global stmt
+    global add
+    stmt = stmt + 1
+    p[0] = "statement_"+str(stmt);
+    add += "\nstatement_"+str(stmt)+" -- {" + p[1] + "};"
 
 def p_ifthen(p):
 	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block'
@@ -85,6 +100,11 @@ def p_return(p):
 def p_assignment(p):
     '''assignment : lefthandside decList assignmenttype expression SEMICOLON
                   | lefthandside decList CLOSE_PARANTHESIS assignmenttype expression SEMICOLON'''
+    global asgn
+    global add
+    asgn = asgn + 1
+    p[0] = "assignment_"+str(asgn)
+    add += "assignment_"+str(asgn)+" -- { LHS dec ass_type exp };"
 
 def p_assignmenttype(p):
 	'''assignmenttype : ADV_ASSIGNMENT_OP
@@ -312,6 +332,7 @@ parser = yacc.yacc(debug=1)
 def runparser(inputfile):
 	program=open(inputfile).read()
 	result=parser.parse(program,debug=1)
+	result = "graph parse_tree {" + result + add + "}"
 	print result 
 
 if __name__=="__main__":
