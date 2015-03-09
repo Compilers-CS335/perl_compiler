@@ -25,6 +25,7 @@ reserved={
 	'my':'PRIVATE',
 	'local':'LOCAL',
 	'format':'FORMAT',
+	'print' : 'PRINT',
 	'return':'RETURN',
 	'write':'WRITE',
 	'select':'SELECT'
@@ -241,7 +242,7 @@ def t_EQUALS_OP(t):
 	return t
 
 def t_NOT_EQUALS_OP(t):
-	r"\!=|"r"ne"
+	r"\!="
 	return t
 
 def t_COMPARE_OP(t):

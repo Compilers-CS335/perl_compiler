@@ -7,7 +7,7 @@
 use strict;
 
 sub parg {
-    my($a, $b, $c) = @_;
+    my ($a, $b, $c) = @_;
 
     print "A: $a $b $c\n";
     print "B: $#_ [@_]\n\n";

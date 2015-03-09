@@ -36,30 +36,55 @@ def p_statment(p):
                  | returnStatement 
                  | functionCall  
                  | whileStatement
-                 | forStatement   '''
+                 | forStatement  
+                 | printStatement
+                 | functionStetement 
+                 | lastStatement
+                 | nextStatement
+                 | ifthen
+                 | ifthenelse''' # implementinf ifthen and ifthenelse without nested loop
 
                  #    
                  # | loopcontrolStatement    
                  #      
-                 # 
-                 # | ifThen  
-                 # | ifThenElse  
+                 #   
                  # 
                  # 
                  # | dowhileStatement
                  # | ternaryStatement 
-                 # | functionStetement'''
+                 # '''
 
 
+def p_ifthen(p):
+	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block'
+
+def p_ifthenelse(p):
+	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block ELSE block'
 
 
+def p_lastStatement(p):
+	'lastStatement : LAST SEMICOLON'
+
+def p_nextStatement(p):
+	'nextStatement : NEXT SEMICOLON'   # I am changing lexer here to accomodate this
+
+def p_functionStament(p):
+	'functionStetement : SUB IDENTIFIER block'
+
+def p_printStatement(p):
+	'printStatement : PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON'
+
+def p_string1(p):
+	'''string1 : STRING
+			   | RES_STRING'''
 
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
 
 
 def p_assignment(p):
-    'assignment : lefthandside assignmenttype expression SEMICOLON'
+    '''assignment : lefthandside decList assignmenttype expression SEMICOLON
+                  | lefthandside decList CLOSE_PARANTHESIS assignmenttype expression SEMICOLON'''
 
 def p_assignmenttype(p):
 	'''assignmenttype : ADV_ASSIGNMENT_OP
@@ -67,10 +92,12 @@ def p_assignmenttype(p):
 
 def p_lefthandside(p):
 	'''lefthandside : PRIVATE type
-					| type'''
+					| type
+					| PRIVATE OPEN_PARANTHESIS type'''
 
 def p_declaration(p):
-	'declaration :  lefthandside decList SEMICOLON'
+	'''declaration :  lefthandside decList SEMICOLON
+	               |   lefthandside decList CLOSE_PARANTHESIS SEMICOLON'''
 
 def p_decList(p):
 	'''decList :  COMMA type decList
@@ -137,6 +164,7 @@ def p_variable(p):
 
 def p_term(p):
 	''' term 	: number
+				| type
 				| variable
 				| string
 				| OPEN_PARANTHESIS term CLOSE_PARANTHESIS
@@ -267,7 +295,8 @@ def p_term_19(p):
 
 #########temporary
 def p_expression_number(p):
-	'expression : term_19'
+	'''expression : term_19
+	              | term'''
 
 ##################################################
 #ERROR HANDLING

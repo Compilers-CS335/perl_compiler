@@ -26,6 +26,7 @@ reserved={
 	'local':'LOCAL',
 	'format':'FORMAT',
 	'write':'WRITE',
+	'print':'PRINT',
 	'return':'RETURN'
 	'select':'SELECT'
 }
