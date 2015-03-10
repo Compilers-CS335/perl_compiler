@@ -15,7 +15,6 @@ reserved={
 	'for':'FOR',
 	'foreach':'FOREACH',
 	'do':'DO',
-	'next':'NEXT',
 	'last':'LAST',
 	'continue':'CONTINUE',
 	'redo':'REDO',
@@ -100,13 +99,17 @@ tokens=[
 		"INCREMENT_OP",
 		"DECREMENT_OP",
 		"FILE_HANDLING_OPTIONS",
-		"ASSOCIATE_OP"
+		"ASSOCIATE_OP",
+		"NEXT"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
 
 
 
+def t_NEXT(t):
+	r"next"
+	return t
 
 def t_STRING(t):
 	r"\'([^\'])*\'"
@@ -242,7 +245,7 @@ def t_EQUALS_OP(t):
 	return t
 
 def t_NOT_EQUALS_OP(t):
-	r"\!="
+	r"\!=|"r"ne"
 	return t
 
 def t_COMPARE_OP(t):

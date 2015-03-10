@@ -1,0 +1,949 @@
+WARNING: Token 'FORMAT' defined, but not used
+WARNING: Token 'COMMENT' defined, but not used
+WARNING: Token 'TRANSLATION' defined, but not used
+WARNING: Token 'GOTO' defined, but not used
+WARNING: Token 'FOREACH' defined, but not used
+WARNING: Token 'ELSIF' defined, but not used
+WARNING: Token 'SUBSTITUTE' defined, but not used
+WARNING: Token 'SELECT' defined, but not used
+WARNING: Token 'FILE_HANDLING_OPTIONS' defined, but not used
+WARNING: Token 'COLON' defined, but not used
+WARNING: Token 'UNLESS' defined, but not used
+WARNING: Token 'UNTIL' defined, but not used
+WARNING: Token 'WHITESPACE' defined, but not used
+WARNING: Token 'USER_INPUT_OP' defined, but not used
+WARNING: Token 'QUESTION_MARK' defined, but not used
+WARNING: Token 'CASE' defined, but not used
+WARNING: Token 'REDO' defined, but not used
+WARNING: Token 'SWITCH' defined, but not used
+WARNING: Token 'WRITE' defined, but not used
+WARNING: Token 'MATCH' defined, but not used
+WARNING: Token 'DO' defined, but not used
+WARNING: Token 'USE' defined, but not used
+WARNING: Token 'SYSTEM_COMMAND' defined, but not used
+WARNING: Token 'CONTINUE' defined, but not used
+WARNING: Token 'LOCAL' defined, but not used
+WARNING: There are 25 unused tokens
+Generating LALR tables
+WARNING: 20 shift/reduce conflicts
+WARNING: 37 reduce/reduce conflicts
+WARNING: reduce/reduce conflict in state 69 resolved using rule (term -> variable)
+WARNING: rejected rule (type -> variable) in state 69
+PLY: PARSE DEBUG START
+
+State  : 0
+Stack  : . LexToken(FOR,'for',3,3)
+Action : Shift and goto state 23
+
+State  : 23
+Stack  : FOR . LexToken(OPEN_PARANTHESIS,'(',3,6)
+Action : Shift and goto state 86
+
+State  : 86
+Stack  : FOR OPEN_PARANTHESIS . LexToken(VARIABLE,'$a',3,7)
+Action : Shift and goto state 4
+
+State  : 4
+Stack  : FOR OPEN_PARANTHESIS VARIABLE . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [variable -> VARIABLE] with ['$a'] and goto state 52
+Result : <NoneType @ 0x920190> (None)
+
+State  : 69
+Stack  : FOR OPEN_PARANTHESIS variable . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term -> variable] with [None] and goto state 57
+Result : <NoneType @ 0x920190> (None)
+
+State  : 72
+Stack  : FOR OPEN_PARANTHESIS term . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_01 -> term] with [None] and goto state 86
+Result : <NoneType @ 0x920190> (None)
+
+State  : 64
+Stack  : FOR OPEN_PARANTHESIS term_01 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_02 -> term_01] with [None] and goto state 88
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : FOR OPEN_PARANTHESIS term_02 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_03 -> term_02] with [None] and goto state 93
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : FOR OPEN_PARANTHESIS term_03 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_04 -> term_03] with [None] and goto state 96
+Result : <NoneType @ 0x920190> (None)
+
+State  : 67
+Stack  : FOR OPEN_PARANTHESIS term_04 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_05 -> term_04] with [None] and goto state 101
+Result : <NoneType @ 0x920190> (None)
+
+State  : 68
+Stack  : FOR OPEN_PARANTHESIS term_05 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_06 -> term_05] with [None] and goto state 105
+Result : <NoneType @ 0x920190> (None)
+
+State  : 65
+Stack  : FOR OPEN_PARANTHESIS term_06 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_07 -> term_06] with [None] and goto state 108
+Result : <NoneType @ 0x920190> (None)
+
+State  : 66
+Stack  : FOR OPEN_PARANTHESIS term_07 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_08 -> term_07] with [None] and goto state 113
+Result : <NoneType @ 0x920190> (None)
+
+State  : 70
+Stack  : FOR OPEN_PARANTHESIS term_08 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_09 -> term_08] with [None] and goto state 117
+Result : <NoneType @ 0x920190> (None)
+
+State  : 71
+Stack  : FOR OPEN_PARANTHESIS term_09 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_10 -> term_09] with [None] and goto state 119
+Result : <NoneType @ 0x920190> (None)
+
+State  : 48
+Stack  : FOR OPEN_PARANTHESIS term_10 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_11 -> term_10] with [None] and goto state 122
+Result : <NoneType @ 0x920190> (None)
+
+State  : 47
+Stack  : FOR OPEN_PARANTHESIS term_11 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_12 -> term_11] with [None] and goto state 124
+Result : <NoneType @ 0x920190> (None)
+
+State  : 50
+Stack  : FOR OPEN_PARANTHESIS term_12 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_13 -> term_12] with [None] and goto state 126
+Result : <NoneType @ 0x920190> (None)
+
+State  : 49
+Stack  : FOR OPEN_PARANTHESIS term_13 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Reduce rule [term_14 -> term_13] with [None] and goto state 128
+Result : <NoneType @ 0x920190> (None)
+
+State  : 44
+Stack  : FOR OPEN_PARANTHESIS term_14 . LexToken(ASSIGNMENT_OP,'=',3,9)
+Action : Shift and goto state 118
+
+State  : 118
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP . LexToken(NUMBER,0,3,10)
+Action : Shift and goto state 62
+
+State  : 62
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [number -> NUMBER] with [0] and goto state 47
+Result : <NoneType @ 0x920190> (None)
+
+State  : 42
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP number . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term -> number] with [None] and goto state 55
+Result : <NoneType @ 0x920190> (None)
+
+State  : 72
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_01 -> term] with [None] and goto state 86
+Result : <NoneType @ 0x920190> (None)
+
+State  : 64
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_01 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_02 -> term_01] with [None] and goto state 88
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_02 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_03 -> term_02] with [None] and goto state 93
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_03 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_04 -> term_03] with [None] and goto state 96
+Result : <NoneType @ 0x920190> (None)
+
+State  : 67
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_04 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_05 -> term_04] with [None] and goto state 101
+Result : <NoneType @ 0x920190> (None)
+
+State  : 68
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_05 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_06 -> term_05] with [None] and goto state 105
+Result : <NoneType @ 0x920190> (None)
+
+State  : 65
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_06 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_07 -> term_06] with [None] and goto state 108
+Result : <NoneType @ 0x920190> (None)
+
+State  : 66
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_07 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_08 -> term_07] with [None] and goto state 113
+Result : <NoneType @ 0x920190> (None)
+
+State  : 70
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_08 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_09 -> term_08] with [None] and goto state 117
+Result : <NoneType @ 0x920190> (None)
+
+State  : 71
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_09 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_10 -> term_09] with [None] and goto state 119
+Result : <NoneType @ 0x920190> (None)
+
+State  : 48
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_10 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_11 -> term_10] with [None] and goto state 122
+Result : <NoneType @ 0x920190> (None)
+
+State  : 47
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_11 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_12 -> term_11] with [None] and goto state 124
+Result : <NoneType @ 0x920190> (None)
+
+State  : 50
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_12 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_13 -> term_12] with [None] and goto state 126
+Result : <NoneType @ 0x920190> (None)
+
+State  : 49
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_13 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_14 -> term_13] with [None] and goto state 128
+Result : <NoneType @ 0x920190> (None)
+
+State  : 44
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_14 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_15 -> term_14] with [None] and goto state 131
+Result : <NoneType @ 0x920190> (None)
+
+State  : 197
+Stack  : FOR OPEN_PARANTHESIS term_14 ASSIGNMENT_OP term_15 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_15 -> term_14 ASSIGNMENT_OP term_15] with [None,'=',None] and goto state 130
+Result : <NoneType @ 0x920190> (None)
+
+State  : 43
+Stack  : FOR OPEN_PARANTHESIS term_15 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_16 -> term_15] with [None] and goto state 134
+Result : <NoneType @ 0x920190> (None)
+
+State  : 46
+Stack  : FOR OPEN_PARANTHESIS term_16 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_17 -> term_16] with [None] and goto state 136
+Result : <NoneType @ 0x920190> (None)
+
+State  : 45
+Stack  : FOR OPEN_PARANTHESIS term_17 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_18 -> term_17] with [None] and goto state 138
+Result : <NoneType @ 0x920190> (None)
+
+State  : 54
+Stack  : FOR OPEN_PARANTHESIS term_18 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [term_19 -> term_18] with [None] and goto state 141
+Result : <NoneType @ 0x920190> (None)
+
+State  : 53
+Stack  : FOR OPEN_PARANTHESIS term_19 . LexToken(SEMICOLON,';',3,11)
+Action : Reduce rule [expression -> term_19] with [None] and goto state 142
+Result : <NoneType @ 0x920190> (None)
+
+State  : 165
+Stack  : FOR OPEN_PARANTHESIS expression . LexToken(SEMICOLON,';',3,11)
+Action : Shift and goto state 232
+
+State  : 232
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON . LexToken(VARIABLE,'$a',3,12)
+Action : Shift and goto state 4
+
+State  : 4
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON VARIABLE . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [variable -> VARIABLE] with ['$a'] and goto state 52
+Result : <NoneType @ 0x920190> (None)
+
+State  : 69
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON variable . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term -> variable] with [None] and goto state 57
+Result : <NoneType @ 0x920190> (None)
+
+State  : 72
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term_01 -> term] with [None] and goto state 86
+Result : <NoneType @ 0x920190> (None)
+
+State  : 64
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_01 . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term_02 -> term_01] with [None] and goto state 88
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_02 . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term_03 -> term_02] with [None] and goto state 93
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_03 . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term_04 -> term_03] with [None] and goto state 96
+Result : <NoneType @ 0x920190> (None)
+
+State  : 67
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_04 . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term_05 -> term_04] with [None] and goto state 101
+Result : <NoneType @ 0x920190> (None)
+
+State  : 68
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_05 . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term_06 -> term_05] with [None] and goto state 105
+Result : <NoneType @ 0x920190> (None)
+
+State  : 65
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_06 . LexToken(LESS_OP,'<',3,14)
+Action : Reduce rule [term_07 -> term_06] with [None] and goto state 108
+Result : <NoneType @ 0x920190> (None)
+
+State  : 66
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 . LexToken(LESS_OP,'<',3,14)
+Action : Shift and goto state 142
+
+State  : 142
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP . LexToken(NUMBER,10,3,15)
+Action : Shift and goto state 62
+
+State  : 62
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP NUMBER . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [number -> NUMBER] with [10] and goto state 47
+Result : <NoneType @ 0x920190> (None)
+
+State  : 42
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP number . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term -> number] with [None] and goto state 55
+Result : <NoneType @ 0x920190> (None)
+
+State  : 72
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_01 -> term] with [None] and goto state 86
+Result : <NoneType @ 0x920190> (None)
+
+State  : 64
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term_01 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_02 -> term_01] with [None] and goto state 88
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term_02 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_03 -> term_02] with [None] and goto state 93
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term_03 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_04 -> term_03] with [None] and goto state 96
+Result : <NoneType @ 0x920190> (None)
+
+State  : 67
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term_04 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_05 -> term_04] with [None] and goto state 101
+Result : <NoneType @ 0x920190> (None)
+
+State  : 68
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term_05 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_06 -> term_05] with [None] and goto state 105
+Result : <NoneType @ 0x920190> (None)
+
+State  : 65
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term_06 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_07 -> term_06] with [None] and goto state 108
+Result : <NoneType @ 0x920190> (None)
+
+State  : 217
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_07 LESS_OP term_07 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_08 -> term_07 LESS_OP term_07] with [None,'<',None] and goto state 110
+Result : <NoneType @ 0x920190> (None)
+
+State  : 70
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_08 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_09 -> term_08] with [None] and goto state 117
+Result : <NoneType @ 0x920190> (None)
+
+State  : 71
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_09 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_10 -> term_09] with [None] and goto state 119
+Result : <NoneType @ 0x920190> (None)
+
+State  : 48
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_10 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_11 -> term_10] with [None] and goto state 122
+Result : <NoneType @ 0x920190> (None)
+
+State  : 47
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_11 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_12 -> term_11] with [None] and goto state 124
+Result : <NoneType @ 0x920190> (None)
+
+State  : 50
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_12 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_13 -> term_12] with [None] and goto state 126
+Result : <NoneType @ 0x920190> (None)
+
+State  : 49
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_13 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_14 -> term_13] with [None] and goto state 128
+Result : <NoneType @ 0x920190> (None)
+
+State  : 44
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_14 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_15 -> term_14] with [None] and goto state 131
+Result : <NoneType @ 0x920190> (None)
+
+State  : 43
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_15 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_16 -> term_15] with [None] and goto state 134
+Result : <NoneType @ 0x920190> (None)
+
+State  : 46
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_16 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_17 -> term_16] with [None] and goto state 136
+Result : <NoneType @ 0x920190> (None)
+
+State  : 45
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_17 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_18 -> term_17] with [None] and goto state 138
+Result : <NoneType @ 0x920190> (None)
+
+State  : 54
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_18 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [term_19 -> term_18] with [None] and goto state 141
+Result : <NoneType @ 0x920190> (None)
+
+State  : 53
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON term_19 . LexToken(SEMICOLON,';',3,17)
+Action : Reduce rule [expression -> term_19] with [None] and goto state 142
+Result : <NoneType @ 0x920190> (None)
+
+State  : 241
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression . LexToken(SEMICOLON,';',3,17)
+Action : Shift and goto state 245
+
+State  : 245
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON . LexToken(VARIABLE,'$a',3,18)
+Action : Shift and goto state 4
+
+State  : 4
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON VARIABLE . LexToken(INCREMENT_OP,'++',3,20)
+Action : Reduce rule [variable -> VARIABLE] with ['$a'] and goto state 52
+Result : <NoneType @ 0x920190> (None)
+
+State  : 69
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON variable . LexToken(INCREMENT_OP,'++',3,20)
+Action : Reduce rule [term -> variable] with [None] and goto state 57
+Result : <NoneType @ 0x920190> (None)
+
+State  : 72
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term . LexToken(INCREMENT_OP,'++',3,20)
+Action : Shift and goto state 156
+
+State  : 156
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term INCREMENT_OP . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_01 -> term INCREMENT_OP] with [None,'++'] and goto state 82
+Result : <NoneType @ 0x920190> (None)
+
+State  : 64
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_01 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_02 -> term_01] with [None] and goto state 88
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_02 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_03 -> term_02] with [None] and goto state 93
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_03 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_04 -> term_03] with [None] and goto state 96
+Result : <NoneType @ 0x920190> (None)
+
+State  : 67
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_04 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_05 -> term_04] with [None] and goto state 101
+Result : <NoneType @ 0x920190> (None)
+
+State  : 68
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_05 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_06 -> term_05] with [None] and goto state 105
+Result : <NoneType @ 0x920190> (None)
+
+State  : 65
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_06 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_07 -> term_06] with [None] and goto state 108
+Result : <NoneType @ 0x920190> (None)
+
+State  : 66
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_07 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_08 -> term_07] with [None] and goto state 113
+Result : <NoneType @ 0x920190> (None)
+
+State  : 70
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_08 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_09 -> term_08] with [None] and goto state 117
+Result : <NoneType @ 0x920190> (None)
+
+State  : 71
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_09 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_10 -> term_09] with [None] and goto state 119
+Result : <NoneType @ 0x920190> (None)
+
+State  : 48
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_10 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_11 -> term_10] with [None] and goto state 122
+Result : <NoneType @ 0x920190> (None)
+
+State  : 47
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_11 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_12 -> term_11] with [None] and goto state 124
+Result : <NoneType @ 0x920190> (None)
+
+State  : 50
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_12 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_13 -> term_12] with [None] and goto state 126
+Result : <NoneType @ 0x920190> (None)
+
+State  : 49
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_13 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_14 -> term_13] with [None] and goto state 128
+Result : <NoneType @ 0x920190> (None)
+
+State  : 44
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_14 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_15 -> term_14] with [None] and goto state 131
+Result : <NoneType @ 0x920190> (None)
+
+State  : 43
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_15 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_16 -> term_15] with [None] and goto state 134
+Result : <NoneType @ 0x920190> (None)
+
+State  : 46
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_16 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_17 -> term_16] with [None] and goto state 136
+Result : <NoneType @ 0x920190> (None)
+
+State  : 45
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_17 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_18 -> term_17] with [None] and goto state 138
+Result : <NoneType @ 0x920190> (None)
+
+State  : 54
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_18 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [term_19 -> term_18] with [None] and goto state 141
+Result : <NoneType @ 0x920190> (None)
+
+State  : 53
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON term_19 . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Reduce rule [expression -> term_19] with [None] and goto state 142
+Result : <NoneType @ 0x920190> (None)
+
+State  : 248
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression . LexToken(CLOSE_PARANTHESIS,')',3,22)
+Action : Shift and goto state 250
+
+State  : 250
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS . LexToken(BLOCK_BEGIN,'{',5,25)
+Action : Shift and goto state 3
+
+State  : 3
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN . LexToken(PRINT,'print',6,28)
+Action : Shift and goto state 6
+
+State  : 6
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN PRINT . LexToken(OPEN_PARANTHESIS,'(',6,34)
+Action : Shift and goto state 38
+
+State  : 38
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN PRINT OPEN_PARANTHESIS . LexToken(RES_STRING,'"$a"',6,35)
+Action : Shift and goto state 96
+
+State  : 96
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN PRINT OPEN_PARANTHESIS RES_STRING . LexToken(CLOSE_PARANTHESIS,')',6,39)
+Action : Reduce rule [string1 -> RES_STRING] with ['"$a"'] and goto state 26
+Result : <NoneType @ 0x920190> (None)
+
+State  : 97
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN PRINT OPEN_PARANTHESIS string1 . LexToken(CLOSE_PARANTHESIS,')',6,39)
+Action : Shift and goto state 176
+
+State  : 176
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS . LexToken(SEMICOLON,';',6,40)
+Action : Shift and goto state 239
+
+State  : 239
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON . LexToken(BLOCK_ENDS,'}',7,42)
+Action : Reduce rule [printStatement -> PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON] with ['print','(',None,')',';'] and goto state 24
+Result : <NoneType @ 0x920190> (None)
+
+State  : 18
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN printStatement . LexToken(BLOCK_ENDS,'}',7,42)
+Action : Reduce rule [statement -> printStatement] with [None] and goto state 13
+Result : <NoneType @ 0x920190> (None)
+
+State  : 17
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN statement . LexToken(BLOCK_ENDS,'}',7,42)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 84
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN statement empty . LexToken(BLOCK_ENDS,'}',7,42)
+Action : Reduce rule [statements -> statement empty] with [None,None] and goto state 5
+Result : <NoneType @ 0x920190> (None)
+
+State  : 34
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',7,42)
+Action : Shift and goto state 91
+
+State  : 91
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS BLOCK_BEGIN statements BLOCK_ENDS . LexToken(SUB,'sub',8,45)
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',None,'}'] and goto state 3
+Result : <NoneType @ 0x920190> (None)
+
+State  : 251
+Stack  : FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS block . LexToken(SUB,'sub',8,45)
+Action : Reduce rule [forStatement -> FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS block] with ['for','(',None,';',None,';',None,')',None] and goto state 44
+Result : <NoneType @ 0x920190> (None)
+
+State  : 1
+Stack  : forStatement . LexToken(SUB,'sub',8,45)
+Action : Reduce rule [statement -> forStatement] with [None] and goto state 12
+Result : <NoneType @ 0x920190> (None)
+
+State  : 17
+Stack  : statement . LexToken(SUB,'sub',8,45)
+Action : Shift and goto state 9
+
+State  : 9
+Stack  : statement SUB . LexToken(IDENTIFIER,'parg',8,49)
+Action : Shift and goto state 78
+
+State  : 78
+Stack  : statement SUB IDENTIFIER . LexToken(BLOCK_BEGIN,'{',8,54)
+Action : Shift and goto state 3
+
+State  : 3
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN . LexToken(PRIVATE,'my',9,61)
+Action : Shift and goto state 13
+
+State  : 13
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN PRIVATE . LexToken(OPEN_PARANTHESIS,'(',9,64)
+Action : Shift and goto state 80
+
+State  : 80
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN PRIVATE OPEN_PARANTHESIS . LexToken(VARIABLE,'$a',9,65)
+Action : Shift and goto state 4
+
+State  : 4
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN PRIVATE OPEN_PARANTHESIS VARIABLE . LexToken(COMMA,',',9,67)
+Action : Reduce rule [variable -> VARIABLE] with ['$a'] and goto state 52
+Result : <NoneType @ 0x920190> (None)
+
+State  : 29
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN PRIVATE OPEN_PARANTHESIS variable . LexToken(COMMA,',',9,67)
+Action : Reduce rule [type -> variable] with [None] and goto state 81
+Result : <NoneType @ 0x920190> (None)
+
+State  : 161
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN PRIVATE OPEN_PARANTHESIS type . LexToken(COMMA,',',9,67)
+Action : Reduce rule [lefthandside -> PRIVATE OPEN_PARANTHESIS type] with ['my','(',None] and goto state 34
+Result : <NoneType @ 0x920190> (None)
+
+State  : 26
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside . LexToken(COMMA,',',9,67)
+Action : Shift and goto state 88
+
+State  : 88
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA . LexToken(VARIABLE,'$b',9,69)
+Action : Shift and goto state 4
+
+State  : 4
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA VARIABLE . LexToken(COMMA,',',9,71)
+Action : Reduce rule [variable -> VARIABLE] with ['$b'] and goto state 52
+Result : <NoneType @ 0x920190> (None)
+
+State  : 29
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA variable . LexToken(COMMA,',',9,71)
+Action : Reduce rule [type -> variable] with [None] and goto state 81
+Result : <NoneType @ 0x920190> (None)
+
+State  : 171
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type . LexToken(COMMA,',',9,71)
+Action : Shift and goto state 88
+
+State  : 88
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type COMMA . LexToken(VARIABLE,'$c',9,73)
+Action : Shift and goto state 4
+
+State  : 4
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type COMMA VARIABLE . LexToken(CLOSE_PARANTHESIS,')',9,75)
+Action : Reduce rule [variable -> VARIABLE] with ['$c'] and goto state 52
+Result : <NoneType @ 0x920190> (None)
+
+State  : 29
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type COMMA variable . LexToken(CLOSE_PARANTHESIS,')',9,75)
+Action : Reduce rule [type -> variable] with [None] and goto state 81
+Result : <NoneType @ 0x920190> (None)
+
+State  : 171
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type COMMA type . LexToken(CLOSE_PARANTHESIS,')',9,75)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 89
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type COMMA type empty . LexToken(CLOSE_PARANTHESIS,')',9,75)
+Action : Reduce rule [decList -> empty] with [None] and goto state 38
+Result : <NoneType @ 0x920190> (None)
+
+State  : 236
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type COMMA type decList . LexToken(CLOSE_PARANTHESIS,')',9,75)
+Action : Reduce rule [decList -> COMMA type decList] with [',',None,None] and goto state 37
+Result : <NoneType @ 0x920190> (None)
+
+State  : 236
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside COMMA type decList . LexToken(CLOSE_PARANTHESIS,')',9,75)
+Action : Reduce rule [decList -> COMMA type decList] with [',',None,None] and goto state 37
+Result : <NoneType @ 0x920190> (None)
+
+State  : 87
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList . LexToken(CLOSE_PARANTHESIS,')',9,75)
+Action : Shift and goto state 168
+
+State  : 168
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS . LexToken(ASSIGNMENT_OP,'=',9,76)
+Action : Shift and goto state 170
+
+State  : 170
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS ASSIGNMENT_OP . LexToken(ARRAY,'@_',9,78)
+Action : Reduce rule [assignmenttype -> ASSIGNMENT_OP] with ['='] and goto state 31
+Result : <NoneType @ 0x920190> (None)
+
+State  : 234
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype . LexToken(ARRAY,'@_',9,78)
+Action : Shift and goto state 31
+
+State  : 31
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype ARRAY . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [type -> ARRAY] with ['@_'] and goto state 79
+Result : <NoneType @ 0x920190> (None)
+
+State  : 59
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype type . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term -> type] with [None] and goto state 56
+Result : <NoneType @ 0x920190> (None)
+
+State  : 72
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_01 -> term] with [None] and goto state 86
+Result : <NoneType @ 0x920190> (None)
+
+State  : 64
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_01 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_02 -> term_01] with [None] and goto state 88
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_02 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_03 -> term_02] with [None] and goto state 93
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_03 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_04 -> term_03] with [None] and goto state 96
+Result : <NoneType @ 0x920190> (None)
+
+State  : 67
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_04 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_05 -> term_04] with [None] and goto state 101
+Result : <NoneType @ 0x920190> (None)
+
+State  : 68
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_05 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_06 -> term_05] with [None] and goto state 105
+Result : <NoneType @ 0x920190> (None)
+
+State  : 65
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_06 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_07 -> term_06] with [None] and goto state 108
+Result : <NoneType @ 0x920190> (None)
+
+State  : 66
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_07 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_08 -> term_07] with [None] and goto state 113
+Result : <NoneType @ 0x920190> (None)
+
+State  : 70
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_08 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_09 -> term_08] with [None] and goto state 117
+Result : <NoneType @ 0x920190> (None)
+
+State  : 71
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_09 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_10 -> term_09] with [None] and goto state 119
+Result : <NoneType @ 0x920190> (None)
+
+State  : 48
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_10 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_11 -> term_10] with [None] and goto state 122
+Result : <NoneType @ 0x920190> (None)
+
+State  : 47
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_11 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_12 -> term_11] with [None] and goto state 124
+Result : <NoneType @ 0x920190> (None)
+
+State  : 50
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_12 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_13 -> term_12] with [None] and goto state 126
+Result : <NoneType @ 0x920190> (None)
+
+State  : 49
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_13 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_14 -> term_13] with [None] and goto state 128
+Result : <NoneType @ 0x920190> (None)
+
+State  : 44
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_14 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_15 -> term_14] with [None] and goto state 131
+Result : <NoneType @ 0x920190> (None)
+
+State  : 43
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_15 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_16 -> term_15] with [None] and goto state 134
+Result : <NoneType @ 0x920190> (None)
+
+State  : 46
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_16 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_17 -> term_16] with [None] and goto state 136
+Result : <NoneType @ 0x920190> (None)
+
+State  : 45
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_17 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_18 -> term_17] with [None] and goto state 138
+Result : <NoneType @ 0x920190> (None)
+
+State  : 54
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_18 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [term_19 -> term_18] with [None] and goto state 141
+Result : <NoneType @ 0x920190> (None)
+
+State  : 53
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype term_19 . LexToken(SEMICOLON,';',9,80)
+Action : Reduce rule [expression -> term_19] with [None] and goto state 142
+Result : <NoneType @ 0x920190> (None)
+
+State  : 243
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype expression . LexToken(SEMICOLON,';',9,80)
+Action : Shift and goto state 246
+
+State  : 246
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN lefthandside decList CLOSE_PARANTHESIS assignmenttype expression SEMICOLON . LexToken(NEXT,'next',10,87)
+Action : Reduce rule [assignment -> lefthandside decList CLOSE_PARANTHESIS assignmenttype expression SEMICOLON] with [None,None,')',None,None,';'] and goto state 29
+Result : <NoneType @ 0x920190> (None)
+
+State  : 24
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN assignment . LexToken(NEXT,'next',10,87)
+Action : Reduce rule [statement -> assignment] with [None] and goto state 7
+Result : <NoneType @ 0x920190> (None)
+
+State  : 17
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement . LexToken(NEXT,'next',10,87)
+Action : Shift and goto state 14
+
+State  : 14
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement NEXT . LexToken(SEMICOLON,';',10,92)
+Action : Shift and goto state 82
+
+State  : 82
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement NEXT SEMICOLON . LexToken(LAST,'last',11,99)
+Action : Reduce rule [nextStatement -> NEXT SEMICOLON] with ['next',';'] and goto state 22
+Result : <NoneType @ 0x920190> (None)
+
+State  : 12
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement nextStatement . LexToken(LAST,'last',11,99)
+Action : Reduce rule [statement -> nextStatement] with [None] and goto state 16
+Result : <NoneType @ 0x920190> (None)
+
+State  : 17
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statement . LexToken(LAST,'last',11,99)
+Action : Shift and goto state 11
+
+State  : 11
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statement LAST . LexToken(SEMICOLON,';',11,104)
+Action : Shift and goto state 79
+
+State  : 79
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statement LAST SEMICOLON . LexToken(BLOCK_ENDS,'}',12,106)
+Action : Reduce rule [lastStatement -> LAST SEMICOLON] with ['last',';'] and goto state 21
+Result : <NoneType @ 0x920190> (None)
+
+State  : 16
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statement lastStatement . LexToken(BLOCK_ENDS,'}',12,106)
+Action : Reduce rule [statement -> lastStatement] with [None] and goto state 15
+Result : <NoneType @ 0x920190> (None)
+
+State  : 17
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statement statement . LexToken(BLOCK_ENDS,'}',12,106)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 84
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statement statement empty . LexToken(BLOCK_ENDS,'}',12,106)
+Action : Reduce rule [statements -> statement empty] with [None,None] and goto state 5
+Result : <NoneType @ 0x920190> (None)
+
+State  : 83
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statement statements . LexToken(BLOCK_ENDS,'}',12,106)
+Action : Reduce rule [statements -> statement statements] with [None,None] and goto state 4
+Result : <NoneType @ 0x920190> (None)
+
+State  : 83
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statement statements . LexToken(BLOCK_ENDS,'}',12,106)
+Action : Reduce rule [statements -> statement statements] with [None,None] and goto state 4
+Result : <NoneType @ 0x920190> (None)
+
+State  : 34
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',12,106)
+Action : Shift and goto state 91
+
+State  : 91
+Stack  : statement SUB IDENTIFIER BLOCK_BEGIN statements BLOCK_ENDS . $end
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',None,'}'] and goto state 3
+Result : <NoneType @ 0x920190> (None)
+
+State  : 160
+Stack  : statement SUB IDENTIFIER block . $end
+Action : Reduce rule [functionStetement -> SUB IDENTIFIER block] with ['sub','parg',None] and goto state 23
+Result : <NoneType @ 0x920190> (None)
+
+State  : 10
+Stack  : statement functionStetement . $end
+Action : Reduce rule [statement -> functionStetement] with [None] and goto state 14
+Result : <NoneType @ 0x920190> (None)
+
+State  : 17
+Stack  : statement statement . $end
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 84
+Stack  : statement statement empty . $end
+Action : Reduce rule [statements -> statement empty] with [None,None] and goto state 5
+Result : <NoneType @ 0x920190> (None)
+
+State  : 83
+Stack  : statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [None,None] and goto state 4
+Result : <NoneType @ 0x920190> (None)
+
+State  : 2
+Stack  : statements . $end
+Action : Reduce rule [start -> statements] with [None] and goto state 2
+Result : <NoneType @ 0x920190> (None)
+
+State  : 15
+Stack  : start . $end
+Done   : Returning <NoneType @ 0x920190> (None)
+PLY: PARSE DEBUG END
+None

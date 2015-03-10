@@ -36,12 +36,14 @@ def p_block(p):
     add += "\nblock_" +str(blockNUM)+ "-- {BLOCK_BEGIN_" +str(blockbegNUM)+ p[2] + "BLOCK_ENDS_" +str(blockendNUM)+ "};"
 
 
-def p_statments(p):
+def p_statements(p):
     '''statements : statement statements
                   | statement empty'''
+
     global stmtsNUM
     stmtsNUM += 1
     p[0] = "statements_"+str(stmtsNUM)+" };\n statements_"+str(stmtsNUM)+" -- { " + p[1] +" " + p[2]
+
 
 
 def p_empty(p):
@@ -66,7 +68,10 @@ def p_statment(p):
                  | lastStatement
                  | nextStatement
                  | ifthen
-                 | ifthenelse''' # implementinf ifthen and ifthenelse without nested loop
+                 | ifthenelse
+                 | switchStatement
+                 | ternaryStatement''' # implementinf ifthen and ifthenelse without nested loop
+              
 
                  #    
                  # | loopcontrolStatement    
@@ -77,11 +82,27 @@ def p_statment(p):
                  # | dowhileStatement
                  # | ternaryStatement 
                  # '''
+
     global stmtNUM
     global add
     stmtNUM += 1
     p[0] = "statement_"+str(stmtNUM);
     add += "\nstatement_"+str(stmtNUM)+" -- {" + p[1] + "};"
+
+
+
+
+def p_switchStatement(p):
+	'switchStatement : SWITCH OPEN_PARANTHESIS lefthandside CLOSE_PARANTHESIS BLOCK_BEGIN caselist BLOCK_ENDS'
+
+def p_caselist(p):
+    '''caselist : CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
+                | ELSE block
+                | empty'''
+
+    
+
+
 
 def p_ifthen(p):
 	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block'
@@ -115,13 +136,16 @@ def p_nextStatement(p):
 	global add
 	add += "\nnextStatement -- { NEXT STATEMENT };"
 
+
+
 def p_functionStament(p):
 	'functionStetement : SUB IDENTIFIER block'
 	global add
 	add += "\n"
 
 def p_printStatement(p):
-	'printStatement : PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON'
+	'''printStatement : PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON
+					  | PRINT string1 SEMICOLON'''
 
 def p_string1(p):
 	'''string1 : STRING
@@ -349,15 +373,21 @@ def p_term_19(p):
 
 #########temporary
 def p_expression_number(p):
-	'''expression : term_19
-	              | term'''
+	'expression : term_19'
 
 ##################################################
 #ERROR HANDLING
 ##################################################
 def p_error(p):
-	print "Temporary error statement! Has to be modified later"
-	#panic mode recovery code
+    # print "Temporary error statement! Has to be modified later"
+    #panic mode recovery code
+    print "Whoa. You are seriously in trouble."
+    # Read ahead looking for a closing '}'
+    # while True:
+    #     tok = parser.token()             # Get the next token
+    #     if not tok or tok.type == 'BLOCK_BEGIN' or tok.type == 'BLOCK_ENDS' or tok.type == 'SEMICOLON' : break
+    # parser.errorok()
+    # return tok
 
 
 
