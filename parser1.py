@@ -10,10 +10,17 @@ from lexer import tokens,lexer
 
 # def p_block(p):
 # 	'block :BLOCK_BEGIN statements BLOCK_ENDS'
+blockNUM = 0
+blockbegNUM = 0
+blockendNUM = 0
+stmtsNUM = 0
+emptyNUM = 0
+stmtNUM = 0
+asgnNUM = 0
+ifthenNUM = 0
+ifNUM = 0
 
-stmts = 0
-stmt = 0
-asgn = 0
+
 add = ""
 
 def p_start(p):
@@ -23,19 +30,25 @@ def p_start(p):
 
 def p_block(p):
     'block : BLOCK_BEGIN  statements  BLOCK_ENDS'
-    p[0] = "block"
+    global blockNUM
+    global add
+    p[0] = "block_" +str(blockNUM)
+    add += "\nblock_" +str(blockNUM)+ "-- {BLOCK_BEGIN_" +str(blockbegNUM)+ p[2] + "BLOCK_ENDS_" +str(blockendNUM)+ "};"
+
 
 def p_statments(p):
     '''statements : statement statements
                   | statement empty'''
-    global stmts
-    stmts = stmts + 1
-    p[0] = "statements_"+str(stmts)+" };\n statements_"+str(stmts)+" -- { " + p[1] +" " + p[2]
+    global stmtsNUM
+    stmtsNUM += 1
+    p[0] = "statements_"+str(stmtsNUM)+" };\n statements_"+str(stmtsNUM)+" -- { " + p[1] +" " + p[2]
 
 
 def p_empty(p):
     'empty :'
-    p[0] = "empty"
+    global emptyNUM
+    p[0] = "empty_" + str(emptyNUM)
+    add += "\n"
     pass
 
 # def p_empty_statements(p):
@@ -64,27 +77,48 @@ def p_statment(p):
                  # | dowhileStatement
                  # | ternaryStatement 
                  # '''
-    global stmt
+    global stmtNUM
     global add
-    stmt = stmt + 1
-    p[0] = "statement_"+str(stmt);
-    add += "\nstatement_"+str(stmt)+" -- {" + p[1] + "};"
+    stmtNUM += 1
+    p[0] = "statement_"+str(stmtNUM);
+    add += "\nstatement_"+str(stmtNUM)+" -- {" + p[1] + "};"
 
 def p_ifthen(p):
 	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block'
+	global add
+	global ifthenNUM
+	global ifNUM
+	ifthenNUM += 1
+	ifNUM += 1
+	p[0] = "ifthen_" + str(ifthenNUM);
+	add += "\nifthen_" +str(ifthenNUM)+ " -- { IF ( " + p[3] + "then" + p[5] + " ) };"
 
 def p_ifthenelse(p):
 	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block ELSE block'
+	# global add
+	# global ifthenelse
+	# ifthenelse += 1
+	# p[0] = "ifthenelse_" + str(ifthenelse)
+	# add += "\nifthenelse_" +str(ifthenelse)+ " -- { IF OPEN_PARANTHESIS " + p[3] + " CLOSE_PARANTHESIS " + p[5] + " ELSE " + p[6] + "};" 
 
 
 def p_lastStatement(p):
 	'lastStatement : LAST SEMICOLON'
+	# global add
+	# global lastStatement
+	# lastStatement += 1
+	# p[0] = "lastStatement_" + str(lastStatement)
+	# add += "\nlastStatement_" +str(lastStatement)+ " -- { LAST SEMICOLON };"
 
 def p_nextStatement(p):
 	'nextStatement : NEXT SEMICOLON'   # I am changing lexer here to accomodate this
+	global add
+	add += "\nnextStatement -- { NEXT STATEMENT };"
 
 def p_functionStament(p):
 	'functionStetement : SUB IDENTIFIER block'
+	global add
+	add += "\n"
 
 def p_printStatement(p):
 	'printStatement : PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON'
@@ -100,11 +134,11 @@ def p_return(p):
 def p_assignment(p):
     '''assignment : lefthandside decList assignmenttype expression SEMICOLON
                   | lefthandside decList CLOSE_PARANTHESIS assignmenttype expression SEMICOLON'''
-    global asgn
+    global asgnNUM
     global add
-    asgn = asgn + 1
-    p[0] = "assignment_"+str(asgn)
-    add += "assignment_"+str(asgn)+" -- { LHS dec ass_type exp };"
+    asgnNUM = asgnNUM + 1
+    p[0] = "assignment_"+str(asgnNUM)
+    add += "assignment_"+str(asgnNUM)+" -- { LHS dec ass_type exp };"
 
 def p_assignmenttype(p):
 	'''assignmenttype : ADV_ASSIGNMENT_OP
