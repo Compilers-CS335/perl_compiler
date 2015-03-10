@@ -1,0 +1,13 @@
+graph test {
+    A -- B;
+
+    subgraph sub_g {
+        E -- A;
+        A -- {X Y Z}    
+    }
+
+    B -- {C D};
+    C -- E;
+    C -- C;
+    E -- sub_g;
+}

@@ -11,20 +11,32 @@ from lexer import tokens,lexer
 # def p_block(p):
 # 	'block :BLOCK_BEGIN statements BLOCK_ENDS'
 
-
+stmts = 0
+stmt = 0
+asgn = 0
+add = ""
 
 def p_start(p):
     '''start : block
              | statements'''
+    p[0] = "\tstart -- {" + p[1] + "};"
 
 def p_block(p):
     'block : BLOCK_BEGIN  statements  BLOCK_ENDS'
+    p[0] = "block"
 
-def p_statments(p):
+def p_statements(p):
     '''statements : statement statements
                   | statement empty'''
+
+    global stmts
+    stmts = stmts + 1
+    p[0] = "statements_"+str(stmts)+" };\n statements_"+str(stmts)+" -- { " + p[1] +" " + p[2]
+
+
 def p_empty(p):
     'empty :'
+    p[0] = "empty"
     pass
 
 # def p_empty_statements(p):
@@ -43,7 +55,14 @@ def p_statment(p):
                  | nextStatement
                  | ifthen
                  | ifthenelse
-                 | switchStatement''' # implementinf ifthen and ifthenelse without nested loop
+                 | switchStatement
+                 | ternaryStatement''' # implementinf ifthen and ifthenelse without nested loop
+
+    global stmt
+    global add
+    stmt = stmt + 1
+    p[0] = "statement_"+str(stmt);
+    add += "\nstatement_"+str(stmt)+" -- {" + p[1] + "};"                 
 
                  #    
                  # | loopcontrolStatement    
@@ -55,13 +74,18 @@ def p_statment(p):
                  # | ternaryStatement 
                  # '''
 
+
+
 def p_switchStatement(p):
 	'switchStatement : SWITCH OPEN_PARANTHESIS lefthandside CLOSE_PARANTHESIS BLOCK_BEGIN caselist BLOCK_ENDS'
 
 def p_caselist(p):
-	'''caselist : CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
-	            | ELSE block
-	            | empty'''
+    '''caselist : CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
+                | ELSE block
+                | empty'''
+
+    
+
 
 def p_ifthen(p):
 	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block'
@@ -94,6 +118,11 @@ def p_return(p):
 def p_assignment(p):
     '''assignment : lefthandside decList assignmenttype expression SEMICOLON
                   | lefthandside decList CLOSE_PARANTHESIS assignmenttype expression SEMICOLON'''
+    global asgn
+    global add
+    asgn = asgn + 1
+    p[0] = "assignment_"+str(asgn)
+    add += "assignment_"+str(asgn)+" -- { LHS dec ass_type exp };"
 
 def p_assignmenttype(p):
 	'''assignmenttype : ADV_ASSIGNMENT_OP
@@ -310,14 +339,15 @@ def p_expression_number(p):
 #ERROR HANDLING
 ##################################################
 def p_error(p):
-	# print "Temporary error statement! Has to be modified later"
-	#panic mode recovery code
-	print "Whoa. You are seriously in trouble."
+    # print "Temporary error statement! Has to be modified later"
+    #panic mode recovery code
+    print "Whoa. You are seriously in trouble."
     # Read ahead looking for a closing '}'
-    while True:
-        tok = parser.token()             # Get the next token
-        if not tok or tok.type == 'BLOCK_BEGIN' or tok.type == 'BLOCK_ENDS' or tok.type == 'SEMICOLON' : break
-    parser.restart()
+    # while True:
+    #     tok = parser.token()             # Get the next token
+    #     if not tok or tok.type == 'BLOCK_BEGIN' or tok.type == 'BLOCK_ENDS' or tok.type == 'SEMICOLON' : break
+    # parser.errorok()
+    # return tok
 
 
 
@@ -326,6 +356,7 @@ parser = yacc.yacc(debug=1)
 def runparser(inputfile):
 	program=open(inputfile).read()
 	result=parser.parse(program,debug=1)
+	result = "graph parse_tree {" + result + add + "}"
 	print result 
 
 if __name__=="__main__":
