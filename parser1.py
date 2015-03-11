@@ -49,8 +49,8 @@ def p_statements(p):
 def p_empty(p):
     'empty :'
     global emptyNUM
-    p[0] = "empty_" + str(emptyNUM)
-    add += "\n"
+    p[0] = "empty_" +str(emptyNUM)
+    #add += "\nempty_" +str(emptyNUM)
     pass
 
 # def p_empty_statements(p):
@@ -86,21 +86,38 @@ def p_statment(p):
     global stmtNUM
     global add
     stmtNUM += 1
-    p[0] = "statement_"+str(stmtNUM);
-    add += "\nstatement_"+str(stmtNUM)+" -- {" + p[1] + "};"
-
+    p[0] = "statement_" +str(stmtNUM);
+    add += "\nstatement_" +str(stmtNUM)+ " -- {" + p[1] + "};"
 
 
 
 def p_switchStatement(p):
 	'switchStatement : SWITCH OPEN_PARANTHESIS lefthandside CLOSE_PARANTHESIS BLOCK_BEGIN caselist BLOCK_ENDS'
+	global switchstmtNUM
+	global switchNUM
+	global openparenthesisNUM
+	global closeparenthesisNUM
+	global blockbegNUM
+	global blockendNUM
+	global add
+	switchstmtNUM +=1
+	switchNUM +=1
+	openparenthesisNUM +=1
+	closeparenthesisNUM +=1
+	blockbegNUM +=1
+	blockendNUM +=1
+	p[0] = "switchStatement_" +str(switchstmtNUM)
+	add += "\nswitchStatement_" +str(switchstmtNUM)+ "-- { SWITCH_" +str(switchNUM)+ "OPEN_PARANTHESIS_" +str(openparenthesisNUM) + p[3] + "CLOSE_PARANTHESIS_" +str(closeparenthesisNUM)+ "BLOCK_BEGIN_" +str(blockbegNUM)+ p[6] + "BLOCK_ENDS_" +str(blockendNUM)+ "};"
+
+
 
 def p_caselist(p):
     '''caselist : CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
-                | ELSE block
-                | empty'''
-
-    
+                | ELSE block empty empty empty empty
+                | empty empty empty empty empty empty'''
+    p[0] = "caselist_" +str(caselistNUM)
+    add += "\ncaselist_" +str(caselistNUM)+ "-- { CASE_" +str(caseNUM)+ "OPEN_PARANTHESIS_" +str(openparenthesisNUM)+ p[3] + "CLOSE_PARANTHESIS_"  +str(closeparenthesisNUM)+ p[5] + p[6] + " };"
+    #DOUBT HERE: CASE, EMPTY in the beginning
 
 
 
@@ -234,11 +251,13 @@ def p_number(p):
 				| FLOAT
 				| HEXADECIMAL
 				| OCTAL'''
+				#DOUBT, what to write here?
 
 def p_variable(p):
 	''' variable 	: VARIABLE 
 					| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET
 					| VARIABLE BLOCK_BEGIN string BLOCK_ENDS'''
+					#DOUBT
 
 def p_term(p):
 	''' term 	: number
