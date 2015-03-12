@@ -16,7 +16,12 @@ blockendNUM = 0
 stmtsNUM = 0
 emptyNUM = 0
 stmtNUM = 0
+switchstmtNUM = 0
+switchNUM = 0
 asgnNUM = 0
+openparenthesisNUM =0
+closeparenthesisNUM = 0
+caselistNUM = 0
 ifthenNUM = 0
 ifNUM = 0
 
@@ -113,12 +118,14 @@ def p_switchStatement(p):
 
 def p_caselist(p):
     '''caselist : CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
-                | ELSE block empty empty empty empty
                 | empty empty empty empty empty empty'''
     p[0] = "caselist_" +str(caselistNUM)
     add += "\ncaselist_" +str(caselistNUM)+ "-- { CASE_" +str(caseNUM)+ "OPEN_PARANTHESIS_" +str(openparenthesisNUM)+ p[3] + "CLOSE_PARANTHESIS_"  +str(closeparenthesisNUM)+ p[5] + p[6] + " };"
     #DOUBT HERE: CASE, EMPTY in the beginning
 
+
+def p_caselistB(p):
+	'caselistB : ELSE block'
 
 
 def p_ifthen(p):
@@ -162,7 +169,7 @@ def p_functionStament(p):
 
 def p_printStatement(p):
 	'''printStatement : PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON
-					  | PRINT string1 SEMICOLON'''
+					  | PRINT empty string1 empty SEMICOLON'''
 
 def p_string1(p):
 	'''string1 : STRING
@@ -173,7 +180,7 @@ def p_return(p):
 
 
 def p_assignment(p):
-    '''assignment : lefthandside decList assignmenttype expression SEMICOLON
+    '''assignment : lefthandside decList empty assignmenttype expression SEMICOLON
                   | lefthandside decList CLOSE_PARANTHESIS assignmenttype expression SEMICOLON'''
     global asgnNUM
     global add
@@ -362,37 +369,134 @@ def p_term_12(p):
 def p_term_13(p):
 	''' term_13	: term_13 OR_OP term_12
 				| term_12'''
+
+
 # nonassoc    ..  ... 							# not implemented ...
-def p_term_14(p):
-	''' term_14 : term_13 RANGE_OP term_13
-				| term_13'''
+def p_term_14A(p):
+	''' term_14A : term_13 RANGE_OP term_13'''
+
+
+def p_term_14B(p):
+	''' term_14B : term_13'''
+
+
+
+
 # right   = += -= *= etc. goto last next redo dump		##### see if we can implement goto, last, next, redo ... dump not implemented
-def p_term_15(p):
-	''' term_15 : term_14 ADV_ASSIGNMENT_OP term_15
-				| term_14 ASSIGNMENT_OP term_15
-				| term_14'''
+def p_term_15A(p):
+	''' term_15A : term_14A ADV_ASSIGNMENT_OP term_15A
+				| term_14A ADV_ASSIGNMENT_OP term_15B
+				| term_14A ADV_ASSIGNMENT_OP term_15C
+				| term_14B ADV_ASSIGNMENT_OP term_15A
+				| term_14B ADV_ASSIGNMENT_OP term_15B
+				| term_14B ADV_ASSIGNMENT_OP term_15C'''
+
+
+def p_term_15B(p):
+	''' term_15B : term_14A ASSIGNMENT_OP term_15A
+				| term_14A ASSIGNMENT_OP term_15B
+				| term_14A ASSIGNMENT_OP term_15C
+				| term_14B ASSIGNMENT_OP term_15A
+				| term_14B ASSIGNMENT_OP term_15B
+				| term_14B ASSIGNMENT_OP term_15C'''
+
+
+def p_term_15C(p):
+	''' term_15C : term_14A
+				| term_14B
+				| term_14C'''
+
+
+
 # left    , =>
-def p_term_16(p):
-	''' term_16	: term_16 COMMA term_15
-				| term_16 ASSOCIATE_OP term_15
-				| term_15'''
+def p_term_16A(p):
+	''' term_16A : term_16A COMMA term_15A
+				| term_16B COMMA term_15A
+				| term_16C COMMA term_15A
+				| term_16A COMMA term_15B
+				| term_16B COMMA term_15B
+				| term_16C COMMA term_15B
+				| term_16A COMMA term_15C
+				| term_16B COMMA term_15C
+				| term_16C COMMA term_15C'''
+
+
+def p_term_16B(p):
+	'''term_16B	: term_16A ASSOCIATE_OP term_15A
+				| term_16B ASSOCIATE_OP term_15A
+				| term_16C ASSOCIATE_OP term_15A
+				| term_16A ASSOCIATE_OP term_15B
+				| term_16B ASSOCIATE_OP term_15B
+				| term_16C ASSOCIATE_OP term_15B
+				| term_16A ASSOCIATE_OP term_15C
+				| term_16B ASSOCIATE_OP term_15C
+				| term_16C ASSOCIATE_OP term_15C'''
+
+
+def p_term_16C(p):
+	''' term_16C	: term_15A
+					| term_15B
+					| term_15C'''
+
+
+
 # right   not
-def p_term_17(p):
-	''' term_17 : term_16 NOT_STR_OP term_17
-				| term_16'''
+def p_term_17A(p):
+	'''term_17A : term_16A
+				| term_16B
+				| term_16C'''
+
+
+def p_term_17B(p):
+	'''term_17B : term_16A NOT_STR_OP term_17A
+				| term_16A NOT_STR_OP term_17B
+				| term_16B NOT_STR_OP term_17A
+				| term_16B NOT_STR_OP term_17B
+				| term_16C NOT_STR_OP term_17A
+				| term_16C NOT_STR_OP term_17B''' 
+
+
+
+
 # left    and
-def p_term_18(p):
-	''' term_18 : term_18 AND_STR_OP term_17
-				| term_17'''
+def p_term_18A(p):
+	'''term_18A : term_17A 
+				| term_17B'''
+
+def p_term_18B(p):
+	'''term_18B : term_18A AND_STR_OP term_17A
+				| term_18B AND_STR_OP term_17A
+				| term_18A AND_STR_OP term_17B
+				| term_18B AND_STR_OP term_17B'''
+
+
+
 # left    or xor
-def p_term_19(p):
-	''' term_19 : term_19 OR_STR_OP term_18
-				| term_19 XOR_STR_OP term_18
-				| term_18'''
+def p_term_19A(p):
+	'''term_19A : term_18A
+				| term_18B'''
+
+def p_term_19B(p):
+	''' term_19B : term_19A XOR_STR_OP term_18A
+				| term_19B XOR_STR_OP term_18A
+				| term_19C XOR_STR_OP term_18A
+				| term_19A XOR_STR_OP term_18B
+				| term_19B XOR_STR_OP term_18B
+				| term_19C XOR_STR_OP term_18B'''
+
+def p_term_19C(p):
+	''' term_19C : term_19A OR_STR_OP term_18A
+				| term_19B OR_STR_OP term_18A
+				| term_19C OR_STR_OP term_18A
+				| term_19A OR_STR_OP term_18B
+				| term_19B OR_STR_OP term_18B
+				| term_19C OR_STR_OP term_18B'''
 
 #########temporary
 def p_expression_number(p):
-	'expression : term_19'
+	''' expression 	: term_19A
+					| term_19B
+					| term_19C'''
 
 ##################################################
 #ERROR HANDLING
