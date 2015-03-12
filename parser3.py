@@ -23,6 +23,7 @@ unnopNUM =0
 exprNUM = 0
 binopNUM =0
 stmtsNUM = 0
+localNUM = 0
 stmtNUM = 0
 asgnNUM = 0
 switchstmtNUM = 0
@@ -31,6 +32,9 @@ openparenthesisNUM = 0
 closeparenthesisNUM = 0
 lockbegNUM= 0
 blockcloseNUM = 0
+forNUM = 0
+useNUM = 0
+useStatementNUM = 0
 
 caselistNUM = 0
 caseNUM =0
@@ -55,7 +59,7 @@ nextStatement =0
 nextNUM =0
 semicolonNUM =0
 
-functionStatement = 0
+functionStatementNUM = 0
 subNUM = 0
 identifierNUM =0
 
@@ -156,7 +160,9 @@ def p_statment(p):
                  | lastStatement
                  | nextStatement
                  | ifthen
-                 | ifthenelse''' # implementinf ifthen and ifthenelse without nested loop
+                 | ifthenelse
+                 | useStatement
+                 | switchStatement''' # implementinf ifthen and ifthenelse without nested loop
 
                  #    
                  # | loopcontrolStatement    
@@ -173,23 +179,31 @@ def p_statment(p):
     p[0] = "statement_"+str(stmtNUM);
     add += "\nstatement_"+str(stmtNUM)+" -- { " + p[1] + " };"
 
+
+
+def p_useStatement(p):
+	'useStatement : USE IDENTIFIER SEMICOLON'
+	global add
+	global useStatementNUM
+	global useNUM
+	useNUM += 1
+	useStatementNUM += 1
+	p[0] = "useStatement_" + str(useStatementNUM)
+	add += "\nuseStatement_" + str(useStatementNUM) + " -- { " + "USE_" + str(useNUM) + " IDENTIFIER_" + str(identifierNUM) + " SEMICOLON_" + str(semicolonNUM) + " };" 
+
 def p_switchStatement(p):
-	'switchStatement : SWITCH OPEN_PARANTHESIS lefthandside CLOSE_PARANTHESIS BLOCK_BEGIN caselist BLOCK_ENDS'
+	'switchStatement : SWITCH empty lefthandside empty BLOCK_BEGIN caselist BLOCK_ENDS'
 	global switchstmtNUM
 	global switchNUM
-	global openparenthesisNUM
-	global closeparenthesisNUM
-	global blockbegNUM
+	global blockbeginNUM
 	global blockcloseNUM
 	global add
 	switchstmtNUM +=1
 	switchNUM +=1
-	openparenthesisNUM +=1
-	closeparenthesisNUM +=1
 	blockbeginNUM +=1
 	blockcloseNUM +=1
 	p[0] = "switchStatement_" +str(switchstmtNUM)
-	add += "\nswitchStatement_" +str(switchstmtNUM)+ "-- { SWITCH_" +str(switchNUM) +" " +"OPEN_PARANTHESIS" + "_" +str(openparenthesisNUM) + " " +p[3] + " " + "CLOSE_PARANTHESIS" + "_" +str(closeparenthesisNUM)+ " " + "BLOCKBEGIN_" +str(blockbeginNUM)+ " " + p[6] + " BLOCKENDS_" +str(blockcloseNUM)+ " };"
+	add += "\nswitchStatement_" +str(switchstmtNUM)+ "-- { SWITCH_" +str(switchNUM) +" "  + " " +p[3] + " " + " " + "BLOCKBEGIN_" +str(blockbeginNUM)+ " " + p[6] + " BLOCKENDS_" +str(blockcloseNUM)+ " };"
 
 
 def p_caselist(p):
@@ -227,10 +241,11 @@ def p_ifthen(p):
 def p_ifthenelse(p):
 	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block ELSE block'
 	global add
-	global ifthenelse
+	global ifthenelse 
 	global openparenthesisNUM
 	global closeparenthesisNUM
 	global caseNUM
+	global ifNUM
 	ifthenelse += 1
 	ifNUM +=1
 	openparenthesisNUM += 1
@@ -272,7 +287,7 @@ def p_functionStament(p):
 	global functionStatementNUM
 	global subNUM
 	global identifierNUM
-	functionStatement += 1
+	functionStatementNUM += 1
 	subNUM += 1
 	identifierNUM +=1
 	p[0] = "functionStatement_" + str(functionStatementNUM)
@@ -280,7 +295,8 @@ def p_functionStament(p):
 
 def p_printStatement(p):
 	'''printStatement : PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON
-						| PRINT empty string1 empty SEMICOLON'''
+						| PRINT empty string1 empty SEMICOLON
+						| PRINT empty expression empty SEMICOLON'''
 	global add
 	global printstatementNUM
 	global printNUM
@@ -355,6 +371,19 @@ def p_lefthandside(p):
 	p[0] = "lefthandside_" +str(lefthandsideNUM)
 	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { PRIVATE_" +str(privateNUM) +" " +  p[3] + " " + p[4] + " };"
 
+def p_lefthandsided(p):
+	'''lefthandside : LOCAL empty type decList 
+					| LOCAL OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
+	global add
+	global lefthandsideNUM
+	global localNUM
+	global openparenthesisNUM
+	lefthandsideNUM +=1
+	localNUM +=1
+	openparenthesisNUM +=1
+	p[0] = "lefthandside_" +str(lefthandsideNUM)
+	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { LOCAL_" +str(localNUM) +" " +  p[3] + " " + p[4] + " };"
+
 def p_lefthandsideb(p):
 	'''lefthandside : OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
 	global add
@@ -405,7 +434,7 @@ def p_decList(p):
 
 
 def p_functionCall(p):
-	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS'
+	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS SEMICOLON' 
 	global add
 	global functncallNUM
 	global identifierNUM
@@ -623,6 +652,12 @@ def p_expression(p):
 	p[0] = "expression_" + str(exprNUM)
 	add += "\nexpression_" + str(exprNUM) + " -- { " + p[1] + " " + "UNARY_OPERATORS_" + str(unnopNUM) + " };"
 
+def p_expression_empty(p):
+	'expression : empty'
+	global exprNUM
+	exprNUM +=1
+	p[0] = "expression_" + str(exprNUM)
+
 def p_expression_term(p):
 	'expression : term'
 	global add
@@ -818,7 +853,7 @@ def p_expression_binary(p):
 #ERROR HANDLING
 ##################################################
 def p_error(p):
-	print "Temporary error statement! Has to be modified later"
+	print "ERROR IN PARSING PHASE!!!"
 	#panic mode recovery code
 
 
