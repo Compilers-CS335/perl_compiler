@@ -86,7 +86,7 @@ def p_switchStatement(p):
 	global openparenthesisNUM
 	global closeparenthesisNUM
 	global blockbegNUM
-	global blockendNUM
+	global blockcloseNUM
 	global add
 	switchstmtNUM +=1
 	switchNUM +=1
@@ -315,13 +315,24 @@ def p_parameters(p):
 def p_while(p):
 	'whileStatement : WHILE  OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  block'
 	global add
+	global whilestmtNUM
+	global whileNUM
+	global openparenthesisNUM
+	global closeparenthesisNUM
+	whilestmtNUM +=1
+	whileNUM +=1
+	openparenthesisNUM +=1
+	closeparenthesisNUM +=1
 	p[0] = "whileStatement_" +str(whilestmtNUM)
-	add += "\nwhileStatement_" +str(whilestmtNUM)+ p[1] + "_" +str(whileNUM) + p[2] +  
+	add += "\nwhileStatement_" +str(whilestmtNUM)+ p[1] + "_" +str(whileNUM) + p[2] + "_" +str(openparenthesisNUM)+ p[3] + p[4]+ "_" +str(closeparenthesisNUM)+ p[5]
 
 
 def p_for(p):
 	'forStatement : FOR  OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS  block'
-
+	global add
+	p[0] = "forStatement_" +str(forstmtNUM)
+	add  += "\nforStatement_" +str(forstmtNUM)+ " -- { FOR_" +str(forNUM)+ "OPEN_PARANTHESIS_" +str(openparenthesisNUM)+ p[3] + "SEMICOLON_" + str(semicolonNUM) + p[4] +  
+	#### KYA KARU 2 SEMICOLON KA???
 
 ### EXPRESSIONS
 	# associativity and precedence
@@ -352,6 +363,11 @@ def p_for(p):
 def p_string(p):
 	''' string 	: STRING 
 				| RES_STRING'''
+	global add
+	global strngNUM
+	strngNUM +=1
+	p[0] = "string_" + str(strngNUM)
+	add += "\nstring_" + str(strngNUM) + " -- { " + p[1] + " };"
 
 def p_number(p):
 	''' number  : NUMBER
@@ -359,6 +375,11 @@ def p_number(p):
 				| FLOAT
 				| HEXADECIMAL
 				| OCTAL'''
+	global add
+	global numberNUM += 1
+	p[0] = "number_" + str(numberNUM)
+	add += "\nnumber_" + str(numberNUM) + " -- { " + p[1] + " };"
+
 
 #SPLIT
 def p_variableA(p):
@@ -367,6 +388,16 @@ def p_variableA(p):
 
 def p_variableB(p):
 	'variableB : VARIABLE BLOCK_BEGIN string BLOCK_ENDS'
+	global add
+	global variblebNUM
+	global blockbeginNUM
+	global blockcloseNUM
+	variblebNUM +=1
+	blockcloseNUM +=1
+	blockbeginNUM +=1
+	p[0] = "variableB_" + str(variblebNUM)
+	add += "\nvariableB_" +str(variblebNUM)+ " -- { " + p[1] + "BLOCK_BEGIN_" +str(blockbeginNUM)+ p[3] + "BLOCK_ENDS_" + str(blockcloseNUM) + " };"
+
 
 
 def p_term(p):
@@ -396,12 +427,27 @@ def p_term(p):
 				| OPEN_PARANTHESIS term_17 CLOSE_PARANTHESIS
 				| OPEN_PARANTHESIS term_18 CLOSE_PARANTHESIS
 				| OPEN_PARANTHESIS term_19 CLOSE_PARANTHESIS'''
+	global add
+	global termNUM
+	global openparenthesisNUM
+	global closeparenthesisNUM
+	termNUM +=1
+	openparenthesisNUM +=1
+	closeparenthesisNUM +=1
+	p[0] = "term_" + str(termNUM)
+	add += "\nterm_" + str(termNUM)+ " -- { " + p[1] + "_" + str(openparenthesisNUM) + p[2] + p[3] + "_" + str(closeparenthesisNUM) + " };" 
+
 
 def p_type(p):
 	''' type : ARRAY
 			 | HASH
 			 | variableA
 			 | variableB'''
+	global add
+	global typeNUM
+	typeNUM +=1
+	p[0] = "type_" + str(typeNUM)
+	add += "\ntype_" + str(typeNUM) + " -- { " + p[1] + " };"
 					
 #now we have finally got an expression for each term
 # nonassoc    ++ --
