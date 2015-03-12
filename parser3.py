@@ -456,11 +456,23 @@ def p_term_01A(p):
 	''' term_01A : INCREMENT_OP term
 				| DECREMENT_OP term
 				| empty term_01A'''
+	global add
+	global term1ANUM
+	term1ANUM += 1
+	p[0] = "term_01A_" + str(term1ANUM)
+	add += "\nterm_01A_" + str(term1ANUM) " -- { " + p[1]
+	term1ANUM +=1
+	add += p[2] + " };"
 
 def p_term_01B(p):
 	''' term_01B : INCREMENT_OP term
 				| DECREMENT_OP term
 				| empty term'''
+	global add
+	global term1BNUM
+	term1BNUM +=1
+	p[0] = "term_01B_" +str(term1BNUM)
+	add += "\nterm_01B_" +str(term1BNUM) + " -- { " + "INC_DEC_OP_" + str(incdecopNUM) + p[2] + " };"
 
 # right   **
 def p_term_02(p):
@@ -468,6 +480,14 @@ def p_term_02(p):
 				| term_01A  empty empty
 				| term_01B EXPONENT_OP term_02
 				| term_01B  empty empty'''
+	global add
+	global term2NUM
+	global exponentopNUM
+	term2NUM +=1
+	exponentopNUM +=1
+	p[0] = "term_02_" + str(term2NUM)
+	add += "\nterm_02_" + str(term2NUM) + " -- { " + p[1] + p[2] + "_" + str(exponentopNUM) + p[3] + " };"
+	
 # right   ! ~ \ and unary + and -				# our expressions will not have "\" in them .. it is for the strings
 def p_term_03(p):
 	''' term_03	: PLUS_OP term_02
