@@ -15,6 +15,88 @@ add = ""
 stmtsNUM = 0
 stmtNUM = 0
 asgnNUM = 0
+switchstmtNUM = 0
+switchNUM = 0
+openparenthesisNUM = 0
+closeparenthesisNUM = 0
+lockbegNUM= 0
+blockcloseNUM = 0
+
+caselistNUM = 0
+caseNUM =0
+openparenthesisNUM =0
+closeparenthesisNUM =0
+
+ifthenNUM = 0
+openparenthesisNUM = 0
+closeparenthesisNUM = 0
+ifNUM = 0
+
+ifthenelse = 0
+ifNUM =0
+openparenthesisNUM = 0
+closeparenthesisNUM = 0
+caseNUM = 0
+
+lastStatement = 0
+lastNUM =0
+semicolonNUM =0
+nextStatement =0
+nextNUM =0
+semicolonNUM =0
+
+functionStatement = 0
+subNUM = 0
+identifierNUM =0
+
+printstatementNUM =0
+printNUM =0
+openparenthesisNUM =0
+closeparenthesisNUM =0
+semicolonNUM =0
+
+string0NUM =0
+strinNUM =0
+
+returnstmtNUM =0
+returnNUM =0
+semicolonNUM =0
+
+closeparenthesisNUM =0
+semicolonNUM =0
+asgnNUM = 0
+
+assntypeopNUM =0
+assntypeNUM =0
+
+lefthandside =0
+privateNUM =0
+openparenthesisNUM =0
+
+declarationNUM =0
+closeparenthesisNUM =0
+semicolonNUM =0
+
+functncallNUM =0
+identifierNUM =0
+openparenthesisNUM =0
+closeparenthesisNUM =0
+
+parametersNUM =0
+
+whilestmtNUM =0
+whileNUM =0
+openparenthesisNUM =0
+closeparenthesisNUM =0
+
+forstmtNUM =0
+strngNUM =0
+numberNUM =0
+variblebNUM =0
+blockcloseNUM =0
+blockbeginNUM =0
+termNUM =0
+typeNUM =0
 
 blockbeginNUM = 0
 blockcloseNUM = 0
@@ -107,10 +189,10 @@ def p_caselist(p):
     global caseNUM
     global openparenthesisNUM
     global closeparenthesisNUM
-	caselistNUM +=1
-	caseNUM +=1
-	openparenthesisNUM +=1
-	closeparenthesisNUM +=1
+    caselistNUM +=1
+    caseNUM +=1
+    openparenthesisNUM +=1
+    closeparenthesisNUM +=1
     p[0] = "caselist_" +str(caselistNUM)
     add += "\ncaselist_" +str(caselistNUM)+ "-- { " +p[1]+ "_" +str(caseNUM)+ p[2] + "_" +str(openparenthesisNUM)+ p[3] + " " + p[4] + "_" +str(closeparenthesisNUM)+ p[5] + " " + p[6] + " };"
 
@@ -285,8 +367,10 @@ def p_decList(p):
 	'''decList :  COMMA type decList
 	           |   empty  empty  empty'''
 	global add
+	global declistNUM
+	declistNUM +=1
 	p[0] = "declist_" +str(declistNUM)
-	add += "\ndeclist_" +str(declistNUM)  ### ??? KAISE LIKHU AAGE?? Split karna padega
+	add += "\ndeclist_" +str(declistNUM)+ " -- {" +p[2]+p[3] +" };"  ### ??? KAISE LIKHU AAGE?? Split karna padega
 
 
 
@@ -311,6 +395,11 @@ def p_parameters(p):
 					| expression  empty  empty
 					| empty  empty  empty'''
 					#### KAISE START KARU. SPLIT KARNA PADEGA
+	global add
+	global parametersNUM
+	parametersNUM +=1
+	p[0] = "parameters_" + str(parametersNUM)
+	add += "\nparameters_" + str(parametersNUM)+ " -- { " + p[1] + p[3] + " };"
 
 def p_while(p):
 	'whileStatement : WHILE  OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  block'
@@ -330,8 +419,17 @@ def p_while(p):
 def p_for(p):
 	'forStatement : FOR  OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS  block'
 	global add
+	global forstmtNUM
+	global openparenthesisNUM
+	global closeparenthesisNUM
+	global semicolonNUM
+	forstmtNUM +=1
+	openparenthesisNUM +=1
+	closeparenthesisNUM +=1
+	semicolonNUM +=1
 	p[0] = "forStatement_" +str(forstmtNUM)
-	add  += "\nforStatement_" +str(forstmtNUM)+ " -- { FOR_" +str(forNUM)+ "OPEN_PARANTHESIS_" +str(openparenthesisNUM)+ p[3] + "SEMICOLON_" + str(semicolonNUM) + p[4] +  
+	add  += "\nforStatement_" +str(forstmtNUM)+ " -- { FOR_" +str(forNUM)+ "OPEN_PARANTHESIS_" +str(openparenthesisNUM)+ p[3] + "SEMICOLON_" + str(semicolonNUM) + p[5] + "SEMICOLON_" +str(semicolonNUM+1) + "CLOSE_PARANTHESIS_" + str(closeparenthesisNUM)+ p[8] + " };"
+	semicolonNUM += 1
 	#### KYA KARU 2 SEMICOLON KA???
 
 ### EXPRESSIONS
@@ -376,7 +474,8 @@ def p_number(p):
 				| HEXADECIMAL
 				| OCTAL'''
 	global add
-	global numberNUM += 1
+	global numberNUM
+	numberNUM +=1
 	p[0] = "number_" + str(numberNUM)
 	add += "\nnumber_" + str(numberNUM) + " -- { " + p[1] + " };"
 
@@ -460,7 +559,7 @@ def p_term_01A(p):
 	global term1ANUM
 	term1ANUM += 1
 	p[0] = "term_01A_" + str(term1ANUM)
-	add += "\nterm_01A_" + str(term1ANUM) " -- { " + p[1]
+	add += "\nterm_01A_" + str(term1ANUM) +" -- { " + p[1]
 	term1ANUM +=1
 	add += p[2] + " };"
 
@@ -495,6 +594,9 @@ def p_term_03(p):
 				| BIT_FLIP term_02
 				| NOT_OP term_02
 				| empty term_02'''
+	global add
+	p[0] = "term_03_" + str(term3NUM)
+	add += "term_03_" + str(term3NUM) + " -- { " + p[1] + "_" +str(plmibinoNUM)+ p[2] + " };"
 # left    =~ !~
 def p_term_04(p):
 	''' term_04	: term_04 SEARCH_MODIFY term_03
