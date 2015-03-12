@@ -1,0 +1,467 @@
+graph parsetree {	start -- { start1_1 };
+
+useStatement_1 -- { USE_1 IDENTIFIER_0 SEMICOLON_0 };
+
+statement_1 -- { useStatement_1 };
+
+variable_1 -- { VARIABLE_1   };
+
+type_1 -- { variable_1 };
+
+lefthandside_1 -- { type_1 };
+
+assignmenttype_1 -- { ASSIGNMENTOP_1 };
+
+number_1 -- { NUMBER_1 };
+
+term_1 -- { number_1 };
+
+expression_1 -- { term_1 };
+
+assignment_1 -- { lefthandside_1 assignmenttype_1 expression_1 SEMICOLON_1 };
+
+statement_2 -- { assignment_1 };
+
+type_2 -- { TYPE_2 };
+
+lefthandside_2 -- { type_2 };
+
+assignmenttype_2 -- { ASSIGNMENTOP_2 };
+
+number_2 -- { NUMBER_2 };
+
+term_2 -- { number_2 };
+
+expression_2 -- { term_2 };
+
+number_3 -- { NUMBER_3 };
+
+term_3 -- { number_3 };
+
+expression_3 -- { term_3 };
+
+expression_4 -- { expression_2 BINOPERATOR_1 expression_3 };
+
+term_4 -- { expression_4 };
+
+expression_5 -- { term_4 };
+
+assignment_2 -- { lefthandside_2 assignmenttype_2 expression_5 SEMICOLON_2 };
+
+statement_3 -- { assignment_2 };
+
+type_3 -- { TYPE_3 };
+
+lefthandside_3 -- { type_3 };
+
+assignmenttype_3 -- { ASSIGNMENTOP_3 };
+
+string_1 -- { STRING_1 };
+
+term_5 -- { string_1 };
+
+expression_6 -- { term_5 };
+
+number_4 -- { NUMBER_4 };
+
+term_6 -- { number_4 };
+
+expression_7 -- { term_6 };
+
+expression_8 -- { expression_6 BINOPERATOR_2 expression_7 };
+
+string_2 -- { STRING_2 };
+
+term_7 -- { string_2 };
+
+expression_9 -- { term_7 };
+
+expression_10 -- { expression_8 BINOPERATOR_3 expression_9 };
+
+number_5 -- { NUMBER_5 };
+
+term_8 -- { number_5 };
+
+expression_11 -- { term_8 };
+
+expression_12 -- { expression_10 BINOPERATOR_4 expression_11 };
+
+term_9 -- { expression_12 };
+
+expression_13 -- { term_9 };
+
+assignment_3 -- { lefthandside_3 assignmenttype_3 expression_13 SEMICOLON_3 };
+
+statement_4 -- { assignment_3 };
+
+variable_2 -- { VARIABLE_2   };
+
+type_4 -- { variable_2 };
+
+lefthandside_4 -- { OPENPARANTHESIS_10 type_4 declist_1CLOSEPARANTHESIS_10 };
+
+number_6 -- { NUMBER_6 };
+
+term_10 -- { number_6 };
+
+expression_14 -- { term_10 };
+
+string1_1 -- {  STRING_1 };
+
+printStatement_1 -- { PRINT_1 string1_1 SEMICOLON_4 };
+
+statement_5 -- { printStatement_1 };
+
+statements_1 -- { statement_5   };
+
+block_1 -- { BLOCKBEGIN_3 statements_1 BLOCKENDS_3 };
+
+string_3 -- { STRING_3 };
+
+term_11 -- { string_3 };
+
+expression_15 -- { term_11 };
+
+string1_2 -- {  STRING_2 };
+
+printStatement_2 -- { PRINT_2 string1_2 SEMICOLON_5 };
+
+statement_6 -- { printStatement_2 };
+
+statements_2 -- { statement_6   };
+
+block_2 -- { BLOCKBEGIN_4 statements_2 BLOCKENDS_4 };
+
+type_5 -- { TYPE_5 };
+
+term_12 -- { type_5 };
+
+expression_16 -- { term_12 };
+
+string1_3 -- {  STRING_3 };
+
+printStatement_3 -- { PRINT_3 string1_3 SEMICOLON_6 };
+
+statement_7 -- { printStatement_3 };
+
+statements_3 -- { statement_7   };
+
+block_3 -- { BLOCKBEGIN_5 statements_3 BLOCKENDS_5 };
+
+type_6 -- { TYPE_6 };
+
+term_13 -- { type_6 };
+
+expression_17 -- { term_13 };
+
+string1_4 -- {  STRING_4 };
+
+printStatement_4 -- { PRINT_4 string1_4 SEMICOLON_7 };
+
+statement_8 -- { printStatement_4 };
+
+statements_4 -- { statement_8   };
+
+block_4 -- { BLOCKBEGIN_6 statements_4 BLOCKENDS_6 };
+
+string1_5 -- {  STRING_5 };
+
+printStatement_5 -- { PRINT_5 string1_5 SEMICOLON_8 };
+
+statement_9 -- { printStatement_5 };
+
+statements_5 -- { statement_9   };
+
+block_5 -- { BLOCKBEGIN_7 statements_5 BLOCKENDS_7 };
+
+caselist_1 -- { else_1   block_5   };
+
+caselist_2 -- { case_2 expression_17 block_4 caselist_1 };
+
+caselist_3 -- { case_3 expression_16 block_3 caselist_2 };
+
+caselist_4 -- { case_4 expression_15 block_2 caselist_3 };
+
+caselist_5 -- { case_5 expression_14 block_1 caselist_4 };
+
+switchStatement_1-- { SWITCH_1  lefthandside_4  BLOCKBEGIN_8 caselist_5 BLOCKENDS_8 };
+
+statement_10 -- { switchStatement_1 };
+
+statements_6 -- { statement_10   };
+
+statements_7 -- { statement_4 statements_6 };
+
+statements_8 -- { statement_3 statements_7 };
+
+statements_9 -- { statement_2 statements_8 };
+
+statements_10 -- { statement_1 statements_9 };
+
+start1_1 -- { statements_10 };
+
+start1_1 [label ="start1"];
+useStatement_1 [label ="useStatement"];
+USE_1 [label ="USE"];
+IDENTIFIER_0 [label ="IDENTIFIER"];
+SEMICOLON_0 [label ="SEMICOLON"];
+statement_1 [label ="statement"];
+useStatement_1 [label ="useStatement"];
+variable_1 [label ="variable"];
+VARIABLE_1 [label ="VARIABLE"];
+type_1 [label ="type"];
+variable_1 [label ="variable"];
+lefthandside_1 [label ="lefthandside"];
+type_1 [label ="type"];
+assignmenttype_1 [label ="assignmenttype"];
+ASSIGNMENTOP_1 [label ="ASSIGNMENTOP"];
+number_1 [label ="number"];
+NUMBER_1 [label ="NUMBER"];
+term_1 [label ="term"];
+number_1 [label ="number"];
+expression_1 [label ="expression"];
+term_1 [label ="term"];
+assignment_1 [label ="assignment"];
+lefthandside_1 [label ="lefthandside"];
+assignmenttype_1 [label ="assignmenttype"];
+expression_1 [label ="expression"];
+SEMICOLON_1 [label ="SEMICOLON"];
+statement_2 [label ="statement"];
+assignment_1 [label ="assignment"];
+type_2 [label ="type"];
+TYPE_2 [label ="TYPE"];
+lefthandside_2 [label ="lefthandside"];
+type_2 [label ="type"];
+assignmenttype_2 [label ="assignmenttype"];
+ASSIGNMENTOP_2 [label ="ASSIGNMENTOP"];
+number_2 [label ="number"];
+NUMBER_2 [label ="NUMBER"];
+term_2 [label ="term"];
+number_2 [label ="number"];
+expression_2 [label ="expression"];
+term_2 [label ="term"];
+number_3 [label ="number"];
+NUMBER_3 [label ="NUMBER"];
+term_3 [label ="term"];
+number_3 [label ="number"];
+expression_3 [label ="expression"];
+term_3 [label ="term"];
+expression_4 [label ="expression"];
+expression_2 [label ="expression"];
+BINOPERATOR_1 [label ="BINOPERATOR"];
+expression_3 [label ="expression"];
+term_4 [label ="term"];
+expression_4 [label ="expression"];
+expression_5 [label ="expression"];
+term_4 [label ="term"];
+assignment_2 [label ="assignment"];
+lefthandside_2 [label ="lefthandside"];
+assignmenttype_2 [label ="assignmenttype"];
+expression_5 [label ="expression"];
+SEMICOLON_2 [label ="SEMICOLON"];
+statement_3 [label ="statement"];
+assignment_2 [label ="assignment"];
+type_3 [label ="type"];
+TYPE_3 [label ="TYPE"];
+lefthandside_3 [label ="lefthandside"];
+type_3 [label ="type"];
+assignmenttype_3 [label ="assignmenttype"];
+ASSIGNMENTOP_3 [label ="ASSIGNMENTOP"];
+string_1 [label ="string"];
+STRING_1 [label ="STRING"];
+term_5 [label ="term"];
+string_1 [label ="string"];
+expression_6 [label ="expression"];
+term_5 [label ="term"];
+number_4 [label ="number"];
+NUMBER_4 [label ="NUMBER"];
+term_6 [label ="term"];
+number_4 [label ="number"];
+expression_7 [label ="expression"];
+term_6 [label ="term"];
+expression_8 [label ="expression"];
+expression_6 [label ="expression"];
+BINOPERATOR_2 [label ="BINOPERATOR"];
+expression_7 [label ="expression"];
+string_2 [label ="string"];
+STRING_2 [label ="STRING"];
+term_7 [label ="term"];
+string_2 [label ="string"];
+expression_9 [label ="expression"];
+term_7 [label ="term"];
+expression_10 [label ="expression"];
+expression_8 [label ="expression"];
+BINOPERATOR_3 [label ="BINOPERATOR"];
+expression_9 [label ="expression"];
+number_5 [label ="number"];
+NUMBER_5 [label ="NUMBER"];
+term_8 [label ="term"];
+number_5 [label ="number"];
+expression_11 [label ="expression"];
+term_8 [label ="term"];
+expression_12 [label ="expression"];
+expression_10 [label ="expression"];
+BINOPERATOR_4 [label ="BINOPERATOR"];
+expression_11 [label ="expression"];
+term_9 [label ="term"];
+expression_12 [label ="expression"];
+expression_13 [label ="expression"];
+term_9 [label ="term"];
+assignment_3 [label ="assignment"];
+lefthandside_3 [label ="lefthandside"];
+assignmenttype_3 [label ="assignmenttype"];
+expression_13 [label ="expression"];
+SEMICOLON_3 [label ="SEMICOLON"];
+statement_4 [label ="statement"];
+assignment_3 [label ="assignment"];
+variable_2 [label ="variable"];
+VARIABLE_2 [label ="VARIABLE"];
+type_4 [label ="type"];
+variable_2 [label ="variable"];
+declist_1 [label ="declist"];
+lefthandside_4 [label ="lefthandside"];
+OPENPARANTHESIS_10 [label ="OPENPARANTHESIS"];
+type_4 [label ="type"];
+declist_1CLOSEPARANTHESIS_10 [label ="declist"];
+number_6 [label ="number"];
+NUMBER_6 [label ="NUMBER"];
+term_10 [label ="term"];
+number_6 [label ="number"];
+expression_14 [label ="expression"];
+term_10 [label ="term"];
+string1_1 [label ="string1"];
+STRING_1 [label ="STRING"];
+printStatement_1 [label ="printStatement"];
+PRINT_1 [label ="PRINT"];
+string1_1 [label ="string1"];
+SEMICOLON_4 [label ="SEMICOLON"];
+statement_5 [label ="statement"];
+printStatement_1 [label ="printStatement"];
+statements_1 [label ="statements"];
+statement_5 [label ="statement"];
+block_1 [label ="block"];
+BLOCKBEGIN_3 [label ="BLOCKBEGIN"];
+statements_1 [label ="statements"];
+BLOCKENDS_3 [label ="BLOCKENDS"];
+string_3 [label ="string"];
+STRING_3 [label ="STRING"];
+term_11 [label ="term"];
+string_3 [label ="string"];
+expression_15 [label ="expression"];
+term_11 [label ="term"];
+string1_2 [label ="string1"];
+STRING_2 [label ="STRING"];
+printStatement_2 [label ="printStatement"];
+PRINT_2 [label ="PRINT"];
+string1_2 [label ="string1"];
+SEMICOLON_5 [label ="SEMICOLON"];
+statement_6 [label ="statement"];
+printStatement_2 [label ="printStatement"];
+statements_2 [label ="statements"];
+statement_6 [label ="statement"];
+block_2 [label ="block"];
+BLOCKBEGIN_4 [label ="BLOCKBEGIN"];
+statements_2 [label ="statements"];
+BLOCKENDS_4 [label ="BLOCKENDS"];
+type_5 [label ="type"];
+TYPE_5 [label ="TYPE"];
+term_12 [label ="term"];
+type_5 [label ="type"];
+expression_16 [label ="expression"];
+term_12 [label ="term"];
+string1_3 [label ="string1"];
+STRING_3 [label ="STRING"];
+printStatement_3 [label ="printStatement"];
+PRINT_3 [label ="PRINT"];
+string1_3 [label ="string1"];
+SEMICOLON_6 [label ="SEMICOLON"];
+statement_7 [label ="statement"];
+printStatement_3 [label ="printStatement"];
+statements_3 [label ="statements"];
+statement_7 [label ="statement"];
+block_3 [label ="block"];
+BLOCKBEGIN_5 [label ="BLOCKBEGIN"];
+statements_3 [label ="statements"];
+BLOCKENDS_5 [label ="BLOCKENDS"];
+type_6 [label ="type"];
+TYPE_6 [label ="TYPE"];
+term_13 [label ="term"];
+type_6 [label ="type"];
+expression_17 [label ="expression"];
+term_13 [label ="term"];
+string1_4 [label ="string1"];
+STRING_4 [label ="STRING"];
+printStatement_4 [label ="printStatement"];
+PRINT_4 [label ="PRINT"];
+string1_4 [label ="string1"];
+SEMICOLON_7 [label ="SEMICOLON"];
+statement_8 [label ="statement"];
+printStatement_4 [label ="printStatement"];
+statements_4 [label ="statements"];
+statement_8 [label ="statement"];
+block_4 [label ="block"];
+BLOCKBEGIN_6 [label ="BLOCKBEGIN"];
+statements_4 [label ="statements"];
+BLOCKENDS_6 [label ="BLOCKENDS"];
+string1_5 [label ="string1"];
+STRING_5 [label ="STRING"];
+printStatement_5 [label ="printStatement"];
+PRINT_5 [label ="PRINT"];
+string1_5 [label ="string1"];
+SEMICOLON_8 [label ="SEMICOLON"];
+statement_9 [label ="statement"];
+printStatement_5 [label ="printStatement"];
+statements_5 [label ="statements"];
+statement_9 [label ="statement"];
+block_5 [label ="block"];
+BLOCKBEGIN_7 [label ="BLOCKBEGIN"];
+statements_5 [label ="statements"];
+BLOCKENDS_7 [label ="BLOCKENDS"];
+caselist_1 [label ="caselist"];
+else_1 [label ="else"];
+block_5 [label ="block"];
+caselist_2 [label ="caselist"];
+case_2 [label ="case"];
+expression_17 [label ="expression"];
+block_4 [label ="block"];
+caselist_1 [label ="caselist"];
+caselist_3 [label ="caselist"];
+case_3 [label ="case"];
+expression_16 [label ="expression"];
+block_3 [label ="block"];
+caselist_2 [label ="caselist"];
+caselist_4 [label ="caselist"];
+case_4 [label ="case"];
+expression_15 [label ="expression"];
+block_2 [label ="block"];
+caselist_3 [label ="caselist"];
+caselist_5 [label ="caselist"];
+case_5 [label ="case"];
+expression_14 [label ="expression"];
+block_1 [label ="block"];
+caselist_4 [label ="caselist"];
+switchStatement_1-- [label ="switchStatement"];
+SWITCH_1 [label ="SWITCH"];
+lefthandside_4 [label ="lefthandside"];
+BLOCKBEGIN_8 [label ="BLOCKBEGIN"];
+caselist_5 [label ="caselist"];
+BLOCKENDS_8 [label ="BLOCKENDS"];
+statement_10 [label ="statement"];
+switchStatement_1 [label ="switchStatement"];
+statements_6 [label ="statements"];
+statement_10 [label ="statement"];
+statements_7 [label ="statements"];
+statement_4 [label ="statement"];
+statements_6 [label ="statements"];
+statements_8 [label ="statements"];
+statement_3 [label ="statement"];
+statements_7 [label ="statements"];
+statements_9 [label ="statements"];
+statement_2 [label ="statement"];
+statements_8 [label ="statements"];
+statements_10 [label ="statements"];
+statement_1 [label ="statement"];
+statements_9 [label ="statements"];
+start1_1 [label ="start1"];
+statements_10 [label ="statements"];
+ }

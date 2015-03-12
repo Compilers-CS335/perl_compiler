@@ -75,6 +75,7 @@ strinNUM =0
 returnstmtNUM =0
 returnNUM =0
 semicolonNUM =0
+blockNUM = 0
 
 closeparenthesisNUM =0
 semicolonNUM =0
@@ -114,21 +115,35 @@ typeNUM =0
 
 blockbeginNUM = 0
 blockcloseNUM = 0
-
+start1NUM =0
 
 def p_start(p):
-    '''start : block
+	'start : start1'
+	p[0] = "\tstart -- { " + p[1] + " };"
+
+
+def p_start1(p):
+    '''start1 : block
              | statements'''
-    p[0] = "\tstart -- { " + p[1] + " };"
+    global add
+    global start1NUM
+    start1NUM +=1
+    p[0] = "start1_" + str(start1NUM)
+    add += "\nstart1_" + str(start1NUM) + " -- { " + p[1] + " };"
 
 def p_block(p):
     'block : BLOCK_BEGIN  statements  BLOCK_ENDS'
-    p[0] = "block"
     global add
     global blockcloseNUM
     global blockbeginNUM
-    add += "\nblock -- { " + "BLOCKBEGIN" + "_" +str(blockbeginNUM) + " " + p[2] + " BLOCKENDS" + "_" +str(blockcloseNUM)+ " };"
+    global blockNUM
+    blockbeginNUM+=1
+    blockcloseNUM+=1
+    blockNUM+=1
+    p[0] = "block_" + str(blockNUM)
+    add += "\nblock_" + str(blockNUM) + " -- { " + "BLOCKBEGIN" + "_" +str(blockbeginNUM) + " " + p[2] + " BLOCKENDS" + "_" +str(blockcloseNUM)+ " };"
 
+#EMPTY EMTPY
 def p_statments(p):
     '''statements : statement statements
                   | statement empty
@@ -203,9 +218,9 @@ def p_switchStatement(p):
 	blockbeginNUM +=1
 	blockcloseNUM +=1
 	p[0] = "switchStatement_" +str(switchstmtNUM)
-	add += "\nswitchStatement_" +str(switchstmtNUM)+ "-- { SWITCH_" +str(switchNUM) +" "  + " " +p[3] + " " + " " + "BLOCKBEGIN_" +str(blockbeginNUM)+ " " + p[6] + " BLOCKENDS_" +str(blockcloseNUM)+ " };"
+	add += "\nswitchStatement_" +str(switchstmtNUM)+ " -- { SWITCH_" +str(switchNUM) +" "  + " " +p[3] + " " + " " + "BLOCKBEGIN_" +str(blockbeginNUM)+ " " + p[6] + " BLOCKENDS_" +str(blockcloseNUM)+ " };"
 
-
+#EMPTY EMTPY
 def p_caselist(p):
     '''caselist : CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
     			| ELSE empty empty empty block empty
@@ -220,7 +235,7 @@ def p_caselist(p):
     openparenthesisNUM +=1
     closeparenthesisNUM +=1
     p[0] = "caselist_" +str(caselistNUM)
-    add += "\ncaselist_" +str(caselistNUM)+ "-- { " +p[1]+ "_" +str(caseNUM)+" " + p[3] + " " + p[5] + " " + p[6] + " };"
+    add += "\ncaselist_" +str(caselistNUM)+ " -- { " +p[1]+ "_" +str(caseNUM)+" " + p[3] + " " + p[5] + " " + p[6] + " };"
 
 
 def p_ifthen(p):
@@ -235,7 +250,7 @@ def p_ifthen(p):
 	closeparenthesisNUM += 1
 	ifNUM += 1
 	p[0] = "ifthen_" + str(ifthenNUM);
-	add += "\nifthen_" +str(ifthenNUM)+ " -- { IF_" +str(ifNUM) + " OPEN_PARANTHESIS" + "_" +str(openparenthesisNUM)+ p[3] + " " + "CLOSE_PARANTHESIS" + "_" +str(closeparenthesisNUM) + " " +p[5] + " };"
+	add += "\nifthen_" +str(ifthenNUM)+ " -- { IF_" +str(ifNUM) + " OPENPARANTHESIS" + "_" +str(openparenthesisNUM)+ p[3] + " " + "CLOSEPARANTHESIS" + "_" +str(closeparenthesisNUM) + " " +p[5] + " };"
 
 
 def p_ifthenelse(p):
@@ -252,7 +267,7 @@ def p_ifthenelse(p):
 	closeparenthesisNUM += 1
 	caseNUM += 1
 	p[0] = "ifthenelse_" + str(ifthenelse)
-	add += "\nifthenelse_" +str(ifthenelse)+ " -- { IF_" +str(ifNUM) +" " + "OPEN_PARANTHESIS" + "_" +str(openparenthesisNUM)+ p[3] + " " + "CLOSE_PARANTHESIS" + "_" +str(closeparenthesisNUM) +" " + p[5] + " ELSE_" +str(caseNUM) +" " + p[6] + " };" 
+	add += "\nifthenelse_" +str(ifthenelse)+ " -- { IF_" +str(ifNUM) +" " + "OPENPARANTHESIS" + "_" +str(openparenthesisNUM)+ p[3] + " " + "CLOSEPARANTHESIS" + "_" +str(closeparenthesisNUM) +" " + p[5] + " ELSE_" +str(caseNUM) +" " + p[6] + " };" 
 
 
 def p_lastStatement(p):
@@ -394,7 +409,7 @@ def p_lefthandsideb(p):
 	openparenthesisNUM +=1
 	closeparenthesisNUM +=1
 	p[0] = "lefthandside_" +str(lefthandsideNUM)
-	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { OPEN_PARANTHESIS_" +str(openparenthesisNUM) +" " +p[2]+ " " + p[3] + "CLOSE_PARANTHESIS_" +str(closeparenthesisNUM) +" };"
+	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { OPENPARANTHESIS_" +str(openparenthesisNUM) +" " +p[2]+ " " + p[3] + "CLOSEPARANTHESIS_" +str(closeparenthesisNUM) +" };"
 
 def p_lefthandsidec(p):
 	'lefthandside : type'
@@ -420,7 +435,7 @@ def p_declaration(p):
 	p[0] = "declaration_" +str(declarationNUM)
 	add += "\ndeclaration_" +str(declarationNUM)+ " -- { " +p[1]+ " " +p[2] +" " +  "SEMICOLON_" + str(semicolonNUM) + " };"
 
-
+#EMPTY EMTPY
 def p_decList(p):
 	'''decList :  COMMA type decList
 	           |   empty  empty  empty'''
@@ -445,9 +460,9 @@ def p_functionCall(p):
 	openparenthesisNUM +=1
 	closeparenthesisNUM +=1
 	p[0] = "functionCall_" +str(functncallNUM)
-	add += "\nfunctionCall_" +str(functncallNUM) +" -- { "+ p[1]+ "_" +str(identifierNUM)+ " OPEN_PARANTHESIS" + "_" +str(openparenthesisNUM)+ " " +p[3] + " CLOSE_PARANTHESIS" + "_" +str(closeparenthesisNUM) + " };"
+	add += "\nfunctionCall_" +str(functncallNUM) +" -- { "+ p[1]+ "_" +str(identifierNUM)+ " OPENPARANTHESIS" + "_" +str(openparenthesisNUM)+ " " +p[3] + " CLOSEPARANTHESIS" + "_" +str(closeparenthesisNUM) + " };"
 
-
+#EMPTY EMTPY
 def p_parameters(p):
 	'''parameters 	: expression COMMA parameters
 					| expression  empty  empty
@@ -471,7 +486,7 @@ def p_while(p):
 	openparenthesisNUM +=1
 	closeparenthesisNUM +=1
 	p[0] = "whileStatement_" +str(whilestmtNUM)
-	add += "\nwhileStatement_" +str(whilestmtNUM)+ " -- { " + "WHILE" + "_" +str(whileNUM) + " OPEN_PARANTHESIS" + "_" +str(openparenthesisNUM)+" " + p[3] + " " +"CLOSE_PARANTHESIS"+ "_" +str(closeparenthesisNUM)+ " " +p[5] + " };"
+	add += "\nwhileStatement_" +str(whilestmtNUM)+ " -- { " + "WHILE" + "_" +str(whileNUM) + " OPENPARANTHESIS" + "_" +str(openparenthesisNUM)+" " + p[3] + " " +"CLOSEPARANTHESIS"+ "_" +str(closeparenthesisNUM)+ " " +p[5] + " };"
 
 
 def p_for(p):
@@ -486,7 +501,7 @@ def p_for(p):
 	closeparenthesisNUM +=1
 	semicolonNUM +=1
 	p[0] = "forStatement_" +str(forstmtNUM)
-	add  += "\nforStatement_" +str(forstmtNUM)+ " -- { FOR_" +str(forNUM)+" " + "OPEN_PARANTHESIS_" +str(openparenthesisNUM)+ " " +p[3] + " SEMICOLON_" + str(semicolonNUM) + " " +p[5] + " SEMICOLON_" +str(semicolonNUM+1) + " " +"CLOSE_PARANTHESIS_" + str(closeparenthesisNUM)+ " " +p[8] + " };"
+	add  += "\nforStatement_" +str(forstmtNUM)+ " -- { FOR_" +str(forNUM)+" " + "OPENPARANTHESIS_" +str(openparenthesisNUM)+ " " +p[3] + " SEMICOLON_" + str(semicolonNUM) + " " +p[5] + " SEMICOLON_" +str(semicolonNUM+1) + " " +"CLOSEPARANTHESIS_" + str(closeparenthesisNUM)+ " " +p[8] + " };"
 	semicolonNUM += 1
 	#### KYA KARU 2 SEMICOLON KA???
 
@@ -655,7 +670,7 @@ def p_expression(p):
 def p_expression_empty(p):
 	'expression : empty'
 	global exprNUM
-	exprNUM +=1
+	#exprNUM +=1
 	p[0] = "expression_" + str(exprNUM)
 
 def p_expression_term(p):
