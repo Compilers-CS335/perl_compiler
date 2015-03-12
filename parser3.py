@@ -322,14 +322,12 @@ def p_return(p):
 def p_assignment(p):
     'assignment : lefthandside assignmenttype expression SEMICOLON'
     global asgnNUM
-    global closeparenthesisNUM
     global semicolonNUM
     global add
-    closeparenthesisNUM +=1
     semicolonNUM +=1
     asgnNUM += 1
     p[0] = "assignment_" +str(asgnNUM)
-    add += "\nassignment_" +str(asgnNUM)+ " -- { " + p[1] +" " + p[2] +" " + p[4] +" " + p[5] + " SEMICOLON_" + str(semicolonNUM) + " };"
+    add += "\nassignment_" +str(asgnNUM)+ " -- { " + p[1] +" " + p[2] +" " + p[3] + " SEMICOLON_" + str(semicolonNUM) + " };"
 
 
 def p_assignmenttype(p):
@@ -345,10 +343,8 @@ def p_assignmenttype(p):
 
 
 def p_lefthandside(p):
-	'''lefthandside : PRIVATE  empty type declist 
-					| empty empty type 
-					| PRIVATE OPEN_PARANTHESIS type declist CLOSE_PARANTHESIS
-					| OPEN_PARANTHESIS type declist CLOSE_PARANTHESIS'''
+	'''lefthandside : PRIVATE empty type decList 
+					| PRIVATE OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
 	global add
 	global lefthandsideNUM
 	global privateNUM
@@ -357,7 +353,27 @@ def p_lefthandside(p):
 	privateNUM +=1
 	openparenthesisNUM +=1
 	p[0] = "lefthandside_" +str(lefthandsideNUM)
-	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { " +p[1]+ "_" +str(privateNUM)+" " +  p[3] + " };"
+	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { PRIVATE_" +str(privateNUM) +" " +  p[3] + " " + p[4] + " };"
+
+def p_lefthandsideb(p):
+	'''lefthandside : OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
+	global add
+	global lefthandsideNUM
+	global openparenthesisNUM
+	global closeparenthesisNUM
+	lefthandsideNUM +=1
+	openparenthesisNUM +=1
+	closeparenthesisNUM +=1
+	p[0] = "lefthandside_" +str(lefthandsideNUM)
+	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { OPEN_PARANTHESIS_" +str(openparenthesisNUM) +" " +p[2]+ " " + p[3] + "CLOSE_PARANTHESIS_" +str(closeparenthesisNUM) +" };"
+
+def p_lefthandsidec(p):
+	'lefthandside : type'
+	global add
+	global lefthandsideNUM
+	lefthandsideNUM +=1
+	p[0] = "lefthandside_" +str(lefthandsideNUM)
+	add += "\nlefthandside_" +str(lefthandsideNUM)+ " -- { " +p[1]+ " };"
 
 
 
