@@ -564,8 +564,7 @@ def p_term(p):
 
 def p_type(p):
 	''' type : ARRAY
-			 | HASH
-			 | variable'''
+			 | HASH'''
 	global add
 	global typeNUM
 	global type2NUM
@@ -573,6 +572,16 @@ def p_type(p):
 	type2NUM +=1
 	p[0] = "type_" + str(typeNUM)
 	add += "\ntype_" + str(typeNUM) + " -- { " + "TYPE_" +str(type2NUM)+ " };"
+
+def p_type1(p):
+	' type : variable'
+	global add
+	global typeNUM
+	global type2NUM
+	typeNUM +=1
+	type2NUM +=1
+	p[0] = "type_" + str(typeNUM)
+	add += "\ntype_" + str(typeNUM) + " -- { " + p[1]+ " };"
 
 def p_expression_unary(p):
 	''' expression : PLUS_OP expression   %prec UPLUS

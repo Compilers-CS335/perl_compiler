@@ -50,7 +50,7 @@ expression_18 -- { term_11 };
 assignment_2 -- { lefthandside_2 declist_2 assignmenttype_2 expression_18 SEMICOLON_2 };
 statement_2 -- { assignment_2 };
 variable_1 -- { VARIABLE_1 empty };
-type_3 -- { TYPE_3 };
+type_3 -- { variable_1 };
 lefthandside_3 -- { empty_3 type_3 };
 declist_3 -- { empty empty };
 assignmenttype_3 -- { ASSIGNMENTOP_3 };
@@ -60,7 +60,7 @@ expression_19 -- { term_12 };
 assignment_3 -- { lefthandside_3 declist_3 assignmenttype_3 expression_19 SEMICOLON_3 };
 statement_3 -- { assignment_3 };
 variable_2 -- { VARIABLE_2 2 };
-type_4 -- { TYPE_4 };
+type_4 -- { variable_2 };
 lefthandside_4 -- { empty_4 type_4 };
 declist_4 -- { empty empty };
 assignmenttype_4 -- { ASSIGNMENTOP_4 };
@@ -71,7 +71,7 @@ assignment_4 -- { lefthandside_4 declist_4 assignmenttype_4 expression_20 SEMICO
 statement_4 -- { assignment_4 };
 string_4 -- { STRING_4 };
 variable_3 -- { VARIABLE_3 string_4 };
-type_5 -- { TYPE_5 };
+type_5 -- { variable_3 };
 lefthandside_5 -- { empty_5 type_5 };
 declist_5 -- { empty empty };
 assignmenttype_5 -- { ASSIGNMENTOP_5 };
@@ -87,4 +87,3 @@ statements_3 -- { statement_3 statements_2 };
 statements_4 -- { statement_2 statements_3 };
 statements_5 -- { statement_1 statements_4 };
 }
-
