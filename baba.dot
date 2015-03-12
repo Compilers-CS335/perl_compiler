@@ -1,0 +1,7 @@
+graph parse_tree {	start -- { block };
+string1_1 -- { "2"_1 };
+printStatement_1 -- { PRINT_1 string1_1 SEMICOLON_1 };
+statement_1 -- { printStatement_1 };
+statements_1 -- { statement_1 empty };
+block -- { BLOCK_BEGIN_0 statements_1 BLOCK_ENDS_0 };}
+
