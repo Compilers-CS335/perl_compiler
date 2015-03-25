@@ -146,13 +146,20 @@ def p_block(p):
 #EMPTY EMTPY
 def p_statments(p):
     '''statements : statement statements
-                  | statement empty
-                  | empty empty'''
+                  | statement empty'''
     global stmtsNUM
     global add
     stmtsNUM = stmtsNUM + 1
     p[0] = "statements_" + str(stmtsNUM)
     add += "\nstatements_" + str(stmtsNUM) + " -- { " + p[1] +" "+ p[2] + " };"
+
+def p_statments1(p):
+    'statements : empty'
+    global stmtsNUM
+    global add
+    #stmtsNUM = stmtsNUM + 1
+    p[0] = "statements_" + str(stmtsNUM)
+
 
 
 def p_empty(p):
@@ -223,8 +230,7 @@ def p_switchStatement(p):
 #EMPTY EMTPY
 def p_caselist(p):
     '''caselist : CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
-    			| ELSE empty empty empty block empty
-                | empty empty empty empty empty empty'''
+    			| ELSE empty empty empty block empty'''
     global add
     global caselistNUM
     global caseNUM
@@ -236,6 +242,19 @@ def p_caselist(p):
     closeparenthesisNUM +=1
     p[0] = "caselist_" +str(caselistNUM)
     add += "\ncaselist_" +str(caselistNUM)+ " -- { " +p[1]+ "_" +str(caseNUM)+" " + p[3] + " " + p[5] + " " + p[6] + " };"
+
+def p_caselist1(p):
+    'caselist :  empty'
+    global add
+    global caselistNUM
+    global caseNUM
+    global openparenthesisNUM
+    global closeparenthesisNUM
+    # caselistNUM +=1
+    # caseNUM +=1
+    # openparenthesisNUM +=1
+    # closeparenthesisNUM +=1
+    p[0] = "caselist_" +str(caselistNUM)
 
 
 def p_ifthen(p):
@@ -437,13 +456,21 @@ def p_declaration(p):
 
 #EMPTY EMTPY
 def p_decList(p):
-	'''decList :  COMMA type decList
-	           |   empty  empty  empty'''
+	'decList :  COMMA type decList'
 	global add
 	global declistNUM
 	declistNUM +=1
 	p[0] = "declist_" +str(declistNUM)
 	add += "\ndeclist_" +str(declistNUM)+ " -- { " +p[2]+" " +p[3] +" };"  ### ??? KAISE LIKHU AAGE?? Split karna padega
+
+#EMPTY EMTPY
+def p_decList1(p):
+	'decList : empty'
+	# global add
+	# global declistNUM
+	# declistNUM +=1
+	p[0] = "declist_" +str(declistNUM)
+	# add += "\ndeclist_" +str(declistNUM)+ " -- { " +p[2]+" " +p[3] +" };"  ### ??? KAISE LIKHU AAGE?? Split karna padega
 
 
 
@@ -465,14 +492,22 @@ def p_functionCall(p):
 #EMPTY EMTPY
 def p_parameters(p):
 	'''parameters 	: expression COMMA parameters
-					| expression  empty  empty
-					| empty  empty  empty'''
+					| expression  empty  empty'''
 					#### KAISE START KARU. SPLIT KARNA PADEGA
 	global add
 	global parametersNUM
 	parametersNUM +=1
 	p[0] = "parameters_" + str(parametersNUM)
 	add += "\nparameters_" + str(parametersNUM)+ " -- { " + p[1] +" " + p[3] + " };"
+
+def p_parameters1(p):
+	'parameters : empty'
+					#### KAISE START KARU. SPLIT KARNA PADEGA
+	# global add
+	# global parametersNUM
+	# parametersNUM +=1
+	p[0] = "parameters_" + str(parametersNUM)
+	# add += "\nparameters_" + str(parametersNUM)+ " -- { " + p[1] +" " + p[3] + " };"
 
 def p_while(p):
 	'whileStatement : WHILE  OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  block'
