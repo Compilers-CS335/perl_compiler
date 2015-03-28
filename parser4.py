@@ -260,41 +260,44 @@ def p_type_var(p):
 def p_type(p):
 	' type : ARRAY'
 
-def p_expression_unary(p):
+def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 	''' expression : PLUS_OP expression   %prec UPLUS
 				   | MINUS_OP expression  %prec UMINUS
-				   | BIT_FLIP expression
-				   | INCREMENT_OP expression
-				   | DECREMENT_OP expression'''
+				   | BIT_FLIP expression'''
+
+	p[0] = {'place':symTable.newtmp()}
 
 	if p[2]['type']!='NUMBER' :
 		print "ERROR: Type error.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "NUMBER"
+		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
-	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+	p[0]['type']= exp_type 
 
 def p_expression_unary_notOp(p):
 	'expression : NOT_OP expression'
 	
+	p[0] = {'place':symTable.newtmp(), 'truelist':p[2]['falselist'], 'falselist':p[2]['truelist']}
 	if p[2]['type']!='BOOLEAN' :
 		print "ERROR: Type error in expression.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
+		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
-	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+	p[0]['type'] = exp_type
 
-def p_expression(p):
-	''' expression : expression INCREMENT_OP
-				   | expression DECREMENT_OP'''
-	if p[1]['type']!='NUMBER' :
-		print "ERROR: Type error.\n"
-		exp_type = "TYPE ERROR"
-	else:
-		exp_type = "NUMBER"
-	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+# def p_expression(p):
+# 	''' expression : expression INCREMENT_OP
+# 				   | expression DECREMENT_OP'''
+# 	if p[1]['type']!='NUMBER' :
+# 		print "ERROR: Type error.\n"
+# 		exp_type = "TYPE ERROR"
+# 	else:
+# 		exp_type = "NUMBER"
+# 	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
 	
 
 def p_expression_empty(p):
@@ -320,8 +323,30 @@ def p_expression_bin_dig(p):
 def p_exp_and_op(p):
 	'expression : expression AND_OP Marker expression'
 
+	p[0] = {'place':symTable.newtmp(), 'falselist':threeAddrCode.merge(p[1]['falselist'], p[4]['falselist']), 'truelist':p[4]['truelist']}
+	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
+		print "ERROR: Illegal expression\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "BOOLEAN"
+		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[4]['place'])
+
+	threeAddrCode.backpatch(p[1]['truelist'], p[3]['quad'])
+	p[0]['type']=exp_type
+
 def p_exp_or_op(p):
 	'expression : expression OR_OP Marker expression'
+
+	p[0] = {'place':symTable.newtmp(), 'truelist':threeAddrCode.merge(p[1]['truelist'], p[4]['truelist']), 'falselist':p[4]['falselist']}
+	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
+		print "ERROR: Illegal expression\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "BOOLEAN"
+		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[4]['place'])
+
+	threeAddrCode.backpatch(p[1]['falselist'], p[3]['quad'])
+	p[0]['type']=exp_type
 
 def p_expression_binary_relational(p):
 	'''expression : expression EQUALS_OP expression
@@ -337,8 +362,9 @@ def p_expression_binary_relational(p):
 	else:
 		exp_type = "BOOLEAN"
 
-	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
-	
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[threeAddrCode.pointer_quad_next()], 'falselist':[1+threeAddrCode.pointer_quad_next()]}
+	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
+
 def marker_relational(p):
 	'Marker : empty'
 
@@ -354,23 +380,34 @@ def p_expression_math(p):
 					| expression BIT_RIGHT_SHIFT expression
 					| expression BIT_LEFT_SHIFT expression'''
 
+	p[0] = {'place':symTable.newtmp()}
 	if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
 		print "ERROR: cannot perform operation\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "NUMBER"
+		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
-	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+	p[0]['type'] = exp_type
 
 
 def p_expression_concat(p):
 	'expression : expression CONCATENATE expression'
 
-	p[0] = {'type' : 'STRING', 'place':symTable.newtmp()}
+	p[0] = {'place':symTable.newtmp()}
+	if p[1]['type']!='STRING' or p[3]['type']!='STRING' :
+		print "ERROR: Concatenation operation works only on strings\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = 'STRING'
+		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
+
+	p[0]['type'] = exp_type
 
 def p_expression_repeatition(p):
 	'expression : expression REP_OP expression'
 
+ 	p[0] = {'place':symTable.newtmp()}
 	if p[3]['type']!='NUMBER' :
 		print "ERROR: How many times to repeat?.\n"
 		exp_type = "TYPE ERROR"
@@ -379,8 +416,9 @@ def p_expression_repeatition(p):
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "STRING"
+		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
-	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+	p[0]['type'] = exp_type,
 
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
 def p_expression_binary(p):
