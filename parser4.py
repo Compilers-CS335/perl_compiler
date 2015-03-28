@@ -1,5 +1,6 @@
 import yacc
 import symbolTable
+import tac
 
 from lexer import tokens,lexer
 
@@ -13,6 +14,7 @@ from lexer import tokens,lexer
 # 	'block :BLOCK_BEGIN statements BLOCK_ENDS'
 
 symTable = symbolTable.SymbolTable()
+threeAddrCode = tac.Tac()
 
 def p_start(p):
     '''start : block
@@ -306,16 +308,20 @@ def p_expression_term(p):
 	
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
 def p_expression_bin_dig(p):
-	'''expression :   expression OR_STR_OP expression
+	'''expression : expression OR_STR_OP expression
 					| expression XOR_STR_OP expression
 					| expression AND_STR_OP expression
 					| expression NOT_STR_OP expression
-					| expression OR_OP expression
-					| expression AND_OP expression
 					| expression COMPARE_OP expression
 					| expression BIT_OR expression
 					| expression BIT_XOR expression
 					| expression BIT_AND expression'''
+
+def p_exp_and_op(p):
+	'expression : expression AND_OP Marker expression'
+
+def p_exp_or_op(p):
+	'expression : expression OR_OP Marker expression'
 
 def p_expression_binary_relational(p):
 	'''expression : expression EQUALS_OP expression
@@ -333,6 +339,11 @@ def p_expression_binary_relational(p):
 
 	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
 	
+def marker_relational(p):
+	'Marker : empty'
+
+	p[0] = {'quad': threeAddrCode.pointer_quad_next()}
+
 def p_expression_math(p):
 	'''expression 	: expression PLUS_OP expression
 					| expression MINUS_OP expression
@@ -350,7 +361,7 @@ def p_expression_math(p):
 		exp_type = "NUMBER"
 
 	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
-	
+
 
 def p_expression_concat(p):
 	'expression : expression CONCATENATE expression'
