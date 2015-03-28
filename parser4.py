@@ -16,10 +16,16 @@ from lexer import tokens,lexer
 def p_start(p):
     '''start : block
              | statements'''
-    
+
+
+
+
+
 
 def p_block(p):
     'block : BLOCK_BEGIN  statements  BLOCK_ENDS'
+
+
     
 def p_statments(p):
     '''statements : statement statements
@@ -228,7 +234,7 @@ def p_number(p):
 # 					| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET'''  ### Ye Bracket hai ya parenthesis???
 
 def p_variable(p):
-	'''variable : VARIABLE  empty empty empty
+	'''variable : VARIABLE  
 					| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET
 					| VARIABLE BLOCK_BEGIN string BLOCK_ENDS'''
 	
@@ -311,145 +317,12 @@ def p_expression_binary(p):
 
 
 
-#now we have finally got an expression for each term
-	# # nonassoc    ++ --
-	# #SPLIT
-	# def p_term_01A(p):
-	# 	''' term_01A : INCREMENT_OP term
-	# 				| DECREMENT_OP term
-	# 				| empty term_01A'''
-	# 	global add
-	# 	global term1ANUM
-	# 	term1ANUM += 1
-	# 	p[0] = "term_01A_" + str(term1ANUM)
-	# 	add += "\nterm_01A_" + str(term1ANUM) +" -- { " + p[1]
-	# 	term1ANUM +=1
-	# 	add += p[2] + " };"
 
-	# def p_term_01B(p):
-	# 	''' term_01B : INCREMENT_OP term
-	# 				| DECREMENT_OP term
-	# 				| empty term'''
-	# 	global add
-	# 	global term1BNUM
-	# 	term1BNUM +=1
-	# 	p[0] = "term_01B_" +str(term1BNUM)
-	# 	add += "\nterm_01B_" +str(term1BNUM) + " -- { " + "INC_DEC_OP_" + str(incdecopNUM) + p[2] + " };"
-
-	# # right   **
-	# def p_term_02(p):
-	# 	''' term_02	: term_01A EXPONENT_OP term_02
-	# 				| term_01A  empty empty
-	# 				| term_01B EXPONENT_OP term_02
-	# 				| term_01B  empty empty'''
-	# 	global add
-	# 	global term2NUM
-	# 	global exponentopNUM
-	# 	term2NUM +=1
-	# 	exponentopNUM +=1
-	# 	p[0] = "term_02_" + str(term2NUM)
-	# 	add += "\nterm_02_" + str(term2NUM) + " -- { " + p[1] + p[2] + "_" + str(exponentopNUM) + p[3] + " };"
-		
-	# # right   ! ~ \ and unary + and -				# our expressions will not have "\" in them .. it is for the strings
-	# def p_term_03(p):
-	# 	''' term_03	: PLUS_OP term_02   %prec UPLUS
-	# 				| MINUS_OP term_02  %prec UMINUS
-	# 				| BIT_FLIP term_02
-	# 				| NOT_OP term_02
-	# 				| empty term_02'''
-	# 	global add
-	# 	p[0] = "term_03_" + str(term3NUM)
-	# 	add += "term_03_" + str(term3NUM) + " -- { " + p[1] + "_" +str(plmibinoNUM)+ p[2] + " };"
-	# # left    =~ !~
-	# def p_term_04(p):
-	# 	''' term_04	: term_04 SEARCH_MODIFY term_03
-	# 				| term_04 SEARCH_MODIFY_NEG term_03
-	# 				| term_03 empty empty'''
-	# # left    * / % x
-	# def p_term_05(p):
-	# 	''' term_05	: term_05 MULTIPLICATION_OP term_04
-	# 				| term_05 DIVISION_OP term_04
-	# 				| term_05 MODULUS_OP term_04
-	# 				| term_05 REP_OP term_04
-	# 				| term_04 empty empty'''
-	# #     left    + - .
-	# def p_term_06(p):
-	# 	''' term_06	: term_06 PLUS_OP term_05
-	# 				| term_06 MINUS_OP term_05
-	# 				| term_06 CONCATENATE term_05
-	# 				| term_05 empty empty'''
-	# #     left    << >>
-	# def p_term_07(p):
-	# 	''' term_07	: term_07 BIT_RIGHT_SHIFT term_06
-	# 				| term_07 BIT_LEFT_SHIFT term_06
-	# 				| term_06 empty empty'''
-	# #     nonassoc    < > <= >= lt gt le ge
-	# def p_term_08(p):
-	# 	''' term_08	: term_07 GREATER_OP term_07
-	# 				| term_07 LESS_OP term_07
-	# 				| term_07 GREATER_EQUAL_OP term_07
-	# 				| term_07 LESS_EQUAL_OP term_07
-	# 				| term_07 empty empty'''
-	# #     nonassoc    == != <=> eq ne cmp ~~ 		#not doing ~~
-	# def p_term_09(p):
-	# 	''' term_09	: term_08 EQUALS_OP term_08
-	# 				| term_08 NOT_EQUALS_OP term_08
-	# 				| term_08 COMPARE_OP term_08
-	# 				| term_08 empty empty'''
-	# #     left    &
-	# def p_term_10(p):
-	# 	''' term_10 : term_10 BIT_AND term_09
-	# 				| term_09 empty empty'''
-	# #     left    | ^
-	# def p_term_11(p):
-	# 	''' term_11	: term_11 BIT_OR term_10
-	# 				| term_11 BIT_XOR term_10
-	# 				| term_10 empty empty'''
-	# #     left    &&
-	# def p_term_12(p):
-	# 	''' term_12	: term_12 AND_OP term_11
-	# 				| term_11 empty empty'''
-	# #     left    || //								# // not implemented:: defined(EXPR1) ? EXPR1 : EXPR
-	# def p_term_13(p):
-	# 	''' term_13	: term_13 OR_OP term_12
-	# 				| term_12 empty empty'''
-	# # nonassoc    ..  ... 							# not implemented ...
-	# def p_term_14(p):
-	# 	''' term_14 : term_13 RANGE_OP term_13
-	# 				| term_13 empty empty'''
-	# # right   = += -= *= etc. goto last next redo dump		##### see if we can implement goto, last, next, redo ... dump not implemented
-	# def p_term_15(p):
-	# 	''' term_15 : term_14 ADV_ASSIGNMENT_OP term_15
-	# 				| term_14 ASSIGNMENT_OP term_15
-	# 				| term_14 empty empty'''
-	# # left    , =>
-	# def p_term_16(p):
-	# 	''' term_16	: term_16 COMMA term_15
-	# 				| term_16 ASSOCIATE_OP term_15
-	# 				| term_15 empty empty'''
-	# # right   not
-	# def p_term_17(p):
-	# 	''' term_17 : term_16 NOT_STR_OP term_17
-	# 				| term_16 empty empty'''
-	# # left    and
-	# def p_term_18(p):
-	# 	''' term_18 : term_18 AND_STR_OP term_17
-	# 				| term_17 empty empty'''
-	# # left    or xor
-	# def p_term_19(p):
-	# 	''' term_19 : term_19 OR_STR_OP term_18
-	# 				| term_19 XOR_STR_OP term_18
-	# 				| term_18 empty empty'''
-
-	# #########temporary
-	# def p_expression_number(p):
-	# 	'''expression : term_19
-	# 	              | term'''
 
 
 
 ##################################################
-#ERROR HANDLING
+#ERROR HANDLINGva
 ##################################################
 def p_error(p):
 	print "ERROR IN PARSING PHASE!!!"
