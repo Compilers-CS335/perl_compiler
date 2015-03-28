@@ -1,4 +1,5 @@
 import yacc
+import symbolTable
 
 from lexer import tokens,lexer
 
@@ -11,7 +12,7 @@ from lexer import tokens,lexer
 # def p_block(p):
 # 	'block :BLOCK_BEGIN statements BLOCK_ENDS'
 
-
+symTable = symbolTable.SymbolTable()
 
 def p_start(p):
     '''start : block
@@ -95,13 +96,8 @@ def p_functionStament(p):
 	'functionStatement : SUB IDENTIFIER block'
 	
 def p_printStatement(p):
-	'''printStatement : PRINT OPEN_PARANTHESIS string1 CLOSE_PARANTHESIS SEMICOLON
-						| PRINT  string1  SEMICOLON
+	'''printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
 						| PRINT  expression  SEMICOLON'''
-	
-def p_string1(p):
-	'''string1 : STRING
-			   | RES_STRING'''
 	
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
@@ -211,8 +207,14 @@ precedence = (
 )
 
 def p_string(p):
-	''' string 	: STRING 
-				| RES_STRING'''
+	'string : STRING'
+
+	p[0] = {'type':'STRING', 'value':p[1]}
+
+def p_res_string(p):
+	'string : RES_STRING'
+
+	p[0] = {'type':'RES_STRING', 'value':p[1]}
 	
 def p_number(p):
 	''' number  : NUMBER
@@ -220,7 +222,8 @@ def p_number(p):
 				| FLOAT
 				| HEXADECIMAL
 				| OCTAL'''
-	
+
+	p[0] = {'type':'NUMBER', 'value':p[1]}
 
 #SPLIT
 # def p_variableA(p):
@@ -228,40 +231,68 @@ def p_number(p):
 # 					| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET'''  ### Ye Bracket hai ya parenthesis???
 
 def p_variable(p):
-	'''variable : VARIABLE  empty empty empty
-					| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET
-					| VARIABLE BLOCK_BEGIN string BLOCK_ENDS'''
+	'''variable : VARIABLE
+				| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET'''
 	
-
+	p[0] = {'place':p[1]}
 
 def p_term(p):
 	''' term 	:  number 
 				|  type 
 				|  variable 
-				|  string  
-				| OPEN_PARANTHESIS expression CLOSE_PARANTHESIS'''
-	
+				|  string  '''
 
+	p[0] = p[1]
 
+def p_term_exp(p):
+	'term : OPEN_PARANTHESIS expression CLOSE_PARANTHESIS'
+
+	p[0] = p[2]
+
+def p_type_var(p):
+	'type : variable'
+
+	p[0] = p[1]
+
+####
 def p_type(p):
-	''' type : ARRAY
-			 | HASH'''
-	
-def p_type1(p):
-	' type : variable'
-	
+	' type : ARRAY'
 
 def p_expression_unary(p):
 	''' expression : PLUS_OP expression   %prec UPLUS
 				   | MINUS_OP expression  %prec UMINUS
 				   | BIT_FLIP expression
-				   | NOT_OP expression
 				   | INCREMENT_OP expression
 				   | DECREMENT_OP expression'''
+
+	if p[2]['type']!='NUMBER' :
+		print "ERROR: Type error.\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "NUMBER"
+
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+
+def p_expression_unary_notOp(p):
+	'expression : NOT_OP expression'
 	
+	if p[2]['type']!='BOOLEAN' :
+		print "ERROR: Type error in expression.\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "BOOLEAN"
+
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+
 def p_expression(p):
 	''' expression : expression INCREMENT_OP
 				   | expression DECREMENT_OP'''
+	if p[1]['type']!='NUMBER' :
+		print "ERROR: Type error.\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "NUMBER"
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
 	
 
 def p_expression_empty(p):
@@ -270,44 +301,83 @@ def p_expression_empty(p):
 
 def p_expression_term(p):
 	'expression : term'
+
+	p[0] = p[1]
 	
+## SAB KUCHH ACHCHHE SE DEKHO ISME
+def p_expression_bin_dig(p):
+	'''expression :   expression OR_STR_OP expression
+					| expression XOR_STR_OP expression
+					| expression AND_STR_OP expression
+					| expression NOT_STR_OP expression
+					| expression OR_OP expression
+					| expression AND_OP expression
+					| expression COMPARE_OP expression
+					| expression BIT_OR expression
+					| expression BIT_XOR expression
+					| expression BIT_AND expression'''
 
-
-def p_expression_binary(p):
-	'''expression : expression OR_STR_OP expression
-				  | expression XOR_STR_OP expression
-				  | expression AND_STR_OP expression
-				  | expression NOT_STR_OP expression
-				  | expression COMMA expression
-				  | expression ASSOCIATE_OP expression
-				  | expression ADV_ASSIGNMENT_OP expression
-				  | expression ASSIGNMENT_OP expression
-				  | expression RANGE_OP expression
-				  | expression OR_OP expression
-				  | expression AND_OP expression
-				  | expression BIT_OR expression
-				  | expression BIT_XOR expression
-				  | expression BIT_AND expression
-				  | expression EQUALS_OP expression
+def p_expression_binary_relational(p):
+	'''expression : expression EQUALS_OP expression
 				  | expression NOT_EQUALS_OP expression
-				  | expression COMPARE_OP expression
 				  | expression GREATER_OP expression
 				  | expression LESS_OP expression
 				  | expression GREATER_EQUAL_OP expression
-				  | expression LESS_EQUAL_OP expression
-				  | expression BIT_RIGHT_SHIFT expression
-				  | expression BIT_LEFT_SHIFT expression
-				  | expression PLUS_OP expression
-				  | expression MINUS_OP expression
-				  | expression CONCATENATE expression
-				  | expression MULTIPLICATION_OP expression
-				  | expression DIVISION_OP expression
-				  | expression MODULUS_OP expression
-				  | expression REP_OP expression
-				  | expression SEARCH_MODIFY expression
-				  | expression SEARCH_MODIFY_NEG expression
-				  | expression EXPONENT_OP expression'''
+				  | expression LESS_EQUAL_OP expression'''
+
+	if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
+		print "ERROR: cannot compare\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "BOOLEAN"
+
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
 	
+def p_expression_math(p):
+	'''expression 	: expression PLUS_OP expression
+					| expression MINUS_OP expression
+					| expression MULTIPLICATION_OP expression
+					| expression DIVISION_OP expression
+					| expression MODULUS_OP expression
+					| expression EXPONENT_OP expression
+					| expression BIT_RIGHT_SHIFT expression
+					| expression BIT_LEFT_SHIFT expression'''
+
+	if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
+		print "ERROR: cannot perform operation\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "NUMBER"
+
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+	
+
+def p_expression_concat(p):
+	'expression : expression CONCATENATE expression'
+
+	p[0] = {'type' : 'STRING', 'place':symTable.newtmp()}
+
+def p_expression_repeatition(p):
+	'expression : expression REP_OP expression'
+
+	if p[3]['type']!='NUMBER' :
+		print "ERROR: How many times to repeat?.\n"
+		exp_type = "TYPE ERROR"
+	elif p[1]['type']!='STRING' :
+		print "ERROR: You can only repeat a string.\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "STRING"
+
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp()}
+
+## SAB KUCHH ACHCHHE SE DEKHO ISME
+def p_expression_binary(p):
+	'''expression 	: expression COMMA expression
+					| expression ASSOCIATE_OP expression
+					| expression RANGE_OP expression
+					| expression SEARCH_MODIFY expression
+					| expression SEARCH_MODIFY_NEG expression'''
 
 
 

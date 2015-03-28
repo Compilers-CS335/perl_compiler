@@ -10,3 +10,12 @@ python parser1.py test_expr.pl 2> strerr_output
 
 python parser1.py test_expr.pl | dot -Tps > tmp
 evince tmp
+
+
+-- 
+> not giving zero integer value to strings. 
+> cannot compare booleans 
+	i.e. (a>b)==(c<d) will raise ERROR
+> repeat does not creat arrays
+> Not implementing Hash
+> Print function only works with parenthesis
