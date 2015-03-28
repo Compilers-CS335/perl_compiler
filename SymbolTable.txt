@@ -1,0 +1,14 @@
+>	Symbol table:
+	implement 4 things:-
+		1. mktable(previous) 
+							# create a new symbol table and return a pointer to the new table.
+							# The argument "previous" poits to the enclosing procedure
+		2. enter(table, name, type, offset)
+							# creates a new entry
+		3. addwidth(table, width)
+							# records cumulative width of all entries in a table
+		4. enterproc(table, name, newtable)
+							# creates a new entry for procedure "name". "newtable" points to the 
+							# symbol table of the new procedure.
+
+>	define the base sizes for different data types

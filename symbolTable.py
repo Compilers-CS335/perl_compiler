@@ -20,6 +20,16 @@ class SymbolTable:
 		self.integer_size=4
 		self.float_size=8
 		self.char_size=1
+		self.temp_count=0
+		self.temp_name_gen="temp"
+		self.temp_vars = {}
+
+	def newtmp(self):
+		self.temp_count+=1
+		temp_name=self.temp_name_gen+str(self.temp_count)
+		self.temp_vars[temp_name]={'value': 0,
+								   'scope': self.get_current_scope() }
+		return temp_name
 
 	def get_current_scope(self):
 		return self.entryscope[len(self.entryscope)-1]['scope']
