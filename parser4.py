@@ -165,6 +165,8 @@ def p_printStatement(p):
 		threeAddrCode.emit(p[3]['type'], '', p[1], p[3]['place'])
 
 	p[0]['type']=exp_type 
+	p[0]['beginlist']=[]
+	p[0]['endlist']=[]
 
 def p_printStatement_no_paran(p):
 	'printStatement : PRINT  expression  SEMICOLON'
@@ -175,9 +177,9 @@ def p_printStatement_no_paran(p):
 		exp_type = "VOID"
 		threeAddrCode.emit(p[2]['type'], '', p[1], p[2]['place'])
 
-	p[0]['type']=exp_type 
-
-					
+	p[0]['type']=exp_type
+	p[0]['beginlist']=[]
+	p[0]['endlist']=[]					
 	
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
@@ -194,21 +196,81 @@ def p_assignment(p):
     else:
     	p[1]={'type':p[3]['type'], 'place':p[1]}
     	# add entry in the symbol table and fill in the type
+    	symTable.newvariableentry(p[1]['place'], p[1]['type'], 0)
     	exp_type = "VOID"
     	threeAddrCode.emit(p[1]['place'], '',p[2], p[3]['place'])
 
     p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}    
 
+def p_assignment_specific_local(p):
+	'assignment : LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON'
+
+	if p[4]=="TYPE ERROR":
+		exp_type = "TYPE ERROR"
+	else:
+		p[2]={'type':p[4]['type'], 'place':p[2]}
+		# add entry in the symbol table and fill in the type
+		symTable.newvariableentry(p[2]['place'], p[2]['type'], 0)
+		exp_type = "VOID"
+		threeAddrCode.emit(p[2]['place'], '',p[3], p[4]['place'])
+
+	p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}
+
 def p_assignment_specific(p):
-    '''assignment : PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    				| LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON'''
+    'assignment : PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON'
+
+    if p[4]=="TYPE ERROR":
+    	exp_type = "TYPE ERROR"
+    else:
+    	p[2]={'type':p[4]['type'], 'place':p[2]}
+    	# add entry in the symbol table and fill in the type
+    	symTable.newvariableentry(p[2]['place'], p[2]['type'], 1)
+    	exp_type = "VOID"
+    	threeAddrCode.emit(p[2]['place'], '',p[3], p[4]['place'])
+
+    p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}
 
 def p_assignment_adv(p):
 	'assignment : VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON'
 
-def p_assignment_adv_specific(p):
-    '''assignment : PRIVATE VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
-    				| LOCAL VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON'''	
+	exp_type = "VOID"
+	if p[3]=="TYPE ERROR":
+		exp_type = "TYPE ERROR"
+	else:
+		varType = symTable.getvalueofkey_variable(p[1], 'type')
+		if varType==None:
+			print "Variable does not exist\n"
+			exp_type_left = "TYPE ERROR"
+		else:
+			exp_type_left = varType
+		p[1] = {'place':p[1], 'type':exp_type_left}
+		# Dealing with the binary operation
+		Adv_Op = p[2].split("=")[0]
+		if Adv_Op=='.':
+			if p[1]['type']!='STRING' or p[3]['type']!='STRING' :
+				print "ERROR: Concatenation operation works only on strings\n"
+				exp_type = "TYPE ERROR"
+		elif Adv_Op=='x':
+			if p[3]['type']!='NUMBER' :
+				print "ERROR: How many times to repeat?.\n"
+				exp_type="TYPE ERROR"
+			elif p[1]['type']!='STRING' :
+				print "ERROR: You can only repeat a string.\n"
+				exp_type="TYPE ERROR"
+		else:
+			if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
+				print "ERROR: cannot perform operation\n"
+				exp_type="TYPE ERROR"
+	
+	if exp_type=="VOID":
+		threeAddrCode.emit(p[1]['place'], p[1]['place'], Adv_Op, p[3]['place'])
+	else:
+		print "Some error occured in advanced assignment\n"
+	p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]} 
+
+# def p_assignment_adv_specific(p):
+#     '''assignment : PRIVATE VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
+#     				| LOCAL VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON'''	
 
 # Earlier implementation remanants
 	# def p_lefthandside(p):
@@ -230,19 +292,40 @@ def p_assignment_adv_specific(p):
 
 def p_declaration(p):
 	'declaration :  VARIABLE decList SEMICOLON'
+	varList = [p[1]] + p[2]
+	for varName in varList:
+		symTable.newvariableentry(varName, '', 0)
+		threeAddrCode.emit('', '', 'DECLARATION', varName)
+	p[0]={'type':"VOID", 'beginlist':[], 'endlist':[]}
+
+def p_declaration_specific_private(p):
+	'declaration :  PRIVATE VARIABLE decList SEMICOLON'
+	varList = [p[2]] + p[3]
+	print varList
+	for varName in varList:
+		symTable.newvariableentry(varName, '', 1)
+		threeAddrCode.emit('', '', 'DECLARATION', varName)
+	p[0]={'type':"VOID", 'beginlist':[], 'endlist':[]}
 
 def p_declaration_specific(p):
-	'''declaration :  PRIVATE VARIABLE decList SEMICOLON
-					| LOCAL VARIABLE decList SEMICOLON'''
+	'declaration :  LOCAL VARIABLE decList SEMICOLON'
+	varList = [p[2]] + p[3]
+	for varName in varList:
+		symTable.newvariableentry(varName, '', 0)
+		threeAddrCode.emit('', '', 'DECLARATION', varName)
+	p[0]={'type':"VOID", 'beginlist':[], 'endlist':[]}
 	
 # def p_decList(p):
 # 	'''decList :  COMMA type decList
 # 	           |  empty'''
 	
 def p_decList(p):
-	'''decList :  COMMA VARIABLE decList
-	           |  empty'''
+	'decList :  COMMA VARIABLE decList'
+	p[0]=[p[2]]+p[3]
 
+def p_decList_empty(p):
+	'decList :  empty'
+	p[0]=[]
 
 def p_functionCall(p):
 	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS SEMICOLON' 
@@ -377,11 +460,20 @@ def p_term(p):
 
 	p[0] = p[1]
 	p[0]['place'] = symTable.newtmp()
+	threeAddrCode.emit(p[0]['place'], '', '=', p[1]['value'])
 
 #### This should actually be derived from the symbol table
 def p_term_var(p):
 	'term : VARIABLE'
-	p[0] = {'place':p[1]}
+
+	varType = symTable.getvalueofkey_variable(p[1], 'type')
+	if varType==None:
+		print "Variable does not exist\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = varType
+
+	p[0] = {'place':p[1], 'type':exp_type}
 
 def p_term_exp(p):
 	'term : OPEN_PARANTHESIS expression CLOSE_PARANTHESIS'

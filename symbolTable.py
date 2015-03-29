@@ -9,34 +9,24 @@ class SymbolTable:
 				'scope_depth': 0
 			}
 		}
-
-
-
-
-
-
-
 # scope=hello
 # parent=currentscope ka parent
 # type= integer
 # return type=UNDEFINED
 # width=4 
 
-
-
-
-	#########Two stacks for offset and scope of the variable
-	self.offset=[0]
-	self.entryscope=[self.symbolTable['root']]
-	
-	address_size=4
-	boolean_size=1
-	integer_size=4
-	float_size=8
-	char_size=1
-	self.temp_count=0
-	self.temp_name_gen="temp"
-	self.temp_vars = {}
+		#########Two stacks for offset and scope of the variable
+		self.offset=[0]
+		self.entryscope=[self.symbolTable['root']]
+		
+		address_size=4
+		boolean_size=1
+		integer_size=4
+		float_size=8
+		char_size=1
+		self.temp_count=0
+		self.temp_name_gen="temp"
+		self.temp_vars = {}
 
 	def newtmp(self):
 		self.temp_count+=1
@@ -98,8 +88,15 @@ class SymbolTable:
 		self.entryscope.append(curr[name])	
 		self.offset.append(0)
 
-	def newvariableentry(self,varible,variabletype):
-		curr=self.entryscope[len(self.entryscope)-1]
+	def newvariableentry(self,varible,variabletype,isPrivate):
+		# To set the scope of the variable correctly
+		if isPrivate:
+			curr=self.entryscope[len(self.entryscope)-1]
+			print curr
+		else:
+			curr=self.entryscope[0]
+			print curr
+
 		if curr.has_key(varible)==0:
 			curr[varible]={}
 
@@ -116,25 +113,19 @@ class SymbolTable:
 		else :
 			tempwidth=0
 
-
 		curr[varible]['type']=variabletype
-		curr[variable]['scope']=curr.get_current_scope()
+		curr[varible]['scope']=curr['scope']
 		curr[varible]['width']=tempwidth
 
 		temp1=self.offset.pop()
 		temp1=temp1+tempwidth
-		self.offset.appe(temp1)
+		self.offset.append(temp1)
 
 	def  getvalueofkey_variable(self,varible,value):
-		entry=self.lookup(entry)
+		entry=self.lookup(varible)
+		if entry==None:
+			return None
 		if entry.has_key(value):
 			return entry[value]
 		else:
 			return  None
-
-	
-
-
-
-
-
