@@ -102,8 +102,8 @@ def p_ifthenelse(p):
 	if p[3]['type']!="BOOLEAN":
 		print "Expression is not bool"
 
-	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))}
-	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))}
+	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))
+	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))
 
 	threeAddrCode.backpatch(p[5]['falselist'],p[8]['quad'])
 	p[0]={'nextlist' : p[8]['nextlist']}
