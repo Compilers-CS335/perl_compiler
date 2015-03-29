@@ -31,6 +31,10 @@ def p_block(p):
 def p_statments(p):
     'statements : statement statements'
 
+    p[0]={}
+    p[0]['beginlist']= threeAddrCode.merge(p[1].get('beginlist'),p[2].get('beginlist',[])) 
+    p[0]['endlist']= threeAddrCode.merge(p[1].get('endlist'),p[2].get('endlist',[])) 
+
 def p_statments_single(p):
 	'statements : statement '
 
@@ -68,7 +72,11 @@ def p_statment(p):
                  # | dowhileStatement
                  # | ternaryStatement 
                  # '''
-    p[0] = p[1]
+    p[0] = {'beginlist' : p[1]['beginlist'] , 'endlist' : p[1]['endlist']}
+
+    nextList = p[1].get('nextList', [])
+    threeAddrCode.backpatch(nextList, p[2]['quad'])
+
 
 
 def p_useStatement(p):
@@ -166,6 +174,10 @@ def p_printStatement_no_paran(p):
 	
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
+
+    p[0]={'type': p[2]['type']}
+    symTable.addintocurrentscope('returntype',p[2]['type'])
+    threeAddrCode.emit(p[2]['place'],'',p[1],'')
     
 def p_assignment(p):
     'assignment : VARIABLE ASSIGNMENT_OP expression SEMICOLON'
@@ -174,10 +186,11 @@ def p_assignment(p):
     	exp_type = "TYPE ERROR"
     else:
     	p[1]={'type':p[3]['type'], 'place':p[1]}
+    	# add entry in the symbol table and fill in the type
     	exp_type = "VOID"
     	threeAddrCode.emit(p[1]['place'], '',p[2], p[3]['place'])
 
-    p[0] = {'type':exp_type}    
+    p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}    
 
 def p_assignment_specific(p):
     '''assignment : PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
@@ -226,7 +239,24 @@ def p_decList(p):
 
 def p_functionCall(p):
 	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS SEMICOLON' 
-	
+
+	p[0]={}
+
+	if ifexist(p[1])==0:
+		print "Function is not defined"
+		exp_type="TYPE ERROR"
+	else:
+		functiontype=symTable.getvalueofkey(p[1],'type')
+		if functiontype=="FUNCTION":
+			p[0]['type']=symTable.getvalueofkey(p[1],'returntype')
+			label=symTable.getvalueofkey(p[1],symTable.get_current_scope())
+			threeAddrCode.emit('','','GOTO_LABEL',label)
+		else:
+			print "This is not a function"
+
+def p_termfunction(p):
+	'term : functionCall'
+	p[0]=p[1]	
 
 def p_parameters(p):
 	'''parameters 	: expression COMMA parameters
@@ -308,12 +338,12 @@ precedence = (
 def p_string(p):
 	'string : STRING'
 
-	p[0] = {'type':'STRING', 'place':p[1]}
+	p[0] = {'type':'STRING', 'value':p[1]}
 
 def p_res_string(p):
 	'string : RES_STRING'
 
-	p[0] = {'type':'RES_STRING', 'place':p[1]}
+	p[0] = {'type':'RES_STRING', 'value':p[1]}
 	
 def p_number(p):
 	''' number  : NUMBER
@@ -322,7 +352,7 @@ def p_number(p):
 				| HEXADECIMAL
 				| OCTAL'''
 
-	p[0] = {'type':'NUMBER', 'place':p[1]}
+	p[0] = {'type':'NUMBER', 'value':p[1]}
 
 #SPLIT
 # def p_variable(p):
@@ -336,10 +366,15 @@ def p_number(p):
 
 def p_term(p):
 	''' term 	:  number 
-				|  VARIABLE 
 				|  string  '''
 
 	p[0] = p[1]
+	p[0]['place'] = symTable.newtmp()
+
+#### This should actually be derived from the symbol table
+def p_term_var(p):
+	'term : VARIABLE'
+	p[0] = {'place':p[1]}
 
 def p_term_exp(p):
 	'term : OPEN_PARANTHESIS expression CLOSE_PARANTHESIS'
@@ -369,7 +404,8 @@ def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 		exp_type = "NUMBER"
 		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
-	p[0]['type']= exp_type 
+	p[0]['type']= exp_type
+	p[0]['value']=str(p[1])+str(p[2]['value'])
 
 def p_expression_unary_notOp(p):
 	'expression : NOT_OP expression'
@@ -383,6 +419,7 @@ def p_expression_unary_notOp(p):
 		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
 	p[0]['type'] = exp_type
+	p[0]['value']= str(p[1])+str(p[2]['value'])
 
 # def p_expression(p):
 # 	''' expression : expression INCREMENT_OP
@@ -428,6 +465,7 @@ def p_exp_and_op(p):
 
 	threeAddrCode.backpatch(p[1]['truelist'], p[3]['quad'])
 	p[0]['type']=exp_type
+	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
 
 def p_exp_or_op(p):
 	'expression : expression OR_OP Marker expression'
@@ -442,6 +480,7 @@ def p_exp_or_op(p):
 
 	threeAddrCode.backpatch(p[1]['falselist'], p[3]['quad'])
 	p[0]['type']=exp_type
+	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
 
 def p_expression_binary_relational(p):
 	'''expression : expression EQUALS_OP expression
@@ -459,6 +498,7 @@ def p_expression_binary_relational(p):
 
 	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[threeAddrCode.pointer_quad_next()], 'falselist':[1+threeAddrCode.pointer_quad_next()]}
 	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
+	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_marker_relational(p):
 	'Marker : empty'
@@ -484,7 +524,7 @@ def p_expression_math(p):
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
-
+	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_expression_concat(p):
 	'expression : expression CONCATENATE expression'
@@ -498,6 +538,7 @@ def p_expression_concat(p):
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
+	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_expression_repeatition(p):
 	'expression : expression REP_OP expression'
@@ -513,7 +554,8 @@ def p_expression_repeatition(p):
 		exp_type = "STRING"
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
-	p[0]['type'] = exp_type,
+	p[0]['type'] = exp_type
+	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
 def p_expression_binary(p):
