@@ -6,23 +6,37 @@ class SymbolTable:
 				'parent': 'root1',
 				'type' : 'FUNCTION',
 				'returntype' : 'UNDEFINED',
-				'string_list': [],
-				'width' : '0',
 				'scope_depth': 0
 			}
 		}
-		#########Two stacks for offset and scope of the variable
-		self.offset=[0]
-		self.entryscope=[self.symbolTable['root']]
-		
-		self.address_size=4
-		self.boolean_size=1
-		self.integer_size=4
-		self.float_size=8
-		self.char_size=1
-		self.temp_count=0
-		self.temp_name_gen="temp"
-		self.temp_vars = {}
+
+
+
+
+
+
+
+# scope=hello
+# parent=currentscope ka parent
+# type= integer
+# return type=UNDEFINED
+# width=4 
+
+
+
+
+	#########Two stacks for offset and scope of the variable
+	self.offset=[0]
+	self.entryscope=[self.symbolTable['root']]
+	
+	address_size=4
+	boolean_size=1
+	integer_size=4
+	float_size=8
+	char_size=1
+	self.temp_count=0
+	self.temp_name_gen="temp"
+	self.temp_vars = {}
 
 	def newtmp(self):
 		self.temp_count+=1
@@ -49,15 +63,15 @@ class SymbolTable:
 			return self.lookup_scope(entry,location-1)
 
 	def addintocurrentscope(self,name,value):
-		curr=self.entryscope(len(self.entryscope)-1)
-		name="\'"+name+"\'"
-		print name
+		curr=self.entryscope[len(self.entryscope)-1]
+		# name="\'"+name+"\'"
+		# print name
 		curr[name]=value
 	
 
 	def ifexist(self,entry):
 		entry=self.lookup(entry)
-		if entry != None
+		if entry != None:
 			return True
 		else:
 			return False
@@ -65,8 +79,62 @@ class SymbolTable:
 
 	def getvalueofkey(self,entry,key):
 		entry=self.lookup(entry)
-		if entry.has_key("\'"+key+"\'"):
-			return entry["\'"+key+"\'"]
+		if entry.has_key(key):
+			return entry[key]
 		else: 
 			None
+
+
+	def enterproc(self,name):
+		curr=self.entryscope[len(self.entryscope)-1]
+		temp=curr['scope_depth']+1
+		curr[name]={
+				'scope' : name,
+				'parent': curr.get_current_scope(),
+				'type' : 'FUNCTION',
+				'returntype' : 'UNDEFINED',
+				'scope_depth': temp
+		}
+		self.entryscope.append(curr[name])	
+		self.offset.append(0)
+
+	def newvariableentry(self,varible,variabletype):
+		curr=self.entryscope[len(self.entryscope)-1]
+		if curr.has_key(varible)==0:
+			curr[varible]={}
+
+		if variabletype=="NUMBER":
+			tempwidth=4
+		elif variabletype=="STRING":
+			tempwidth=8
+		elif variabletype=="RES_STRING":
+			tempwidth=8
+		elif variabletype=="FUNCTION":
+			tempwidth=8
+		elif variabletype=="BOOLEAN":
+			tempwidth=1
+		else :
+			tempwidth=0
+
+
+		curr[varible]['type']=variabletype
+		curr[variable]['scope']=curr.get_current_scope()
+		curr[varible]['width']=tempwidth
+
+		temp1=self.offset.pop()
+		temp1=temp1+tempwidth
+		self.offset.appe(temp1)
+
+	def  getvalueofkey_variable(self,varible,value):
+		entry=self.lookup(entry)
+		if entry.has_key(value):
+			return entry[value]
+		else:
+			return  None
+
+	
+
+
+
+
 
