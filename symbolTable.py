@@ -48,5 +48,25 @@ class SymbolTable:
 		else :
 			return self.lookup_scope(entry,location-1)
 
-
+	def addintocurrentscope(self,name,value):
+		curr=self.entryscope(len(self.entryscope)-1)
+		name="\'"+name+"\'"
+		print name
+		curr[name]=value
 	
+
+	def ifexist(self,entry):
+		entry=self.lookup(entry)
+		if entry != None
+			return True
+		else:
+			return False
+
+
+	def getvalueofkey(self,entry,key):
+		entry=self.lookup(entry)
+		if entry.has_key("\'"+key+"\'"):
+			return entry["\'"+key+"\'"]
+		else: 
+			None
+

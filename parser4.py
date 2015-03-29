@@ -31,6 +31,10 @@ def p_block(p):
 def p_statments(p):
     'statements : statement statements'
 
+    p[0]={}
+    p[0]['beginlist']= threeAddrCode.merge(p[1].get('beginlist'),p[2].get('beginlist',[])) 
+    p[0]['endlist']= threeAddrCode.merge(p[1].get('endlist'),p[2].get('endlist',[])) 
+
 def p_statments_single(p):
 	'statements : statement '
 
@@ -68,7 +72,11 @@ def p_statment(p):
                  # | dowhileStatement
                  # | ternaryStatement 
                  # '''
-    p[0] = p[1]
+    p[0] = {'beginlist' : p[1]['beginlist'] , 'endlist' : p[1]['endlist']}
+
+    nextList = p[1].get('nextList', [])
+    threeAddrCode.backPatch(nextList, p[2]['quad'])
+
 
 
 def p_useStatement(p):
@@ -114,7 +122,7 @@ def p_Markerif(p):
 	threeAddrCode.emit(p[-2]['place'], '','GOTO_MARK','-1')
 
 def p_Markerelse(p):
-	'Markerelse : else'
+	'Markerelse : empty'
 	p[0]={'nextlist' : threeAddrCode.pointer_quad_next()}
 	threeAddrCode.emit('', '','GOTO','-1')	
 	
@@ -166,6 +174,10 @@ def p_printStatement_no_paran(p):
 	
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
+
+    p[0]={'type': p[2]['type']}
+    symTable.addintocurrentscope('returntype',p[2]['type'])
+    threeAddrCode.emit(p[2]['place'],'',p[1],'')
     
 
 def p_assignment(p):
@@ -206,12 +218,29 @@ def p_decList(p):
 
 def p_functionCall(p):
 	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS SEMICOLON' 
-	
 
-def p_parameters(p):
-	'''parameters 	: expression COMMA parameters
-					| expression 
-					| empty '''
+	p[0]={}
+
+	if ifexist(p[1])==0:
+		print "Function is not defined"
+		exp_type="TYPE ERROR"
+	else:
+		functiontype=symTable.getvalueofkey(p[1],'type')
+		if functiontype=="FUNCTION":
+			p[0]['type']=symTable.getvalueofkey(p[1],'returntype')
+			label=symTable.getvalueofkey(p[1],symTable.get_current_scope())
+			threeAddrCode.emit('','','GOTO_LABEL',label)
+		else:
+			print "This is not a function"
+
+def p_termfunction(p):
+	'term : functionCall'
+	p[0]=p[1]	
+
+# def p_parameters(p):
+# 	'''parameters 	: expression COMMA parameters
+# 					| expression 
+# 					| empty '''
 					#### KAISE START KARU. SPLIT KARNA PADEGA
 	
 def p_while(p):
