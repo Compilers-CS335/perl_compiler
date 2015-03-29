@@ -86,21 +86,53 @@ def p_caselist(p):
     
 
 def p_ifthen(p):
-	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block'
-	
+	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block'
+
+	if p[3]['type']!="BOOLEAN":
+		print "Expression is not bool"
+
+	p[0]['beginlist']=p[6].get('beginlist',[])
+	p[0]['endlist']=p[6].get('endlist',[])
+	p[0]={'nextlist': threeAddrCode.merge(p[5].get('falselist',[]),p[6].get('nextlist',[]))}	
 
 
 def p_ifthenelse(p):
-	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block ELSE block'
+	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  Markerif block ELSE Markerelse block'
+
+	if p[3]['type']!="BOOLEAN":
+		print "Expression is not bool"
+
+	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))}
+	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))}
+
+	threeAddrCode.backpatch(p[5]['falselist'],p[8]['quad'])
+	p[0]={'nextlist' : p[8]['nextlist']}
+
+def p_Markerif(p):
+	p[0]={'falselist' : threeAddrCode.pointer_quad_next()}
+	threeAddrCode.emit(p[-2]['place'], '','GOTO_MARK','-1')
+
+def p_Markerelse(p):
+	p[0]={'nextlist' : threeAddrCode.pointer_quad_next()}
+	threeAddrCode.emit('', '','GOTO','-1')	
 	
 
 def p_lastStatement(p):
 	'lastStatement : LAST SEMICOLON'
-	
+	p[0]={'endlist' : threeAddrCode.pointer_quad_next()}
+	threeAddrCode.emit('','','GOTO','-1')
 
 def p_nextStatement(p):
 	'nextStatement : NEXT SEMICOLON'
+	p[0]={'beginlist' : threeAddrCode.pointer_quad_next()}
+	threeAddrCode.emit('','','GOTO','-1')
+
+
 	
+
+
+
+
 def p_functionStament(p):
 	'functionStatement : SUB IDENTIFIER block'
 	
@@ -120,7 +152,8 @@ def p_printStatement(p):
 def p_printStatement_no_paran(p):
 	'printStatement : PRINT  expression  SEMICOLON'
 
-	# p[0] = {'place':symTable.newtmp()}
+	
+
 	p[0]={}
 	if p[2]['type']=="TYPE ERROR":
 		exp_type = "TYPE ERROR"
@@ -129,6 +162,7 @@ def p_printStatement_no_paran(p):
 		threeAddrCode.emit(p[2]['type'], '', p[1], p[2]['place'])
 
 	p[0]['type']=exp_type 
+
 					
 	
 def p_return(p):
@@ -182,8 +216,22 @@ def p_parameters(p):
 					#### KAISE START KARU. SPLIT KARNA PADEGA
 	
 def p_while(p):
-	'whileStatement : WHILE  OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  block'
+	'whileStatement : WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile  block'
 	
+	p[0]={'nextlist':[],'type' : 'VOID'}
+
+	if p[4]['type']=="BOOLEAN":
+		threeAddrCode.backpatch(p[7]['beginlist'],p[2]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[7].get('endlist',[]),p[7].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[6].get('falselist',[]),p[0].get('nextlist',[]))
+		threeAddrCode.emit('','','GOTO',p[2]['quad'])
+	else:
+		print "Expression not bool"
+
+def p_Markerwhile(p):
+	'Markerwhile : empty'
+	p[0]={'falselist' : threeAddrCode.pointer_quad_next()}
+	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
 
 def p_for(p):
 	'forStatement : FOR  OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS  block'
