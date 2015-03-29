@@ -14,7 +14,7 @@ from lexer import tokens,lexer
 # 	'block :BLOCK_BEGIN statements BLOCK_ENDS'
 
 symTable = symbolTable.SymbolTable()
-threeAddrCode = tac.Tac()
+threeAddrCode = tac.Tac(symTable)
 
 def p_start(p):
     '''start : block
@@ -365,7 +365,7 @@ def p_expression_binary_relational(p):
 	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[threeAddrCode.pointer_quad_next()], 'falselist':[1+threeAddrCode.pointer_quad_next()]}
 	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
-def marker_relational(p):
+def p_marker_relational(p):
 	'Marker : empty'
 
 	p[0] = {'quad': threeAddrCode.pointer_quad_next()}

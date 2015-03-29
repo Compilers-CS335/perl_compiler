@@ -1,6 +1,6 @@
 class SymbolTable:
 	def __init__(self):
-		self.symbolTable {
+		self.symbolTable = {
 			'root' :{
 				'scope' : 'root1',
 				'parent': 'root1',

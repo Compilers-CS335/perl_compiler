@@ -1,0 +1,189 @@
+PLY: PARSE DEBUG START
+
+State  : 0
+Stack  : . LexToken(VARIABLE,'$x',4,34)
+Action : Shift and goto state 8
+
+State  : 8
+Stack  : VARIABLE . LexToken(ASSIGNMENT_OP,'=',4,37)
+Action : Reduce rule [variable -> VARIABLE] with ['$x'] and goto state 59
+Result : <dict @ 0x7f5e9795e5c8> ({'place': '$x'})
+
+State  : 33
+Stack  : variable . LexToken(ASSIGNMENT_OP,'=',4,37)
+Action : Reduce rule [type -> variable] with [{'place': '$x'}] and goto state 66
+Result : <dict @ 0x7f5e9795e5c8> ({'place': '$x'})
+
+State  : 25
+Stack  : type . LexToken(ASSIGNMENT_OP,'=',4,37)
+Action : Reduce rule [lefthandside -> type] with [{'place': '$x'}] and goto state 42
+Result : <NoneType @ 0x920190> (None)
+
+State  : 30
+Stack  : lefthandside . LexToken(ASSIGNMENT_OP,'=',4,37)
+Action : Shift and goto state 77
+
+State  : 77
+Stack  : lefthandside ASSIGNMENT_OP . LexToken(NUMBER,7,4,39)
+Action : Reduce rule [assignmenttype -> ASSIGNMENT_OP] with ['='] and goto state 36
+Result : <NoneType @ 0x920190> (None)
+
+State  : 74
+Stack  : lefthandside assignmenttype . LexToken(NUMBER,7,4,39)
+Action : Shift and goto state 55
+
+State  : 55
+Stack  : lefthandside assignmenttype NUMBER . LexToken(SEMICOLON,';',4,40)
+Action : Reduce rule [number -> NUMBER] with [7] and goto state 54
+Result : <dict @ 0x7f5e9962c398> ({'type': 'NUMBER', 'value': 7})
+
+State  : 46
+Stack  : lefthandside assignmenttype number . LexToken(SEMICOLON,';',4,40)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f5e9962c398>] and goto state 61
+Result : <dict @ 0x7f5e9962c398> ({'type': 'NUMBER', 'value': 7})
+
+State  : 58
+Stack  : lefthandside assignmenttype term . LexToken(SEMICOLON,';',4,40)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f5e9962c398>] and goto state 73
+Result : <dict @ 0x7f5e9962c398> ({'type': 'NUMBER', 'value': 7})
+
+State  : 135
+Stack  : lefthandside assignmenttype expression . LexToken(SEMICOLON,';',4,40)
+Action : Shift and goto state 185
+
+State  : 185
+Stack  : lefthandside assignmenttype expression SEMICOLON . LexToken(VARIABLE,'$y',5,42)
+Action : Reduce rule [assignment -> lefthandside assignmenttype expression SEMICOLON] with [None,None,<dict @ 0x7f5e9962c398>,';'] and goto state 34
+Result : <NoneType @ 0x920190> (None)
+
+State  : 28
+Stack  : assignment . LexToken(VARIABLE,'$y',5,42)
+Action : Reduce rule [statement -> assignment] with [None] and goto state 7
+Result : <NoneType @ 0x920190> (None)
+
+State  : 22
+Stack  : statement . LexToken(VARIABLE,'$y',5,42)
+Action : Shift and goto state 8
+
+State  : 8
+Stack  : statement VARIABLE . LexToken(ASSIGNMENT_OP,'=',5,45)
+Action : Reduce rule [variable -> VARIABLE] with ['$y'] and goto state 59
+Result : <dict @ 0x7f5e9795eb40> ({'place': '$y'})
+
+State  : 33
+Stack  : statement variable . LexToken(ASSIGNMENT_OP,'=',5,45)
+Action : Reduce rule [type -> variable] with [{'place': '$y'}] and goto state 66
+Result : <dict @ 0x7f5e9795eb40> ({'place': '$y'})
+
+State  : 25
+Stack  : statement type . LexToken(ASSIGNMENT_OP,'=',5,45)
+Action : Reduce rule [lefthandside -> type] with [{'place': '$y'}] and goto state 42
+Result : <NoneType @ 0x920190> (None)
+
+State  : 30
+Stack  : statement lefthandside . LexToken(ASSIGNMENT_OP,'=',5,45)
+Action : Shift and goto state 77
+
+State  : 77
+Stack  : statement lefthandside ASSIGNMENT_OP . LexToken(NUMBER,7,5,47)
+Action : Reduce rule [assignmenttype -> ASSIGNMENT_OP] with ['='] and goto state 36
+Result : <NoneType @ 0x920190> (None)
+
+State  : 74
+Stack  : statement lefthandside assignmenttype . LexToken(NUMBER,7,5,47)
+Action : Shift and goto state 55
+
+State  : 55
+Stack  : statement lefthandside assignmenttype NUMBER . LexToken(SEMICOLON,';',5,48)
+Action : Reduce rule [number -> NUMBER] with [7] and goto state 54
+Result : <dict @ 0x7f5e9962c168> ({'type': 'NUMBER', 'value': 7})
+
+State  : 46
+Stack  : statement lefthandside assignmenttype number . LexToken(SEMICOLON,';',5,48)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f5e9962c168>] and goto state 61
+Result : <dict @ 0x7f5e9962c168> ({'type': 'NUMBER', 'value': 7})
+
+State  : 58
+Stack  : statement lefthandside assignmenttype term . LexToken(SEMICOLON,';',5,48)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f5e9962c168>] and goto state 73
+Result : <dict @ 0x7f5e9962c168> ({'type': 'NUMBER', 'value': 7})
+
+State  : 135
+Stack  : statement lefthandside assignmenttype expression . LexToken(SEMICOLON,';',5,48)
+Action : Shift and goto state 185
+
+State  : 185
+Stack  : statement lefthandside assignmenttype expression SEMICOLON . LexToken(IF,'if',8,82)
+Action : Reduce rule [assignment -> lefthandside assignmenttype expression SEMICOLON] with [None,None,<dict @ 0x7f5e9962c168>,';'] and goto state 34
+Result : <NoneType @ 0x920190> (None)
+
+State  : 28
+Stack  : statement assignment . LexToken(IF,'if',8,82)
+Action : Reduce rule [statement -> assignment] with [None] and goto state 7
+Result : <NoneType @ 0x920190> (None)
+
+State  : 22
+Stack  : statement statement . LexToken(IF,'if',8,82)
+Action : Shift and goto state 37
+
+State  : 37
+Stack  : statement statement IF . LexToken(OPEN_PARANTHESIS,'(',8,85)
+Action : Shift and goto state 80
+
+State  : 80
+Stack  : statement statement IF OPEN_PARANTHESIS . LexToken(VARIABLE,'$x',8,86)
+Action : Shift and goto state 8
+
+State  : 8
+Stack  : statement statement IF OPEN_PARANTHESIS VARIABLE . LexToken(EQUALS_OP,'==',8,89)
+Action : Reduce rule [variable -> VARIABLE] with ['$x'] and goto state 59
+Result : <dict @ 0x7f5e9795ec58> ({'place': '$x'})
+
+State  : 57
+Stack  : statement statement IF OPEN_PARANTHESIS variable . LexToken(EQUALS_OP,'==',8,89)
+Action : Reduce rule [term -> variable] with [{'place': '$x'}] and goto state 63
+Result : <dict @ 0x7f5e9795ec58> ({'place': '$x'})
+
+State  : 58
+Stack  : statement statement IF OPEN_PARANTHESIS term . LexToken(EQUALS_OP,'==',8,89)
+Action : Reduce rule [expression -> term] with [{'place': '$x'}] and goto state 73
+Result : <dict @ 0x7f5e9795ec58> ({'place': '$x'})
+
+State  : 138
+Stack  : statement statement IF OPEN_PARANTHESIS expression . LexToken(EQUALS_OP,'==',8,89)
+Action : Shift and goto state 103
+
+State  : 103
+Stack  : statement statement IF OPEN_PARANTHESIS expression EQUALS_OP . LexToken(NUMBER,7,8,92)
+Action : Shift and goto state 55
+
+State  : 55
+Stack  : statement statement IF OPEN_PARANTHESIS expression EQUALS_OP NUMBER . LexToken(CLOSE_PARANTHESIS,')',8,93)
+Action : Reduce rule [number -> NUMBER] with [7] and goto state 54
+Result : <dict @ 0x7f5e9795e4b0> ({'type': 'NUMBER', 'value': 7})
+
+State  : 46
+Stack  : statement statement IF OPEN_PARANTHESIS expression EQUALS_OP number . LexToken(CLOSE_PARANTHESIS,')',8,93)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f5e9795e4b0>] and goto state 61
+Result : <dict @ 0x7f5e9795e4b0> ({'type': 'NUMBER', 'value': 7})
+
+State  : 58
+Stack  : statement statement IF OPEN_PARANTHESIS expression EQUALS_OP term . LexToken(CLOSE_PARANTHESIS,')',8,93)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f5e9795e4b0>] and goto state 73
+Result : <dict @ 0x7f5e9795e4b0> ({'type': 'NUMBER', 'value': 7})
+
+State  : 154
+Stack  : statement statement IF OPEN_PARANTHESIS expression EQUALS_OP expression . LexToken(CLOSE_PARANTHESIS,')',8,93)
+Action : Reduce rule [expression -> expression EQUALS_OP expression] with [{'place': '$x'},'==',<dict @ 0x7f5e9795e4b0>] and goto state 84
+Traceback (most recent call last):
+  File "parser4.py", line 589, in <module>
+    runparser(inputfile)
+  File "parser4.py", line 583, in runparser
+    result=parser.parse(program,debug=1)
+  File "/home/avikalpg/Documents/compilers/perl_compiler/yacc.py", line 261, in parse
+    return self.parsedebug(input,lexer,debug,tracking,tokenfunc)
+  File "/home/avikalpg/Documents/compilers/perl_compiler/yacc.py", line 421, in parsedebug
+    p.callable(pslice)
+  File "parser4.py", line 359, in p_expression_binary_relational
+    if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
+KeyError: 'type'
