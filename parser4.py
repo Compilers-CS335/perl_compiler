@@ -75,7 +75,7 @@ def p_useStatement(p):
 	'useStatement : USE IDENTIFIER SEMICOLON'
 	
 def p_switchStatement(p):
-	'switchStatement : SWITCH lefthandside  BLOCK_BEGIN caselist BLOCK_ENDS'
+	'switchStatement : SWITCH expression BLOCK_BEGIN caselist BLOCK_ENDS'
 	
 
 
@@ -114,7 +114,7 @@ def p_Markerif(p):
 	threeAddrCode.emit(p[-2]['place'], '','GOTO_MARK','-1')
 
 def p_Markerelse(p):
-	'Markerelse : else'
+	'Markerelse : empty'
 	p[0]={'nextlist' : threeAddrCode.pointer_quad_next()}
 	threeAddrCode.emit('', '','GOTO','-1')	
 	
@@ -167,41 +167,61 @@ def p_printStatement_no_paran(p):
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
     
-
 def p_assignment(p):
-    'assignment : lefthandside assignmenttype expression SEMICOLON'
-    
+    'assignment : VARIABLE ASSIGNMENT_OP expression SEMICOLON'
 
-def p_assignmenttype(p):
-	'''assignmenttype : ADV_ASSIGNMENT_OP
-					  | ASSIGNMENT_OP'''
-	
+    if p[3]=="TYPE ERROR":
+    	exp_type = "TYPE ERROR"
+    else:
+    	p[1]={'type':p[3]['type'], 'place':p[1]}
+    	exp_type = "VOID"
+    	threeAddrCode.emit(p[1]['place'], '',p[2], p[3]['place'])
 
-def p_lefthandside(p):
-	'''lefthandside : PRIVATE type decList 
-					| PRIVATE OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
-	
-def p_lefthandsided(p):
-	'''lefthandside : LOCAL  type decList 
-					| LOCAL OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
-	
-def p_lefthandsideb(p):
-	'''lefthandside : OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
-	
+    p[0] = {'type':exp_type}    
 
-def p_lefthandsidec(p):
-	'lefthandside : type'
-	
+def p_assignment_specific(p):
+    '''assignment : PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    				| LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON'''
 
+def p_assignment_adv(p):
+	'assignment : VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON'
+
+def p_assignment_adv_specific(p):
+    '''assignment : PRIVATE VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
+    				| LOCAL VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON'''	
+
+# Earlier implementation remanants
+	# def p_lefthandside(p):
+	# 	'''lefthandside : PRIVATE type decList 
+	# 					| PRIVATE OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
+		
+	# def p_lefthandsided(p):
+	# 	'''lefthandside : LOCAL  type decList 
+	# 					| LOCAL OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
+		
+	# def p_lefthandsideb(p):
+	# 	'''lefthandside : OPEN_PARANTHESIS type decList CLOSE_PARANTHESIS'''
+		
+
+	# def p_lefthandsidec(p):
+	# 	'lefthandside : type'
+	# def p_declaration(p):
+	# 	'declaration :  lefthandside SEMICOLON'
 
 def p_declaration(p):
-	'declaration :  lefthandside SEMICOLON'
+	'declaration :  VARIABLE decList SEMICOLON'
+
+def p_declaration_specific(p):
+	'''declaration :  PRIVATE VARIABLE decList SEMICOLON
+					| LOCAL VARIABLE decList SEMICOLON'''
+	
+# def p_decList(p):
+# 	'''decList :  COMMA type decList
+# 	           |  empty'''
 	
 def p_decList(p):
-	'''decList :  COMMA type decList
+	'''decList :  COMMA VARIABLE decList
 	           |  empty'''
-	
-
 
 
 def p_functionCall(p):
@@ -305,19 +325,18 @@ def p_number(p):
 	p[0] = {'type':'NUMBER', 'place':p[1]}
 
 #SPLIT
-# def p_variableA(p):
-# 	''' variableA 	: VARIABLE  empty empty empty
+# def p_variable(p):
+# 	''' variable 	: VARIABLE
 # 					| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET'''  ### Ye Bracket hai ya parenthesis???
 
-def p_variable(p):
-	'''variable : VARIABLE
-				| VARIABLE OPEN_BRACKET NUMBER CLOSE_BRACKET'''
+# def p_variable(p):
+# 	'variable : VARIABLE'
 	
-	p[0] = {'place':p[1]}
+# 	p[0] = {'place':p[1]}
 
 def p_term(p):
 	''' term 	:  number 
-				|  type 
+				|  VARIABLE 
 				|  string  '''
 
 	p[0] = p[1]
@@ -327,14 +346,14 @@ def p_term_exp(p):
 
 	p[0] = p[2]
 
-def p_type_var(p):
-	'type : variable'
+# def p_type_var(p):
+# 	'type : variable'
 
-	p[0] = p[1]
+# 	p[0] = p[1]
 
 ####
-def p_type(p):
-	' type : ARRAY'
+# def p_type(p):
+# 	' type : ARRAY'
 
 def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 	''' expression : PLUS_OP expression   %prec UPLUS

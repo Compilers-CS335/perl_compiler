@@ -19,3 +19,4 @@ evince tmp
 > repeat does not creat arrays
 > Not implementing Hash
 > Print function only works with parenthesis
+> Multiple assignments in a single statement are now not allowed
