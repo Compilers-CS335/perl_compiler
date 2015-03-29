@@ -102,17 +102,19 @@ def p_ifthenelse(p):
 	if p[3]['type']!="BOOLEAN":
 		print "Expression is not bool"
 
-	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))}
-	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))}
+	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))
+	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))
 
 	threeAddrCode.backpatch(p[5]['falselist'],p[8]['quad'])
 	p[0]={'nextlist' : p[8]['nextlist']}
 
 def p_Markerif(p):
+	'Markerif : empty'
 	p[0]={'falselist' : threeAddrCode.pointer_quad_next()}
 	threeAddrCode.emit(p[-2]['place'], '','GOTO_MARK','-1')
 
 def p_Markerelse(p):
+	'Markerelse : else'
 	p[0]={'nextlist' : threeAddrCode.pointer_quad_next()}
 	threeAddrCode.emit('', '','GOTO','-1')	
 	
@@ -151,9 +153,6 @@ def p_printStatement(p):
 
 def p_printStatement_no_paran(p):
 	'printStatement : PRINT  expression  SEMICOLON'
-
-	
-
 	p[0]={}
 	if p[2]['type']=="TYPE ERROR":
 		exp_type = "TYPE ERROR"
