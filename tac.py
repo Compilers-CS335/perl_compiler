@@ -1,8 +1,8 @@
 class Tac:
 	def __init__(self,symTable):
-		self.code={}
-		self.quad={}
-		self.quad_next={}
+		self.code={'root1':[]}
+		self.quad={'root1':-1}
+		self.quad_next={'root1':0}
 		self.symTable=symTable
 
 	def quad_increment(self):
@@ -15,7 +15,7 @@ class Tac:
 		curr=self.symTable.get_current_scope()
 		return self.quad_next[curr]
 
-	def emit(rt,lt1,op,lt2):
+	def emit(self,rt,lt1,op,lt2):
 		curr=self.symTable.get_current_scope()
 		self.quad_increment()
 		self.code[curr].append([rt,lt1,op,lt2])
