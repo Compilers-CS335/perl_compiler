@@ -44,20 +44,20 @@ def p_empty(p):
 # 	'empty_statements : empty'
 
 def p_statment(p):
-    '''statement : assignment 
-    		     | declaration 
-                 | returnStatement 
-                 | functionCall  
-                 | whileStatement
-                 | forStatement  
-                 | printStatement
-                 | functionStatement 
-                 | lastStatement
-                 | nextStatement
-                 | ifthen
-                 | ifthenelse
-                 | useStatement
-                 | switchStatement''' # implementinf ifthen and ifthenelse without nested loop
+    '''statement : assignment Marker
+    		     | declaration Marker
+                 | returnStatement Marker
+                 | functionCall Marker
+                 | whileStatement Marker
+                 | forStatement Marker
+                 | printStatement Marker
+                 | functionStatement Marker
+                 | lastStatement Marker
+                 | nextStatement Marker
+                 | ifthen Marker
+                 | ifthenelse Marker
+                 | useStatement Marker
+                 | switchStatement Marker''' # implementinf ifthen and ifthenelse without nested loop
 
                  #    
                  # | loopcontrolStatement    
@@ -139,18 +139,30 @@ def p_functionStament(p):
 def p_printStatement(p):
 	'printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON'
 
+	# p[0] = {'place':symTable.newtmp()}
+	p[0] = {}
+	if p[3]['type']=="TYPE ERROR":
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "VOID"
+		threeAddrCode.emit(p[3]['type'], '', p[1], p[3]['place'])
+
+	p[0]['type']=exp_type 
+
 def p_printStatement_no_paran(p):
 	'printStatement : PRINT  expression  SEMICOLON'
 
-	# p[0] = {'place':symTable.newtmp()}
 	
+
+	p[0]={}
 	if p[2]['type']=="TYPE ERROR":
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "VOID"
-		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
+		threeAddrCode.emit(p[2]['type'], '', p[1], p[2]['place'])
 
 	p[0]['type']=exp_type 
+
 					
 	
 def p_return(p):
