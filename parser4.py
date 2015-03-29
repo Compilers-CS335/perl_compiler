@@ -118,24 +118,29 @@ def p_ifthenelse(p):
 
 def p_Markerif(p):
 	'Markerif : empty'
-	p[0]={'falselist' : threeAddrCode.pointer_quad_next()}
-	threeAddrCode.emit(p[-2]['place'], '','GOTO_MARK','-1')
+	p[0]={}
+	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
+	threeAddrCode.emit(p[-2]['place'], '','GOTO_MARK',-1)
 
 def p_Markerelse(p):
 	'Markerelse : empty'
-	p[0]={'nextlist' : threeAddrCode.pointer_quad_next()}
-	threeAddrCode.emit('', '','GOTO','-1')	
+	p[0]={}
+	p[0]['nextlist']=[threeAddrCode.pointer_quad_next()]
+	p[0]['quad']=threeAddrCode.pointer_quad_next()
+	threeAddrCode.emit('', '','GOTO',-1)	
 	
 
 def p_lastStatement(p):
 	'lastStatement : LAST SEMICOLON'
-	p[0]={'endlist' : threeAddrCode.pointer_quad_next()}
-	threeAddrCode.emit('','','GOTO','-1')
+	p[0]={}
+	p[0]['endlist']=[threeAddrCode.pointer_quad_next()]
+	threeAddrCode.emit('','','GOTO',-1)
 
 def p_nextStatement(p):
 	'nextStatement : NEXT SEMICOLON'
-	p[0]={'beginlist' : threeAddrCode.pointer_quad_next()}
-	threeAddrCode.emit('','','GOTO','-1')
+	p[0]={}
+	p[0]['beginlist']=[threeAddrCode.pointer_quad_next()]
+	threeAddrCode.emit('','','GOTO',-1)
 
 
 	
@@ -145,6 +150,8 @@ def p_nextStatement(p):
 
 def p_functionStament(p):
 	'functionStatement : SUB IDENTIFIER block'
+
+
 	
 def p_printStatement(p):
 	'printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON'
@@ -244,7 +251,7 @@ def p_functionCall(p):
 
 	if ifexist(p[1])==0:
 		print "Function is not defined"
-		exp_type="TYPE ERROR"
+		p[0]['type']="TYPE ERROR"
 	else:
 		functiontype=symTable.getvalueofkey(p[1],'type')
 		if functiontype=="FUNCTION":
