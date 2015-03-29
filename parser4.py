@@ -19,15 +19,22 @@ threeAddrCode = tac.Tac(symTable)
 def p_start(p):
     '''start : block
              | statements'''
+
+    p[0] = p[1]
     
 
 def p_block(p):
     'block : BLOCK_BEGIN  statements  BLOCK_ENDS'
+
+    p[0] = p[2]
     
 def p_statments(p):
-    '''statements : statement statements
-                  | statement '''
-   
+    'statements : statement statements'
+
+def p_statments_single(p):
+	'statements : statement '
+
+	p[0] = p[1]
 
 def p_empty(p):
     'empty :'
@@ -61,7 +68,7 @@ def p_statment(p):
                  # | dowhileStatement
                  # | ternaryStatement 
                  # '''
-    
+    p[0] = p[1]
 
 
 def p_useStatement(p):
@@ -130,8 +137,20 @@ def p_functionStament(p):
 	'functionStatement : SUB IDENTIFIER block'
 	
 def p_printStatement(p):
-	'''printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
-						| PRINT  expression  SEMICOLON'''
+	'printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON'
+
+def p_printStatement_no_paran(p):
+	'printStatement : PRINT  expression  SEMICOLON'
+
+	p[0] = {'place':symTable.newtmp()}
+	if p[2]['type']=="TYPE ERROR":
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "VOID"
+		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
+
+	p[0]['type']=exp_type 
+					
 	
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
@@ -257,12 +276,12 @@ precedence = (
 def p_string(p):
 	'string : STRING'
 
-	p[0] = {'type':'STRING', 'value':p[1]}
+	p[0] = {'type':'STRING', 'place':p[1]}
 
 def p_res_string(p):
 	'string : RES_STRING'
 
-	p[0] = {'type':'RES_STRING', 'value':p[1]}
+	p[0] = {'type':'RES_STRING', 'place':p[1]}
 	
 def p_number(p):
 	''' number  : NUMBER
@@ -271,7 +290,7 @@ def p_number(p):
 				| HEXADECIMAL
 				| OCTAL'''
 
-	p[0] = {'type':'NUMBER', 'value':p[1]}
+	p[0] = {'type':'NUMBER', 'place':p[1]}
 
 #SPLIT
 # def p_variableA(p):
@@ -287,7 +306,6 @@ def p_variable(p):
 def p_term(p):
 	''' term 	:  number 
 				|  type 
-				|  variable 
 				|  string  '''
 
 	p[0] = p[1]
@@ -411,7 +429,7 @@ def p_expression_binary_relational(p):
 	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[threeAddrCode.pointer_quad_next()], 'falselist':[1+threeAddrCode.pointer_quad_next()]}
 	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
-def marker_relational(p):
+def p_marker_relational(p):
 	'Marker : empty'
 
 	p[0] = {'quad': threeAddrCode.pointer_quad_next()}
@@ -626,8 +644,12 @@ parser = yacc.yacc(debug=1)
 
 def runparser(inputfile):
 	program=open(inputfile).read()
-	result=parser.parse(program,debug=1)
-	print result 
+	result=parser.parse(program,lexer=lexer, debug=1)
+	print result
+	print "\nSymbol Table :-\n"
+	print symTable.symbolTable
+	print "\nThree Address Code:-\n"
+	print threeAddrCode.code
 
 if __name__=="__main__":
 	from sys import argv 
