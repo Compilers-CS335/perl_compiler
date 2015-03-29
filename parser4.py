@@ -142,7 +142,8 @@ def p_printStatement(p):
 def p_printStatement_no_paran(p):
 	'printStatement : PRINT  expression  SEMICOLON'
 
-	p[0] = {'place':symTable.newtmp()}
+	# p[0] = {'place':symTable.newtmp()}
+	
 	if p[2]['type']=="TYPE ERROR":
 		exp_type = "TYPE ERROR"
 	else:
