@@ -98,10 +98,14 @@ def p_ifthen(p):
 
 	if p[3]['type']!="BOOLEAN":
 		print "Expression is not bool"
+		exp_type="TYPE ERROR"
+	else:
+		exp_type="VOID"
+		threeAddrCode.emit('','', 'IF_THEN_GOTO', p[3]['place'])
 
+	p[0]={'type':exp_type,'nextlist': threeAddrCode.merge(p[5].get('falselist',[]),p[6].get('nextlist',[]))}
 	p[0]['beginlist']=p[6].get('beginlist',[])
 	p[0]['endlist']=p[6].get('endlist',[])
-	p[0]={'nextlist': threeAddrCode.merge(p[5].get('falselist',[]),p[6].get('nextlist',[]))}	
 
 
 def p_ifthenelse(p):
@@ -301,7 +305,7 @@ def p_declaration(p):
 def p_declaration_specific_private(p):
 	'declaration :  PRIVATE VARIABLE decList SEMICOLON'
 	varList = [p[2]] + p[3]
-	print varList
+	# print varList
 	for varName in varList:
 		symTable.newvariableentry(varName, '', 1)
 		threeAddrCode.emit('', '', 'DECLARATION', varName)
@@ -462,7 +466,6 @@ def p_term(p):
 	p[0]['place'] = symTable.newtmp()
 	threeAddrCode.emit(p[0]['place'], '', '=', p[1]['value'])
 
-#### This should actually be derived from the symbol table
 def p_term_var(p):
 	'term : VARIABLE'
 
@@ -504,7 +507,7 @@ def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
 	p[0]['type']= exp_type
-	p[0]['value']=str(p[1])+str(p[2]['value'])
+	# p[0]['value']=str(p[1])+str(p[2]['value'])
 
 def p_expression_unary_notOp(p):
 	'expression : NOT_OP expression'
@@ -518,7 +521,7 @@ def p_expression_unary_notOp(p):
 		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
 	p[0]['type'] = exp_type
-	p[0]['value']= str(p[1])+str(p[2]['value'])
+	# p[0]['value']= str(p[1])+str(p[2]['value'])
 
 # def p_expression(p):
 # 	''' expression : expression INCREMENT_OP
@@ -564,7 +567,7 @@ def p_exp_and_op(p):
 
 	threeAddrCode.backpatch(p[1]['truelist'], p[3]['quad'])
 	p[0]['type']=exp_type
-	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
+	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
 
 def p_exp_or_op(p):
 	'expression : expression OR_OP Marker expression'
@@ -579,7 +582,7 @@ def p_exp_or_op(p):
 
 	threeAddrCode.backpatch(p[1]['falselist'], p[3]['quad'])
 	p[0]['type']=exp_type
-	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
+	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
 
 def p_expression_binary_relational(p):
 	'''expression : expression EQUALS_OP expression
@@ -597,7 +600,7 @@ def p_expression_binary_relational(p):
 
 	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[threeAddrCode.pointer_quad_next()], 'falselist':[1+threeAddrCode.pointer_quad_next()]}
 	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
-	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
+	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_marker_relational(p):
 	'Marker : empty'
@@ -623,7 +626,7 @@ def p_expression_math(p):
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
-	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
+	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_expression_concat(p):
 	'expression : expression CONCATENATE expression'
@@ -637,7 +640,7 @@ def p_expression_concat(p):
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
-	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
+	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_expression_repeatition(p):
 	'expression : expression REP_OP expression'
@@ -654,7 +657,7 @@ def p_expression_repeatition(p):
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
-	p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
+	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
 def p_expression_binary(p):
@@ -817,11 +820,15 @@ parser = yacc.yacc(debug=1)
 def runparser(inputfile):
 	program=open(inputfile).read()
 	result=parser.parse(program,lexer=lexer, debug=1)
-	print result
-	print "\nSymbol Table :-\n"
-	print symTable.symbolTable
+	# print result
+	# print "\nSymbol Table :-\n"
+	# print symTable.symbolTable
 	print "\nThree Address Code:-\n"
-	print threeAddrCode.code
+	# print threeAddrCode.code
+	for scopes in threeAddrCode.code:
+		print "In the scope "+str(scopes)+" :-"
+		for TAC in threeAddrCode.code[scopes]:
+			print "\t"+str(TAC)
 
 if __name__=="__main__":
 	from sys import argv 

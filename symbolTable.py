@@ -92,10 +92,10 @@ class SymbolTable:
 		# To set the scope of the variable correctly
 		if isPrivate:
 			curr=self.entryscope[len(self.entryscope)-1]
-			print curr
+			# print curr
 		else:
 			curr=self.entryscope[0]
-			print curr
+			# print curr
 
 		if curr.has_key(varible)==0:
 			curr[varible]={}
