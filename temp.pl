@@ -1,12 +1,17 @@
-sub hello()
+sub hello
 {
 print "nik";
 print "qwer";
+$a="nik";
+return $a;
 }
-hello();
-sub hello()
 {
-print "avi";
-
+$b=hello();
+print $b;
 }
-hello();
+
+
+
+
+
+

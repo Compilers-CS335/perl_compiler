@@ -6,12 +6,20 @@ sub add {
         $sum = $sum + $list[$i];
     }
     return $sum;
+    my $new1 = 100000;
+    $new2 = 123456;
+}
+
+sub justPrint{
+    print $new;
+    print "\n".$new1;
 }
 
 print "Enter the numbers to be added:-\n";
 $a = 1;
 $b = ();
 $ans = add($a, $b);
+print "Testing somethin ".$new2."\n";
 print $a." + ".$b." = ".$ans."\n";
 $a = (1<2);
 $ans = ($a == 1);
@@ -25,3 +33,6 @@ print ($a, $b);
 print '-'x80;
 print "\n";
 print ($a);
+$new = 23;
+local $new1 = 1000;
+justPrint();

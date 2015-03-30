@@ -7,8 +7,9 @@ class Tac:
 
 	def quad_increment(self):
 		curr=self.symTable.get_current_scope()
+		print curr+"ijwnidncj"
 		self.quad[curr]=self.quad_next[curr]
-		self.quad_next[curr]=self.quad[curr]+1
+		self.quad_next[curr]=self.quad_next[curr]+1
 		return self.quad[curr]
 
 	def pointer_quad_next(self):
@@ -29,7 +30,7 @@ class Tac:
 		for j in p:
 			self.code[curr][j]=i
 
-	 def createCode(self, name):
-        self.code[name] = []
-        self.quad[name] = -1
-        self.nextQuad[name] = 0
+	def createCode(self, name):
+		self.code[name] = []
+		self.quad[name] = -1
+		self.quad_next[name] = 0
