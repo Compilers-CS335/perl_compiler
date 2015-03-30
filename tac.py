@@ -28,3 +28,8 @@ class Tac:
 		curr=self.symTable.get_current_scope()
 		for j in p:
 			self.code[curr][j]=i
+
+	 def createCode(self, name):
+        self.code[name] = []
+        self.quad[name] = -1
+        self.nextQuad[name] = 0

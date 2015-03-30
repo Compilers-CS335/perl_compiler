@@ -29,11 +29,7 @@ class SymbolTable:
 	self.offset=[0]
 	self.entryscope=[self.symbolTable['root']]
 	
-	address_size=4
-	boolean_size=1
-	integer_size=4
-	float_size=8
-	char_size=1
+	self.proclist={ 'root': self.symbolTable['root']}
 	self.temp_count=0
 	self.temp_name_gen="temp"
 	self.temp_vars = {}
@@ -96,9 +92,10 @@ class SymbolTable:
 				'scope_depth': temp
 		}
 		self.entryscope.append(curr[name])	
+		self.proclist[name]=curr[name]
 		self.offset.append(0)
 
-	def newvariableentry(self,varible,variabletype):
+	def newvariableentry(self,varible,variabletype,returntype):
 		curr=self.entryscope[len(self.entryscope)-1]
 		if curr.has_key(varible)==0:
 			curr[varible]={}
@@ -120,19 +117,26 @@ class SymbolTable:
 		curr[varible]['type']=variabletype
 		curr[variable]['scope']=curr.get_current_scope()
 		curr[varible]['width']=tempwidth
+		curr[variable]['returntype']=returntype
 
 		temp1=self.offset.pop()
 		temp1=temp1+tempwidth
 		self.offset.appe(temp1)
 
 	def  getvalueofkey_variable(self,varible,value):
-		entry=self.lookup(entry)
+		entry=self.lookup(varible)
 		if entry.has_key(value):
 			return entry[value]
 		else:
 			return  None
 
 	
+	def removehash(self,name):
+		self.entryscope.remove(name)
+
+	def deletescope(self,procname):
+		curr=self.entryscope.pop()
+		curr['width']=self.offset.pop()
 
 
 

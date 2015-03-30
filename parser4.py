@@ -142,16 +142,23 @@ def p_nextStatement(p):
 	p[0]['beginlist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit('','','GOTO',-1)
 
-
-	
-
-
-
-
 def p_functionStament(p):
-	'functionStatement : SUB IDENTIFIER block'
+	'functionStatement : SUB IDENTIFIER Markerscope block'
+	threeAddrCode.emit('','','JUMP_CALLING','')
+	symTable.deletescope(p[2])
 
+def p_Markerscope(p):
+	'Markerscope : empty'
+	p[0]={}
+	p[0]['type']="FUNCTION"
+	symTable.newvariableentry(p[-1],"FUNCTION","UNDEFINED")
 
+	if  not symTable.proclist.has_key(p[-1]):
+		symTable.enterproc(p[-1])
+	else:
+		symTable.removehash(p[-1])
+		symTable.enterproc(p[-1])
+	threeAddrCode.createCode()
 	
 def p_printStatement(p):
 	'printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON'

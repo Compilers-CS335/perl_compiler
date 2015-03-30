@@ -1,3 +1,12 @@
+sub hello()
 {
-return $a;
+print "nik";
+print "qwer";
 }
+hello();
+sub hello()
+{
+print "avi";
+
+}
+hello();
