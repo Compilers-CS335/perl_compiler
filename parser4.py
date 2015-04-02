@@ -120,10 +120,11 @@ def p_ifthenelse(p):
 	else:
 		exp_type="VOID"
 
-	threeAddrCode.backpatch(p[5]['falselist'],p[8]['quad'])
-	p[0]={'type':exp_type, 'nextlist' : p[8]['nextlist']}
-	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))
-	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))
+	threeAddrCode.backpatch(p[5]['truelist'],p[6]['quad'])
+	threeAddrCode.backpatch(p[5]['falselist'],p[9]['quad'])
+	p[0]={'type':exp_type, 'nextlist' : [p[9]['quad']]}
+	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[10].get('beginlist',[]))
+	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[10].get('endlist',[]))
 
 def p_Markerif(p):
 	'Markerif : empty'
@@ -136,9 +137,9 @@ def p_Markerif(p):
 def p_Markerelse(p):
 	'Markerelse : empty'
 	p[0]={}
-	p[0]['nextlist']=[threeAddrCode.pointer_quad_next()]
-	threeAddrCode.emit('', '','GOTO',-1)	
+	# p[0]['nextlist']=[threeAddrCode.pointer_quad_next()]
 	p[0]['quad']=threeAddrCode.pointer_quad_next()
+	threeAddrCode.emit('', '','GOTO_END',-1)	
 
 def p_lastStatement(p):
 	'lastStatement : LAST SEMICOLON'
@@ -842,9 +843,11 @@ def runparser(inputfile):
 	print "\nThree Address Code:-\n"
 	# print threeAddrCode.code
 	for scopes in threeAddrCode.code:
+		count = 0
 		print "In the scope "+str(scopes)+" :-"
 		for TAC in threeAddrCode.code[scopes]:
-			print "\t"+str(TAC)
+			print "\t"+str(count)+"\t"+str(TAC)
+			count+=1
 
 if __name__=="__main__":
 	from sys import argv 
