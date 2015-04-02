@@ -1,14 +1,10 @@
 sub hello
 {
 print "nik";
-print "qwer";
-$a="nik";
-return $a;
+hello();
 }
-{
-$b=hello();
-print $b;
-}
+hello();
+
 
 
 

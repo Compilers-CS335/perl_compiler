@@ -66,19 +66,19 @@ Rule 30    lastStatement -> LAST SEMICOLON
 Rule 31    nextStatement -> NEXT SEMICOLON
 Rule 32    functionStatement -> SUB IDENTIFIER Markerscope block
 Rule 33    Markerscope -> empty
-Rule 34    printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
-Rule 35    printStatement -> PRINT expression SEMICOLON
-Rule 36    returnStatement -> RETURN expression SEMICOLON
-Rule 37    assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON
-Rule 38    assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
-Rule 39    assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
-Rule 40    assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
-Rule 41    declaration -> VARIABLE decList SEMICOLON
-Rule 42    declaration -> PRIVATE VARIABLE decList SEMICOLON
-Rule 43    declaration -> LOCAL VARIABLE decList SEMICOLON
-Rule 44    decList -> COMMA VARIABLE decList
-Rule 45    decList -> empty
-Rule 46    functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+Rule 34    functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+Rule 35    printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
+Rule 36    printStatement -> PRINT expression SEMICOLON
+Rule 37    returnStatement -> RETURN expression SEMICOLON
+Rule 38    assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON
+Rule 39    assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
+Rule 40    assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
+Rule 41    assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
+Rule 42    declaration -> VARIABLE decList SEMICOLON
+Rule 43    declaration -> PRIVATE VARIABLE decList SEMICOLON
+Rule 44    declaration -> LOCAL VARIABLE decList SEMICOLON
+Rule 45    decList -> COMMA VARIABLE decList
+Rule 46    decList -> empty
 Rule 47    term -> functionCall
 Rule 48    parameters -> expression COMMA parameters
 Rule 49    parameters -> expression
@@ -138,11 +138,11 @@ Rule 102   expression -> expression SEARCH_MODIFY_NEG expression
 
 Terminals, with rules where they appear
 
-ADV_ASSIGNMENT_OP    : 40
+ADV_ASSIGNMENT_OP    : 41
 AND_OP               : 79
 AND_STR_OP           : 73
 ARRAY                : 
-ASSIGNMENT_OP        : 37 38 39
+ASSIGNMENT_OP        : 38 39 40
 ASSOCIATE_OP         : 99
 BIT_AND              : 78
 BIT_FLIP             : 67
@@ -154,9 +154,9 @@ BLOCK_BEGIN          : 3 22
 BLOCK_ENDS           : 3 22
 CASE                 : 23
 CLOSE_BRACKET        : 
-CLOSE_PARANTHESIS    : 23 26 27 34 46 51 53 64
+CLOSE_PARANTHESIS    : 23 26 27 34 35 51 53 64
 COLON                : 
-COMMA                : 44 48 98
+COMMA                : 45 48 98
 COMMENT              : 
 COMPARE_OP           : 75
 CONCATENATE          : 96
@@ -178,13 +178,13 @@ GREATER_EQUAL_OP     : 85
 GREATER_OP           : 83
 HASH                 : 
 HEXADECIMAL          : 59
-IDENTIFIER           : 21 32 46
+IDENTIFIER           : 21 32 34
 IF                   : 26 27
 INCREMENT_OP         : 
 LAST                 : 30
 LESS_EQUAL_OP        : 86
 LESS_OP              : 84
-LOCAL                : 38 43
+LOCAL                : 39 44
 MATCH                : 
 MINUS_OP             : 66 89
 MODULUS_OP           : 92
@@ -196,23 +196,23 @@ NOT_STR_OP           : 74
 NUMBER               : 56
 OCTAL                : 60
 OPEN_BRACKET         : 
-OPEN_PARANTHESIS     : 23 26 27 34 46 51 53 64
+OPEN_PARANTHESIS     : 23 26 27 34 35 51 53 64
 OR_OP                : 80
 OR_STR_OP            : 71
 PLUS_OP              : 65 88
-PRINT                : 34 35
-PRIVATE              : 39 42
+PRINT                : 35 36
+PRIVATE              : 40 43
 QUESTION_MARK        : 
 RANGE_OP             : 100
 REDO                 : 
 REP_OP               : 97
 RES_STRING           : 55
-RETURN               : 36
+RETURN               : 37
 SCI_NOT              : 57
 SEARCH_MODIFY        : 101
 SEARCH_MODIFY_NEG    : 102
 SELECT               : 
-SEMICOLON            : 10 21 30 31 34 35 36 37 38 39 40 41 42 43 53 53
+SEMICOLON            : 10 21 30 31 35 36 37 38 39 40 41 42 43 44 53 53
 STRING               : 54
 SUB                  : 32
 SUBSTITUTE           : 
@@ -223,7 +223,7 @@ UNLESS               :
 UNTIL                : 
 USE                  : 21
 USER_INPUT_OP        : 
-VARIABLE             : 37 38 39 40 41 42 43 44 63
+VARIABLE             : 38 39 40 41 42 43 44 45 63
 WHILE                : 51
 WHITESPACE           : 
 WRITE                : 
@@ -240,10 +240,10 @@ Markerwhile          : 51
 assignment           : 7
 block                : 1 23 24 26 27 27 32 51 53
 caselist             : 22 23
-decList              : 41 42 43 44
+decList              : 42 43 44 45
 declaration          : 8
-empty                : 25 28 29 33 45 50 52 69 87
-expression           : 22 23 26 27 34 35 36 37 38 39 40 48 49 51 53 53 53 64 65 66 67 68 71 71 72 72 73 73 74 74 75 75 76 76 77 77 78 78 79 79 80 80 81 81 82 82 83 83 84 84 85 85 86 86 88 88 89 89 90 90 91 91 92 92 93 93 94 94 95 95 96 96 97 97 98 98 99 99 100 100 101 101 102 102
+empty                : 25 28 29 33 46 50 52 69 87
+expression           : 22 23 26 27 35 36 37 38 39 40 41 48 49 51 53 53 53 64 65 66 67 68 71 71 72 72 73 73 74 74 75 75 76 76 77 77 78 78 79 79 80 80 81 81 82 82 83 83 84 84 85 85 86 86 88 88 89 89 90 90 91 91 92 92 93 93 94 94 95 95 96 96 97 97 98 98 99 99 100 100 101 101 102 102
 forStatement         : 12
 functionCall         : 10 47
 functionStatement    : 14
@@ -252,7 +252,7 @@ ifthenelse           : 18
 lastStatement        : 15
 nextStatement        : 16
 number               : 61
-parameters           : 46 48
+parameters           : 34 48
 printStatement       : 13
 returnStatement      : 9
 start                : 0
@@ -288,19 +288,19 @@ state 0
     (18) statement -> . ifthenelse Marker
     (19) statement -> . useStatement Marker
     (20) statement -> . switchStatement Marker
-    (37) assignment -> . VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (38) assignment -> . LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (39) assignment -> . PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (40) assignment -> . VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
-    (41) declaration -> . VARIABLE decList SEMICOLON
-    (42) declaration -> . PRIVATE VARIABLE decList SEMICOLON
-    (43) declaration -> . LOCAL VARIABLE decList SEMICOLON
-    (36) returnStatement -> . RETURN expression SEMICOLON
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (38) assignment -> . VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (39) assignment -> . LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (40) assignment -> . PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (41) assignment -> . VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
+    (42) declaration -> . VARIABLE decList SEMICOLON
+    (43) declaration -> . PRIVATE VARIABLE decList SEMICOLON
+    (44) declaration -> . LOCAL VARIABLE decList SEMICOLON
+    (37) returnStatement -> . RETURN expression SEMICOLON
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (51) whileStatement -> . WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile block
     (53) forStatement -> . FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS block
-    (34) printStatement -> . PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
-    (35) printStatement -> . PRINT expression SEMICOLON
+    (35) printStatement -> . PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
+    (36) printStatement -> . PRINT expression SEMICOLON
     (32) functionStatement -> . SUB IDENTIFIER Markerscope block
     (30) lastStatement -> . LAST SEMICOLON
     (31) nextStatement -> . NEXT SEMICOLON
@@ -455,19 +455,19 @@ state 6
     (18) statement -> . ifthenelse Marker
     (19) statement -> . useStatement Marker
     (20) statement -> . switchStatement Marker
-    (37) assignment -> . VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (38) assignment -> . LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (39) assignment -> . PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (40) assignment -> . VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
-    (41) declaration -> . VARIABLE decList SEMICOLON
-    (42) declaration -> . PRIVATE VARIABLE decList SEMICOLON
-    (43) declaration -> . LOCAL VARIABLE decList SEMICOLON
-    (36) returnStatement -> . RETURN expression SEMICOLON
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (38) assignment -> . VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (39) assignment -> . LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (40) assignment -> . PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (41) assignment -> . VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
+    (42) declaration -> . VARIABLE decList SEMICOLON
+    (43) declaration -> . PRIVATE VARIABLE decList SEMICOLON
+    (44) declaration -> . LOCAL VARIABLE decList SEMICOLON
+    (37) returnStatement -> . RETURN expression SEMICOLON
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (51) whileStatement -> . WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile block
     (53) forStatement -> . FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS block
-    (34) printStatement -> . PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
-    (35) printStatement -> . PRINT expression SEMICOLON
+    (35) printStatement -> . PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
+    (36) printStatement -> . PRINT expression SEMICOLON
     (32) functionStatement -> . SUB IDENTIFIER Markerscope block
     (30) lastStatement -> . LAST SEMICOLON
     (31) nextStatement -> . NEXT SEMICOLON
@@ -521,8 +521,8 @@ state 7
 
 state 8
 
-    (34) printStatement -> PRINT . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
-    (35) printStatement -> PRINT . expression SEMICOLON
+    (35) printStatement -> PRINT . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
+    (36) printStatement -> PRINT . expression SEMICOLON
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
     (67) expression -> . BIT_FLIP expression
@@ -566,7 +566,7 @@ state 8
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -632,7 +632,7 @@ state 8
 
 state 9
 
-    (36) returnStatement -> RETURN . expression SEMICOLON
+    (37) returnStatement -> RETURN . expression SEMICOLON
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
     (67) expression -> . BIT_FLIP expression
@@ -676,7 +676,7 @@ state 9
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -852,7 +852,7 @@ state 14
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -918,8 +918,8 @@ state 14
 
 state 15
 
-    (39) assignment -> PRIVATE . VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (42) declaration -> PRIVATE . VARIABLE decList SEMICOLON
+    (40) assignment -> PRIVATE . VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (43) declaration -> PRIVATE . VARIABLE decList SEMICOLON
 
     VARIABLE        shift and go to state 67
 
@@ -1009,19 +1009,19 @@ state 20
     (18) statement -> . ifthenelse Marker
     (19) statement -> . useStatement Marker
     (20) statement -> . switchStatement Marker
-    (37) assignment -> . VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (38) assignment -> . LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (39) assignment -> . PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (40) assignment -> . VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
-    (41) declaration -> . VARIABLE decList SEMICOLON
-    (42) declaration -> . PRIVATE VARIABLE decList SEMICOLON
-    (43) declaration -> . LOCAL VARIABLE decList SEMICOLON
-    (36) returnStatement -> . RETURN expression SEMICOLON
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (38) assignment -> . VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (39) assignment -> . LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (40) assignment -> . PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (41) assignment -> . VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
+    (42) declaration -> . VARIABLE decList SEMICOLON
+    (43) declaration -> . PRIVATE VARIABLE decList SEMICOLON
+    (44) declaration -> . LOCAL VARIABLE decList SEMICOLON
+    (37) returnStatement -> . RETURN expression SEMICOLON
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (51) whileStatement -> . WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile block
     (53) forStatement -> . FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS block
-    (34) printStatement -> . PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
-    (35) printStatement -> . PRINT expression SEMICOLON
+    (35) printStatement -> . PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON
+    (36) printStatement -> . PRINT expression SEMICOLON
     (32) functionStatement -> . SUB IDENTIFIER Markerscope block
     (30) lastStatement -> . LAST SEMICOLON
     (31) nextStatement -> . NEXT SEMICOLON
@@ -1092,7 +1092,7 @@ state 21
 
 state 22
 
-    (46) functionCall -> IDENTIFIER . OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> IDENTIFIER . OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
 
     OPEN_PARANTHESIS shift and go to state 73
 
@@ -1221,11 +1221,11 @@ state 28
 
 state 29
 
-    (37) assignment -> VARIABLE . ASSIGNMENT_OP expression SEMICOLON
-    (40) assignment -> VARIABLE . ADV_ASSIGNMENT_OP expression SEMICOLON
-    (41) declaration -> VARIABLE . decList SEMICOLON
-    (44) decList -> . COMMA VARIABLE decList
-    (45) decList -> . empty
+    (38) assignment -> VARIABLE . ASSIGNMENT_OP expression SEMICOLON
+    (41) assignment -> VARIABLE . ADV_ASSIGNMENT_OP expression SEMICOLON
+    (42) declaration -> VARIABLE . decList SEMICOLON
+    (45) decList -> . COMMA VARIABLE decList
+    (46) decList -> . empty
     (6) empty -> .
 
     ASSIGNMENT_OP   shift and go to state 83
@@ -1264,8 +1264,8 @@ state 30
 
 state 31
 
-    (38) assignment -> LOCAL . VARIABLE ASSIGNMENT_OP expression SEMICOLON
-    (43) declaration -> LOCAL . VARIABLE decList SEMICOLON
+    (39) assignment -> LOCAL . VARIABLE ASSIGNMENT_OP expression SEMICOLON
+    (44) declaration -> LOCAL . VARIABLE decList SEMICOLON
 
     VARIABLE        shift and go to state 86
 
@@ -1440,7 +1440,7 @@ state 40
 
 state 41
 
-    (34) printStatement -> PRINT OPEN_PARANTHESIS . expression CLOSE_PARANTHESIS SEMICOLON
+    (35) printStatement -> PRINT OPEN_PARANTHESIS . expression CLOSE_PARANTHESIS SEMICOLON
     (64) term -> OPEN_PARANTHESIS . expression CLOSE_PARANTHESIS
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
@@ -1485,7 +1485,7 @@ state 41
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -1595,7 +1595,7 @@ state 42
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -1747,7 +1747,7 @@ state 44
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -1939,7 +1939,7 @@ state 47
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -2451,7 +2451,7 @@ state 58
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -2519,7 +2519,7 @@ state 58
 
 state 59
 
-    (35) printStatement -> PRINT expression . SEMICOLON
+    (36) printStatement -> PRINT expression . SEMICOLON
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
     (73) expression -> expression . AND_STR_OP expression
@@ -2632,7 +2632,7 @@ state 60
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -2698,7 +2698,7 @@ state 60
 
 state 61
 
-    (36) returnStatement -> RETURN expression . SEMICOLON
+    (37) returnStatement -> RETURN expression . SEMICOLON
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
     (73) expression -> expression . AND_STR_OP expression
@@ -2913,10 +2913,10 @@ state 66
 
 state 67
 
-    (39) assignment -> PRIVATE VARIABLE . ASSIGNMENT_OP expression SEMICOLON
-    (42) declaration -> PRIVATE VARIABLE . decList SEMICOLON
-    (44) decList -> . COMMA VARIABLE decList
-    (45) decList -> . empty
+    (40) assignment -> PRIVATE VARIABLE . ASSIGNMENT_OP expression SEMICOLON
+    (43) declaration -> PRIVATE VARIABLE . decList SEMICOLON
+    (45) decList -> . COMMA VARIABLE decList
+    (46) decList -> . empty
     (6) empty -> .
 
     ASSIGNMENT_OP   shift and go to state 134
@@ -3024,7 +3024,7 @@ state 72
 
 state 73
 
-    (46) functionCall -> IDENTIFIER OPEN_PARANTHESIS . parameters CLOSE_PARANTHESIS
+    (34) functionCall -> IDENTIFIER OPEN_PARANTHESIS . parameters CLOSE_PARANTHESIS
     (48) parameters -> . expression COMMA parameters
     (49) parameters -> . expression
     (50) parameters -> . empty
@@ -3071,7 +3071,7 @@ state 73
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -3204,7 +3204,7 @@ state 75
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -3343,14 +3343,14 @@ state 79
 
 state 80
 
-    (41) declaration -> VARIABLE decList . SEMICOLON
+    (42) declaration -> VARIABLE decList . SEMICOLON
 
     SEMICOLON       shift and go to state 140
 
 
 state 81
 
-    (40) assignment -> VARIABLE ADV_ASSIGNMENT_OP . expression SEMICOLON
+    (41) assignment -> VARIABLE ADV_ASSIGNMENT_OP . expression SEMICOLON
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
     (67) expression -> . BIT_FLIP expression
@@ -3394,7 +3394,7 @@ state 81
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -3460,14 +3460,14 @@ state 81
 
 state 82
 
-    (44) decList -> COMMA . VARIABLE decList
+    (45) decList -> COMMA . VARIABLE decList
 
     VARIABLE        shift and go to state 142
 
 
 state 83
 
-    (37) assignment -> VARIABLE ASSIGNMENT_OP . expression SEMICOLON
+    (38) assignment -> VARIABLE ASSIGNMENT_OP . expression SEMICOLON
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
     (67) expression -> . BIT_FLIP expression
@@ -3511,7 +3511,7 @@ state 83
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -3577,9 +3577,9 @@ state 83
 
 state 84
 
-    (45) decList -> empty .
+    (46) decList -> empty .
 
-    SEMICOLON       reduce using rule 45 (decList -> empty .)
+    SEMICOLON       reduce using rule 46 (decList -> empty .)
 
 
 state 85
@@ -3606,10 +3606,10 @@ state 85
 
 state 86
 
-    (38) assignment -> LOCAL VARIABLE . ASSIGNMENT_OP expression SEMICOLON
-    (43) declaration -> LOCAL VARIABLE . decList SEMICOLON
-    (44) decList -> . COMMA VARIABLE decList
-    (45) decList -> . empty
+    (39) assignment -> LOCAL VARIABLE . ASSIGNMENT_OP expression SEMICOLON
+    (44) declaration -> LOCAL VARIABLE . decList SEMICOLON
+    (45) decList -> . COMMA VARIABLE decList
+    (46) decList -> . empty
     (6) empty -> .
 
     ASSIGNMENT_OP   shift and go to state 145
@@ -3666,7 +3666,7 @@ state 87
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -3822,7 +3822,7 @@ state 90
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -3888,7 +3888,7 @@ state 90
 
 state 91
 
-    (34) printStatement -> PRINT OPEN_PARANTHESIS expression . CLOSE_PARANTHESIS SEMICOLON
+    (35) printStatement -> PRINT OPEN_PARANTHESIS expression . CLOSE_PARANTHESIS SEMICOLON
     (64) term -> OPEN_PARANTHESIS expression . CLOSE_PARANTHESIS
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
@@ -4414,7 +4414,7 @@ state 96
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -4526,7 +4526,7 @@ state 97
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -4638,7 +4638,7 @@ state 98
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -4750,7 +4750,7 @@ state 99
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -4862,7 +4862,7 @@ state 100
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -4974,7 +4974,7 @@ state 101
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5086,7 +5086,7 @@ state 102
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5198,7 +5198,7 @@ state 103
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5310,7 +5310,7 @@ state 104
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5422,7 +5422,7 @@ state 105
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5534,7 +5534,7 @@ state 106
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5602,24 +5602,24 @@ state 106
 
 state 107
 
-    (35) printStatement -> PRINT expression SEMICOLON .
+    (36) printStatement -> PRINT expression SEMICOLON .
 
-    VARIABLE        reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    LOCAL           reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    PRIVATE         reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    RETURN          reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    IDENTIFIER      reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    WHILE           reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    FOR             reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    PRINT           reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    SUB             reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    LAST            reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    NEXT            reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    IF              reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    USE             reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    SWITCH          reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
-    $end            reduce using rule 35 (printStatement -> PRINT expression SEMICOLON .)
+    VARIABLE        reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    LOCAL           reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    PRIVATE         reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    RETURN          reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    IDENTIFIER      reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    WHILE           reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    FOR             reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    PRINT           reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    SUB             reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    LAST            reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    NEXT            reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    IF              reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    USE             reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    SWITCH          reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
+    $end            reduce using rule 36 (printStatement -> PRINT expression SEMICOLON .)
 
 
 state 108
@@ -5668,7 +5668,7 @@ state 108
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5836,7 +5836,7 @@ state 110
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -5948,7 +5948,7 @@ state 111
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6060,7 +6060,7 @@ state 112
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6172,7 +6172,7 @@ state 113
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6284,7 +6284,7 @@ state 114
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6396,7 +6396,7 @@ state 115
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6508,7 +6508,7 @@ state 116
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6620,7 +6620,7 @@ state 117
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6732,7 +6732,7 @@ state 118
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -6900,7 +6900,7 @@ state 120
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7012,7 +7012,7 @@ state 121
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7124,7 +7124,7 @@ state 122
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7236,7 +7236,7 @@ state 123
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7348,7 +7348,7 @@ state 124
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7460,7 +7460,7 @@ state 125
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7572,7 +7572,7 @@ state 126
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7684,7 +7684,7 @@ state 127
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7821,24 +7821,24 @@ state 128
 
 state 129
 
-    (36) returnStatement -> RETURN expression SEMICOLON .
+    (37) returnStatement -> RETURN expression SEMICOLON .
 
-    VARIABLE        reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    LOCAL           reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    PRIVATE         reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    RETURN          reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    IDENTIFIER      reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    WHILE           reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    FOR             reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    PRINT           reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    SUB             reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    LAST            reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    NEXT            reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    IF              reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    USE             reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    SWITCH          reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    $end            reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 36 (returnStatement -> RETURN expression SEMICOLON .)
+    VARIABLE        reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    LOCAL           reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    PRIVATE         reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    RETURN          reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    IDENTIFIER      reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    WHILE           reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    FOR             reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    PRINT           reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    SUB             reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    LAST            reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    NEXT            reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    IF              reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    USE             reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    SWITCH          reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    $end            reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 37 (returnStatement -> RETURN expression SEMICOLON .)
 
 
 state 130
@@ -7874,14 +7874,14 @@ state 132
 
 state 133
 
-    (42) declaration -> PRIVATE VARIABLE decList . SEMICOLON
+    (43) declaration -> PRIVATE VARIABLE decList . SEMICOLON
 
     SEMICOLON       shift and go to state 186
 
 
 state 134
 
-    (39) assignment -> PRIVATE VARIABLE ASSIGNMENT_OP . expression SEMICOLON
+    (40) assignment -> PRIVATE VARIABLE ASSIGNMENT_OP . expression SEMICOLON
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
     (67) expression -> . BIT_FLIP expression
@@ -7925,7 +7925,7 @@ state 134
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -7991,7 +7991,7 @@ state 134
 
 state 135
 
-    (46) functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters . CLOSE_PARANTHESIS
+    (34) functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters . CLOSE_PARANTHESIS
 
     CLOSE_PARANTHESIS shift and go to state 188
 
@@ -8201,29 +8201,29 @@ state 139
 
 state 140
 
-    (41) declaration -> VARIABLE decList SEMICOLON .
+    (42) declaration -> VARIABLE decList SEMICOLON .
 
-    VARIABLE        reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    LOCAL           reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    PRIVATE         reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    RETURN          reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    IDENTIFIER      reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    WHILE           reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    FOR             reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    PRINT           reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    SUB             reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    LAST            reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    NEXT            reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    IF              reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    USE             reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    SWITCH          reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
-    $end            reduce using rule 41 (declaration -> VARIABLE decList SEMICOLON .)
+    VARIABLE        reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    LOCAL           reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    PRIVATE         reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    RETURN          reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    IDENTIFIER      reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    WHILE           reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    FOR             reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    PRINT           reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    SUB             reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    LAST            reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    NEXT            reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    IF              reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    USE             reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    SWITCH          reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
+    $end            reduce using rule 42 (declaration -> VARIABLE decList SEMICOLON .)
 
 
 state 141
 
-    (40) assignment -> VARIABLE ADV_ASSIGNMENT_OP expression . SEMICOLON
+    (41) assignment -> VARIABLE ADV_ASSIGNMENT_OP expression . SEMICOLON
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
     (73) expression -> expression . AND_STR_OP expression
@@ -8292,9 +8292,9 @@ state 141
 
 state 142
 
-    (44) decList -> COMMA VARIABLE . decList
-    (44) decList -> . COMMA VARIABLE decList
-    (45) decList -> . empty
+    (45) decList -> COMMA VARIABLE . decList
+    (45) decList -> . COMMA VARIABLE decList
+    (46) decList -> . empty
     (6) empty -> .
 
     COMMA           shift and go to state 82
@@ -8305,7 +8305,7 @@ state 142
 
 state 143
 
-    (37) assignment -> VARIABLE ASSIGNMENT_OP expression . SEMICOLON
+    (38) assignment -> VARIABLE ASSIGNMENT_OP expression . SEMICOLON
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
     (73) expression -> expression . AND_STR_OP expression
@@ -8374,14 +8374,14 @@ state 143
 
 state 144
 
-    (43) declaration -> LOCAL VARIABLE decList . SEMICOLON
+    (44) declaration -> LOCAL VARIABLE decList . SEMICOLON
 
     SEMICOLON       shift and go to state 194
 
 
 state 145
 
-    (38) assignment -> LOCAL VARIABLE ASSIGNMENT_OP . expression SEMICOLON
+    (39) assignment -> LOCAL VARIABLE ASSIGNMENT_OP . expression SEMICOLON
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
     (67) expression -> . BIT_FLIP expression
@@ -8425,7 +8425,7 @@ state 145
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -8630,7 +8630,7 @@ state 147
 
 state 148
 
-    (34) printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . SEMICOLON
+    (35) printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . SEMICOLON
     (64) term -> OPEN_PARANTHESIS expression CLOSE_PARANTHESIS .
 
   ! shift/reduce conflict for SEMICOLON resolved as shift
@@ -9952,7 +9952,7 @@ state 161
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -10991,7 +10991,7 @@ state 171
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -11975,29 +11975,29 @@ state 185
 
 state 186
 
-    (42) declaration -> PRIVATE VARIABLE decList SEMICOLON .
+    (43) declaration -> PRIVATE VARIABLE decList SEMICOLON .
 
-    VARIABLE        reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    LOCAL           reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    PRIVATE         reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    RETURN          reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    IDENTIFIER      reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    WHILE           reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    FOR             reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    PRINT           reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    SUB             reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    LAST            reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    NEXT            reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    IF              reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    USE             reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    SWITCH          reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
-    $end            reduce using rule 42 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    VARIABLE        reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    LOCAL           reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    PRIVATE         reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    RETURN          reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    IDENTIFIER      reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    WHILE           reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    FOR             reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    PRINT           reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    SUB             reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    LAST            reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    NEXT            reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    IF              reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    USE             reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    SWITCH          reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
+    $end            reduce using rule 43 (declaration -> PRIVATE VARIABLE decList SEMICOLON .)
 
 
 state 187
 
-    (39) assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression . SEMICOLON
+    (40) assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression . SEMICOLON
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
     (73) expression -> expression . AND_STR_OP expression
@@ -12066,42 +12066,42 @@ state 187
 
 state 188
 
-    (46) functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .
+    (34) functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .
 
-    OR_STR_OP       reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    XOR_STR_OP      reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    AND_STR_OP      reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    NOT_STR_OP      reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    COMPARE_OP      reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    BIT_OR          reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    BIT_XOR         reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    BIT_AND         reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    AND_OP          reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    OR_OP           reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    EQUALS_OP       reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    NOT_EQUALS_OP   reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    GREATER_OP      reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    LESS_OP         reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    GREATER_EQUAL_OP reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    LESS_EQUAL_OP   reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    PLUS_OP         reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    MINUS_OP        reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    MULTIPLICATION_OP reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    DIVISION_OP     reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    MODULUS_OP      reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    EXPONENT_OP     reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    BIT_RIGHT_SHIFT reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    BIT_LEFT_SHIFT  reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    CONCATENATE     reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    REP_OP          reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    COMMA           reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    ASSOCIATE_OP    reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    RANGE_OP        reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    SEARCH_MODIFY   reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    SEARCH_MODIFY_NEG reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    SEMICOLON       reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    BLOCK_BEGIN     reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
-    CLOSE_PARANTHESIS reduce using rule 46 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    OR_STR_OP       reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    XOR_STR_OP      reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    AND_STR_OP      reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    NOT_STR_OP      reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    COMPARE_OP      reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    BIT_OR          reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    BIT_XOR         reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    BIT_AND         reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    AND_OP          reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    OR_OP           reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    EQUALS_OP       reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    NOT_EQUALS_OP   reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    GREATER_OP      reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    LESS_OP         reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    GREATER_EQUAL_OP reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    LESS_EQUAL_OP   reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    PLUS_OP         reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    MINUS_OP        reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    MULTIPLICATION_OP reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    DIVISION_OP     reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    MODULUS_OP      reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    EXPONENT_OP     reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    BIT_RIGHT_SHIFT reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    BIT_LEFT_SHIFT  reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    CONCATENATE     reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    REP_OP          reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    COMMA           reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    ASSOCIATE_OP    reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    RANGE_OP        reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    SEARCH_MODIFY   reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    SEARCH_MODIFY_NEG reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    SEMICOLON       reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    BLOCK_BEGIN     reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
+    CLOSE_PARANTHESIS reduce using rule 34 (functionCall -> IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS .)
 
 
 state 189
@@ -12154,7 +12154,7 @@ state 189
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -12265,7 +12265,7 @@ state 190
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -12331,80 +12331,80 @@ state 190
 
 state 191
 
-    (40) assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .
+    (41) assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .
 
-    VARIABLE        reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    LOCAL           reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    PRIVATE         reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    RETURN          reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    IDENTIFIER      reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    WHILE           reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    FOR             reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    PRINT           reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    SUB             reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    LAST            reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    NEXT            reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    IF              reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    USE             reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    SWITCH          reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    $end            reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 40 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    VARIABLE        reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    LOCAL           reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    PRIVATE         reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    RETURN          reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    IDENTIFIER      reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    WHILE           reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    FOR             reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    PRINT           reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    SUB             reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    LAST            reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    NEXT            reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    IF              reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    USE             reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    SWITCH          reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    $end            reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 41 (assignment -> VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON .)
 
 
 state 192
 
-    (44) decList -> COMMA VARIABLE decList .
+    (45) decList -> COMMA VARIABLE decList .
 
-    SEMICOLON       reduce using rule 44 (decList -> COMMA VARIABLE decList .)
+    SEMICOLON       reduce using rule 45 (decList -> COMMA VARIABLE decList .)
 
 
 state 193
 
-    (37) assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .
+    (38) assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .
 
-    VARIABLE        reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    LOCAL           reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    PRIVATE         reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    RETURN          reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    IDENTIFIER      reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    WHILE           reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    FOR             reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    PRINT           reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    SUB             reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    LAST            reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    NEXT            reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    IF              reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    USE             reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    SWITCH          reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    $end            reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 37 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    VARIABLE        reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    LOCAL           reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    PRIVATE         reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    RETURN          reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    IDENTIFIER      reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    WHILE           reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    FOR             reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    PRINT           reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    SUB             reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    LAST            reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    NEXT            reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    IF              reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    USE             reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    SWITCH          reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    $end            reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 38 (assignment -> VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
 
 
 state 194
 
-    (43) declaration -> LOCAL VARIABLE decList SEMICOLON .
+    (44) declaration -> LOCAL VARIABLE decList SEMICOLON .
 
-    VARIABLE        reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    LOCAL           reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    PRIVATE         reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    RETURN          reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    IDENTIFIER      reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    WHILE           reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    FOR             reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    PRINT           reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    SUB             reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    LAST            reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    NEXT            reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    IF              reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    USE             reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    SWITCH          reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
-    $end            reduce using rule 43 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    VARIABLE        reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    LOCAL           reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    PRIVATE         reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    RETURN          reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    IDENTIFIER      reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    WHILE           reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    FOR             reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    PRINT           reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    SUB             reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    LAST            reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    NEXT            reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    IF              reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    USE             reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    SWITCH          reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
+    $end            reduce using rule 44 (declaration -> LOCAL VARIABLE decList SEMICOLON .)
 
 
 state 195
 
-    (38) assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression . SEMICOLON
+    (39) assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression . SEMICOLON
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
     (73) expression -> expression . AND_STR_OP expression
@@ -12496,24 +12496,24 @@ state 197
 
 state 198
 
-    (34) printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .
+    (35) printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .
 
-    VARIABLE        reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    LOCAL           reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    PRIVATE         reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    RETURN          reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    IDENTIFIER      reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    WHILE           reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    FOR             reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    PRINT           reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    SUB             reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    LAST            reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    NEXT            reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    IF              reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    USE             reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    SWITCH          reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
-    $end            reduce using rule 34 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    VARIABLE        reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    LOCAL           reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    PRIVATE         reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    RETURN          reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    IDENTIFIER      reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    WHILE           reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    FOR             reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    PRINT           reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    SUB             reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    LAST            reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    NEXT            reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    IF              reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    USE             reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    SWITCH          reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
+    $end            reduce using rule 35 (printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON .)
 
 
 state 199
@@ -12768,7 +12768,7 @@ state 201
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT
@@ -12863,24 +12863,24 @@ state 203
 
 state 204
 
-    (39) assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .
+    (40) assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .
 
-    VARIABLE        reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    LOCAL           reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    PRIVATE         reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    RETURN          reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    IDENTIFIER      reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    WHILE           reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    FOR             reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    PRINT           reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    SUB             reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    LAST            reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    NEXT            reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    IF              reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    USE             reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    SWITCH          reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    $end            reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 39 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    VARIABLE        reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    LOCAL           reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    PRIVATE         reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    RETURN          reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    IDENTIFIER      reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    WHILE           reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    FOR             reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    PRINT           reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    SUB             reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    LAST            reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    NEXT            reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    IF              reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    USE             reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    SWITCH          reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    $end            reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 40 (assignment -> PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
 
 
 state 205
@@ -13066,24 +13066,24 @@ state 207
 
 state 208
 
-    (38) assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .
+    (39) assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .
 
-    VARIABLE        reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    LOCAL           reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    PRIVATE         reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    RETURN          reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    IDENTIFIER      reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    WHILE           reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    FOR             reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    PRINT           reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    SUB             reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    LAST            reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    NEXT            reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    IF              reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    USE             reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    SWITCH          reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    $end            reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
-    BLOCK_ENDS      reduce using rule 38 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    VARIABLE        reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    LOCAL           reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    PRIVATE         reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    RETURN          reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    IDENTIFIER      reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    WHILE           reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    FOR             reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    PRINT           reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    SUB             reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    LAST            reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    NEXT            reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    IF              reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    USE             reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    SWITCH          reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    $end            reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
+    BLOCK_ENDS      reduce using rule 39 (assignment -> LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON .)
 
 
 state 209
@@ -13234,7 +13234,7 @@ state 214
     (62) term -> . string
     (63) term -> . VARIABLE
     (64) term -> . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS
-    (46) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
+    (34) functionCall -> . IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS
     (56) number -> . NUMBER
     (57) number -> . SCI_NOT
     (58) number -> . FLOAT

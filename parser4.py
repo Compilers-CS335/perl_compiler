@@ -160,6 +160,29 @@ def p_Markerscope(p):
 		symTable.enterproc(p[-1])
 	threeAddrCode.createCode(p[-1])
 	
+
+def p_functionCall(p):
+	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS ' 
+
+	p[0]={}
+
+	if symTable.ifexist(p[1])==0:
+		print "Function is not defined"
+		p[0]['type']="TYPE ERROR"
+	else:
+		functiontype=symTable.getvalueofkey(p[1],'type')
+		if functiontype=="FUNCTION":
+			p[0]['type']=symTable.getvalueofkey(p[1],'returntype')
+			# label=symTable.getvalueofkey(p[1],symTable.get_current_scope())
+			# print label
+			# print "nikhil"
+			threeAddrCode.emit('','','GOTO_LABEL',p[1])
+		else:
+			print "This is not a function"
+		p[0]['place']=p[1]
+		p[0]['beginlist']=[]
+		p[0]['endlist']=[]
+
 def p_printStatement(p):
 	'printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON'
 
@@ -334,23 +357,7 @@ def p_decList_empty(p):
 	'decList :  empty'
 	p[0]=[]
 
-def p_functionCall(p):
-	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS ' 
 
-	p[0]={}
-
-	if symTable.ifexist(p[1])==0:
-		print "Function is not defined"
-		p[0]['type']="TYPE ERROR"
-	else:
-		functiontype=symTable.getvalueofkey(p[1],'type')
-		if functiontype=="FUNCTION":
-			p[0]['type']=symTable.getvalueofkey(p[1],'returntype')
-			label=symTable.getvalueofkey(p[1],symTable.get_current_scope())
-			threeAddrCode.emit('','','GOTO_LABEL',label)
-		else:
-			print "This is not a function"
-		p[0]['place']=p[1]
 
 def p_termfunction(p):
 	'term : functionCall'
