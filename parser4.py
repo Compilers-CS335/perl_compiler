@@ -51,7 +51,7 @@ def p_statment(p):
     '''statement : assignment Marker
     		     | declaration Marker
                  | returnStatement Marker
-                 | functionCall Marker
+                 | functionCall Marker SEMICOLON
                  | whileStatement Marker
                  | forStatement Marker
                  | printStatement Marker
@@ -137,9 +137,8 @@ def p_Markerelse(p):
 	'Markerelse : empty'
 	p[0]={}
 	p[0]['nextlist']=[threeAddrCode.pointer_quad_next()]
-	p[0]['quad']=threeAddrCode.pointer_quad_next()
 	threeAddrCode.emit('', '','GOTO',-1)	
-	
+	p[0]['quad']=threeAddrCode.pointer_quad_next()
 
 def p_lastStatement(p):
 	'lastStatement : LAST SEMICOLON'
@@ -153,16 +152,24 @@ def p_nextStatement(p):
 	p[0]['beginlist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit('','','GOTO',-1)
 
-
-	
-
-
-
-
 def p_functionStament(p):
-	'functionStatement : SUB IDENTIFIER block'
+	'functionStatement : SUB IDENTIFIER Markerscope block'
+	threeAddrCode.emit('','','JUMP_CALLING','')
+	symTable.deletescope(p[2])
+	p[0]={'beginlist':[], 'endlist':[]}
 
+def p_Markerscope(p):
+	'Markerscope : empty'
+	p[0]={}
+	p[0]['type']="FUNCTION"
+	symTable.newvariableentry(p[-1],"FUNCTION",0)
 
+	if  not symTable.proclist.has_key(p[-1]):
+		symTable.enterproc(p[-1])
+	else:
+		symTable.removehash(p[-1])
+		symTable.enterproc(p[-1])
+	threeAddrCode.createCode(p[-1])
 	
 def p_printStatement(p):
 	'printStatement : PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON'
@@ -195,7 +202,7 @@ def p_printStatement_no_paran(p):
 def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
 
-    p[0]={'type': p[2]['type']}
+    p[0]={'type': p[2]['type'],'beginlist':[], 'endlist':[]}
     symTable.addintocurrentscope('returntype',p[2]['type'])
     threeAddrCode.emit(p[2]['place'],'',p[1],'')
     
@@ -339,11 +346,11 @@ def p_decList_empty(p):
 	p[0]=[]
 
 def p_functionCall(p):
-	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS SEMICOLON' 
+	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS ' 
 
 	p[0]={}
 
-	if ifexist(p[1])==0:
+	if symTable.ifexist(p[1])==0:
 		print "Function is not defined"
 		p[0]['type']="TYPE ERROR"
 	else:
@@ -354,10 +361,12 @@ def p_functionCall(p):
 			threeAddrCode.emit('','','GOTO_LABEL',label)
 		else:
 			print "This is not a function"
+		p[0]['place']=p[1]
 
 def p_termfunction(p):
 	'term : functionCall'
 	p[0]=p[1]	
+	
 
 def p_parameters(p):
 	'''parameters 	: expression COMMA parameters
