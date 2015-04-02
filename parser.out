@@ -58,8 +58,8 @@ Rule 22    switchStatement -> SWITCH expression BLOCK_BEGIN caselist BLOCK_ENDS
 Rule 23    caselist -> CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist
 Rule 24    caselist -> ELSE block
 Rule 25    caselist -> empty
-Rule 26    ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block
-Rule 27    ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block
+Rule 26    ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block
+Rule 27    ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block
 Rule 28    Markerif -> empty
 Rule 29    Markerelse -> empty
 Rule 30    lastStatement -> LAST SEMICOLON
@@ -232,7 +232,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
-Marker               : 7 8 9 10 11 12 13 14 15 16 17 18 19 20 51 79 80
+Marker               : 7 8 9 10 11 12 13 14 15 16 17 18 19 20 26 27 51 79 80
 Markerelse           : 27
 Markerif             : 26 27
 Markerscope          : 32
@@ -304,8 +304,8 @@ state 0
     (32) functionStatement -> . SUB IDENTIFIER Markerscope block
     (30) lastStatement -> . LAST SEMICOLON
     (31) nextStatement -> . NEXT SEMICOLON
-    (26) ifthen -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block
-    (27) ifthenelse -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block
+    (26) ifthen -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block
+    (27) ifthenelse -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block
     (21) useStatement -> . USE IDENTIFIER SEMICOLON
     (22) switchStatement -> . SWITCH expression BLOCK_BEGIN caselist BLOCK_ENDS
 
@@ -471,8 +471,8 @@ state 6
     (32) functionStatement -> . SUB IDENTIFIER Markerscope block
     (30) lastStatement -> . LAST SEMICOLON
     (31) nextStatement -> . NEXT SEMICOLON
-    (26) ifthen -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block
-    (27) ifthenelse -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block
+    (26) ifthen -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block
+    (27) ifthenelse -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block
     (21) useStatement -> . USE IDENTIFIER SEMICOLON
     (22) switchStatement -> . SWITCH expression BLOCK_BEGIN caselist BLOCK_ENDS
 
@@ -1025,8 +1025,8 @@ state 20
     (32) functionStatement -> . SUB IDENTIFIER Markerscope block
     (30) lastStatement -> . LAST SEMICOLON
     (31) nextStatement -> . NEXT SEMICOLON
-    (26) ifthen -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block
-    (27) ifthenelse -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block
+    (26) ifthen -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block
+    (27) ifthenelse -> . IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block
     (21) useStatement -> . USE IDENTIFIER SEMICOLON
     (22) switchStatement -> . SWITCH expression BLOCK_BEGIN caselist BLOCK_ENDS
 
@@ -1272,8 +1272,8 @@ state 31
 
 state 32
 
-    (26) ifthen -> IF . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block
-    (27) ifthenelse -> IF . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block
+    (26) ifthen -> IF . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block
+    (27) ifthenelse -> IF . OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block
 
     OPEN_PARANTHESIS shift and go to state 87
 
@@ -3621,8 +3621,8 @@ state 86
 
 state 87
 
-    (26) ifthen -> IF OPEN_PARANTHESIS . expression CLOSE_PARANTHESIS Markerif block
-    (27) ifthenelse -> IF OPEN_PARANTHESIS . expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block
+    (26) ifthen -> IF OPEN_PARANTHESIS . expression CLOSE_PARANTHESIS Markerif Marker block
+    (27) ifthenelse -> IF OPEN_PARANTHESIS . expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block
     (65) expression -> . PLUS_OP expression
     (66) expression -> . MINUS_OP expression
     (67) expression -> . BIT_FLIP expression
@@ -8491,8 +8491,8 @@ state 145
 
 state 146
 
-    (26) ifthen -> IF OPEN_PARANTHESIS expression . CLOSE_PARANTHESIS Markerif block
-    (27) ifthenelse -> IF OPEN_PARANTHESIS expression . CLOSE_PARANTHESIS Markerif block ELSE Markerelse block
+    (26) ifthen -> IF OPEN_PARANTHESIS expression . CLOSE_PARANTHESIS Markerif Marker block
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression . CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block
     (71) expression -> expression . OR_STR_OP expression
     (72) expression -> expression . XOR_STR_OP expression
     (73) expression -> expression . AND_STR_OP expression
@@ -12473,15 +12473,15 @@ state 195
 
 state 196
 
-    (26) ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . Markerif block
-    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . Markerif block ELSE Markerelse block
+    (26) ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . Markerif Marker block
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . Markerif Marker block ELSE Markerelse block
     (28) Markerif -> . empty
     (6) empty -> .
 
     BLOCK_BEGIN     reduce using rule 6 (empty -> .)
 
-    empty                          shift and go to state 209
     Markerif                       shift and go to state 210
+    empty                          shift and go to state 209
 
 state 197
 
@@ -13095,13 +13095,15 @@ state 209
 
 state 210
 
-    (26) ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif . block
-    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif . block ELSE Markerelse block
-    (3) block -> . BLOCK_BEGIN statements BLOCK_ENDS
+    (26) ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif . Marker block
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif . Marker block ELSE Markerelse block
+    (87) Marker -> . empty
+    (6) empty -> .
 
-    BLOCK_BEGIN     shift and go to state 6
+    BLOCK_BEGIN     reduce using rule 6 (empty -> .)
 
-    block                          shift and go to state 215
+    Marker                         shift and go to state 215
+    empty                          shift and go to state 35
 
 state 211
 
@@ -13300,27 +13302,13 @@ state 214
 
 state 215
 
-    (26) ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .
-    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block . ELSE Markerelse block
+    (26) ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker . block
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker . block ELSE Markerelse block
+    (3) block -> . BLOCK_BEGIN statements BLOCK_ENDS
 
-    VARIABLE        reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    LOCAL           reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    PRIVATE         reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    RETURN          reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    IDENTIFIER      reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    WHILE           reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    FOR             reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    PRINT           reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    SUB             reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    LAST            reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    NEXT            reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    IF              reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    USE             reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    SWITCH          reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    BLOCK_ENDS      reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    $end            reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block .)
-    ELSE            shift and go to state 219
+    BLOCK_BEGIN     shift and go to state 6
 
+    block                          shift and go to state 219
 
 state 216
 
@@ -13424,14 +13412,27 @@ state 218
 
 state 219
 
-    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE . Markerelse block
-    (29) Markerelse -> . empty
-    (6) empty -> .
+    (26) ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block . ELSE Markerelse block
 
-    BLOCK_BEGIN     reduce using rule 6 (empty -> .)
+    VARIABLE        reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    LOCAL           reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    PRIVATE         reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    RETURN          reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    IDENTIFIER      reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    WHILE           reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    FOR             reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    PRINT           reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    SUB             reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    LAST            reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    NEXT            reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    IF              reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    USE             reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    SWITCH          reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    BLOCK_ENDS      reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    $end            reduce using rule 26 (ifthen -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block .)
+    ELSE            shift and go to state 222
 
-    Markerelse                     shift and go to state 223
-    empty                          shift and go to state 222
 
 state 220
 
@@ -13445,7 +13446,7 @@ state 220
     ELSE            shift and go to state 184
     BLOCK_ENDS      reduce using rule 6 (empty -> .)
 
-    caselist                       shift and go to state 224
+    caselist                       shift and go to state 223
     empty                          shift and go to state 185
 
 state 221
@@ -13455,32 +13456,27 @@ state 221
 
     BLOCK_BEGIN     shift and go to state 6
 
-    block                          shift and go to state 225
+    block                          shift and go to state 224
 
 state 222
 
-    (29) Markerelse -> empty .
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE . Markerelse block
+    (29) Markerelse -> . empty
+    (6) empty -> .
 
-    BLOCK_BEGIN     reduce using rule 29 (Markerelse -> empty .)
+    BLOCK_BEGIN     reduce using rule 6 (empty -> .)
 
+    Markerelse                     shift and go to state 226
+    empty                          shift and go to state 225
 
 state 223
-
-    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse . block
-    (3) block -> . BLOCK_BEGIN statements BLOCK_ENDS
-
-    BLOCK_BEGIN     shift and go to state 6
-
-    block                          shift and go to state 226
-
-state 224
 
     (23) caselist -> CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist .
 
     BLOCK_ENDS      reduce using rule 23 (caselist -> CASE OPEN_PARANTHESIS expression CLOSE_PARANTHESIS block caselist .)
 
 
-state 225
+state 224
 
     (53) forStatement -> FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS block .
 
@@ -13502,26 +13498,42 @@ state 225
     $end            reduce using rule 53 (forStatement -> FOR OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS block .)
 
 
+state 225
+
+    (29) Markerelse -> empty .
+
+    BLOCK_BEGIN     reduce using rule 29 (Markerelse -> empty .)
+
+
 state 226
 
-    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse . block
+    (3) block -> . BLOCK_BEGIN statements BLOCK_ENDS
 
-    VARIABLE        reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    LOCAL           reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    PRIVATE         reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    RETURN          reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    IDENTIFIER      reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    WHILE           reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    FOR             reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    PRINT           reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    SUB             reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    LAST            reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    NEXT            reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    IF              reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    USE             reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    SWITCH          reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    $end            reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
-    BLOCK_ENDS      reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block ELSE Markerelse block .)
+    BLOCK_BEGIN     shift and go to state 6
+
+    block                          shift and go to state 227
+
+state 227
+
+    (27) ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .
+
+    VARIABLE        reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    LOCAL           reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    PRIVATE         reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    RETURN          reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    IDENTIFIER      reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    WHILE           reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    FOR             reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    PRINT           reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    SUB             reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    LAST            reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    NEXT            reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    IF              reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    USE             reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    SWITCH          reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    $end            reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
+    BLOCK_ENDS      reduce using rule 27 (ifthenelse -> IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block ELSE Markerelse block .)
 
 WARNING: 
 WARNING: Conflicts:

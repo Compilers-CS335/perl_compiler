@@ -28,7 +28,9 @@ class Tac:
 	def backpatch(self,p,i):
 		curr=self.symTable.get_current_scope()
 		for j in p:
-			self.code[curr][j]=i
+			# print p
+			# print str(j)+" "+str(i)
+			self.code[curr][j][3]=i
 
 	def createCode(self, name):
 		self.code[name] = []

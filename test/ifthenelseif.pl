@@ -9,6 +9,8 @@ if ($x == 7) {
 	print '$x is equal to 7!';
 	print "\n";
 }
+$x=3;
+print $x;
 if (($x == 7) || ($y == 7)) {
 	print '$x or $y is equal to 7!';
 	print "\n";
