@@ -143,13 +143,13 @@ def p_Markerelse(p):
 
 def p_lastStatement(p):
 	'lastStatement : LAST SEMICOLON'
-	p[0]={}
+	p[0]={'beginlist':[], 'nextlist':[]}
 	p[0]['endlist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit('','','GOTO',-1)
 
 def p_nextStatement(p):
 	'nextStatement : NEXT SEMICOLON'
-	p[0]={}
+	p[0]={'nextlist':[], 'endlist':[]}
 	p[0]['beginlist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit('','','GOTO',-1)
 
@@ -378,7 +378,7 @@ def p_parameters(p):
 def p_while(p):
 	'whileStatement : WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile  block'
 	
-	p[0]={'nextlist':[],'type' : 'VOID'}
+	p[0]={'nextlist':[],'type' : 'VOID', 'beginlist':[], 'endlist':[]}
 
 	if p[4]['type']=="BOOLEAN":
 		threeAddrCode.backpatch(p[7]['beginlist'],p[2]['quad'])
@@ -390,7 +390,7 @@ def p_while(p):
 
 def p_Markerwhile(p):
 	'Markerwhile : empty'
-	p[0]={'falselist' : threeAddrCode.pointer_quad_next()}
+	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
 	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
 
 def p_for(p):
