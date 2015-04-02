@@ -29,4 +29,4 @@ class Tac:
 		for j in p:
 			print p
 			print str(j)+" "+str(i)
-			self.code[curr][j][1]=i
+			self.code[curr][j][3]=i

@@ -72,9 +72,12 @@ def p_statment(p):
                  # | dowhileStatement
                  # | ternaryStatement 
                  # '''
-    p[0] = {'beginlist' : p[1]['beginlist'] , 'endlist' : p[1]['endlist']}
-
-    nextList = p[1].get('nextList', [])
+    p[0] = {'type':"VOID",'beginlist' : p[1]['beginlist'] , 'endlist' : p[1]['endlist']}
+    # p[0] = p[1]
+    # print p[1]
+    # print p[1].get('nextlist', [])
+    nextList = p[1].get('nextlist', [])
+    # print nextList
     threeAddrCode.backpatch(nextList, p[2]['quad'])
 
 
@@ -94,37 +97,41 @@ def p_caselist(p):
     
 
 def p_ifthen(p):
-	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif block'
+	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block'
 
 	if p[3]['type']!="BOOLEAN":
 		print "Expression is not bool"
 		exp_type="TYPE ERROR"
 	else:
 		exp_type="VOID"
-		threeAddrCode.emit('','', 'IF_THEN_GOTO', p[3]['place'])
 
+	threeAddrCode.backpatch(p[5]['truelist'],p[6]['quad'])
 	p[0]={'type':exp_type,'nextlist': threeAddrCode.merge(p[5].get('falselist',[]),p[6].get('nextlist',[]))}
 	p[0]['beginlist']=p[6].get('beginlist',[])
 	p[0]['endlist']=p[6].get('endlist',[])
 
 
 def p_ifthenelse(p):
-	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  Markerif block ELSE Markerelse block'
+	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  Markerif Marker block ELSE Markerelse block'
 
 	if p[3]['type']!="BOOLEAN":
 		print "Expression is not bool"
-
-	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))
-	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))
+		exp_type="TYPE ERROR"
+	else:
+		exp_type="VOID"
 
 	threeAddrCode.backpatch(p[5]['falselist'],p[8]['quad'])
-	p[0]={'nextlist' : p[8]['nextlist']}
+	p[0]={'type':exp_type, 'nextlist' : p[8]['nextlist']}
+	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[9].get('beginlist',[]))
+	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[9].get('endlist',[]))
 
 def p_Markerif(p):
 	'Markerif : empty'
 	p[0]={}
+	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
+	threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
 	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
-	threeAddrCode.emit(p[-2]['place'], '','GOTO_MARK',-1)
+	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
 
 def p_Markerelse(p):
 	'Markerelse : empty'

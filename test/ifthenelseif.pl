@@ -9,14 +9,16 @@ if ($x == 7) {
 	print '$x is equal to 7!';
 	print "\n";
 }
-if (($x == 7) || ($y == 7)) {
-	print '$x or $y is equal to 7!';
-	print "\n";
-}
-if (($x == 7) && ($y == 7)) {
-	print '$x and $y are equal to 7!';
-	print "\n";
-}
+$x=3;
+print $x;
+# if (($x == 7) || ($y == 7)) {
+# 	print '$x or $y is equal to 7!';
+# 	print "\n";
+# }
+# if (($x == 7) && ($y == 7)) {
+# 	print '$x and $y are equal to 7!';
+# 	print "\n";
+# }
 
 # # SOME VARIABLES
 # $name = "Sarah";
