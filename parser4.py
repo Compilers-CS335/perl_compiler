@@ -53,6 +53,7 @@ def p_empty(p):
 def p_statment(p):
     '''statement : assignment Marker 
     		     | declaration Marker
+    		     | array_assignment Marker
                  | returnStatement Marker
                  | functionCall Marker SEMICOLON
                  | whileStatement Marker
@@ -246,7 +247,21 @@ def p_return(p):
 def p_assignment(p):
     'assignment : VARIABLE ASSIGNMENT_OP expression SEMICOLON'
 
-    if p[3]=="TYPE ERROR":
+    if p[3]['type']=="TYPE ERROR":
+    	exp_type = "TYPE ERROR"
+    else:
+    	p[1]={'type':p[3]['type'], 'place':p[1]}
+    	# add entry in the symbol table and fill in the type
+    	symTable.newvariableentry(p[1]['place'], p[1]['type'], 0)
+    	exp_type = "VOID"
+    	threeAddrCode.emit(p[1]['place'], '',p[2], p[3]['place'])
+
+    p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}    
+
+def p_assignment_to_array_elements(p):
+    'assignment : ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET ASSIGNMENT_OP expression SEMICOLON'
+
+    if p[3]['type']=="TYPE ERROR":
     	exp_type = "TYPE ERROR"
     else:
     	p[1]={'type':p[3]['type'], 'place':p[1]}
@@ -260,7 +275,7 @@ def p_assignment(p):
 def p_assignment_specific_local(p):
 	'assignment : LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON'
 
-	if p[4]=="TYPE ERROR":
+	if p[4]['type']=="TYPE ERROR":
 		exp_type = "TYPE ERROR"
 	else:
 		p[2]={'type':p[4]['type'], 'place':p[2]}
@@ -274,7 +289,7 @@ def p_assignment_specific_local(p):
 def p_assignment_specific(p):
     'assignment : PRIVATE VARIABLE ASSIGNMENT_OP expression SEMICOLON'
 
-    if p[4]=="TYPE ERROR":
+    if p[4]['type']=="TYPE ERROR":
     	exp_type = "TYPE ERROR"
     else:
     	p[2]={'type':p[4]['type'], 'place':p[2]}
@@ -289,7 +304,7 @@ def p_assignment_adv(p):
 	'assignment : VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON'
 
 	exp_type = "VOID"
-	if p[3]=="TYPE ERROR":
+	if p[3]['type']=="TYPE ERROR":
 		exp_type = "TYPE ERROR"
 	else:
 		varType = symTable.getvalueofkey_variable(p[1], 'type')
@@ -640,10 +655,58 @@ def p_term_exp(p):
 
 	p[0] = p[2]
 
+def p_term_arr_element(p):
+	'term : ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET'
+
+	varType = symTable.getvalueofkey_array(p[1],p[3],'type')
+	if varType==None:
+		print "Array element does not exist\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = varType
+
+	p[0] = {'place':p[1], 'type':exp_type}
+
 # def p_type_var(p):
 # 	'type : variable'
 
 # 	p[0] = p[1]
+
+def p_array_assignment(p):
+	' array_assignment : ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression arrayList CLOSE_PARANTHESIS SEMICOLON'
+
+	if p[4]['type']=="TYPE ERROR" or p[5]['type']=="TYPE ERROR":
+		exp_type = "TYPE ERROR"
+	else:
+		p[5]['elements'].insert(0, {'type':p[4]['type']})
+		p[1]={'place':p[1], 'elements':p[5]['elements']}
+		# add entry in the symbol table and fill in the type
+		symTable.newarrayentry(p[1]['place'], p[1]['elements'],0)
+		exp_type = "VOID"
+		threeAddrCode.emit(p[1]['place'], '',p[2], 'ARRAY')
+
+	p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}    
+
+def p_arrayList(p):
+	' arrayList : COMMA expression arrayList '
+
+	if p[2]['type']=="TYPE ERROR":
+		print "expression in array assignment has type error\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = p[3]['type']
+
+	p[3]['elements'].insert(0, {'type':p[2]['type']})
+	p[0] = {'type':exp_type, 'elements':p[3]['elements']}
+
+def p_arrayList_empty(p):
+	' arrayList : COMMA expression '
+
+	p[0]={'elements':[{'type':p[2]['type']}], 'type':'array'}
+	if p[2]['type']=="TYPE ERROR":
+		print "expression in array assignment has type error\n"
+		p[0]['type']="TYPE ERROR"
+	
 
 ####
 # def p_type(p):
@@ -818,8 +881,7 @@ def p_expression_repeatition(p):
 
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
 def p_expression_binary(p):
-	'''expression 	: expression COMMA expression
-					| expression ASSOCIATE_OP expression
+	'''expression 	: expression ASSOCIATE_OP expression
 					| expression RANGE_OP expression
 					| expression SEARCH_MODIFY expression
 					| expression SEARCH_MODIFY_NEG expression'''

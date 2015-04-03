@@ -143,7 +143,66 @@ class SymbolTable:
 		curr['width']=self.offset.pop()
 
 
+#########
+	def newarrayentry(self,place,elements,isPrivate):
+		# To set the scope of the variable correctly
+		if isPrivate:
+			curr=self.entryscope[len(self.entryscope)-1]
+			# print curr
+		else:
+			curr=self.entryscope[0]
+			# print curr
 
 
+		if curr.has_key(place)==0:
+			curr[place]={}
 
+		curr[place]['type']='array'
+		curr[place]['scope']=curr['scope']
+		curr[place]['returntype']="UNDEFINED"
+		curr[place]['elements']=elements
 
+		tempwidth = 0;
+
+		for element in curr[place]['elements']:
+			
+			if element['type']=="NUMBER":
+				tempwidth+=4
+				element['width']= 4
+			elif element['type']=="STRING":
+				tempwidth+=8
+				element['width']= 8
+			elif element['type']=="RES_STRING":
+				tempwidth+=8
+				element['width']= 8
+			elif element['type']=="FUNCTION":
+				tempwidth+=8
+				element['width']= 8
+			elif element['type']=="BOOLEAN":
+				tempwidth+=1
+				element['width']= 1
+			else :
+				tempwidth=0
+				element['width']= 0
+
+		# tempwidth=num_elem*tempwidth
+		curr[place]['width']=tempwidth
+
+		temp1=self.offset.pop()
+		temp1=temp1+tempwidth
+		self.offset.append(temp1)
+
+	def  getvalueofkey_array(self,place,index,value):
+		entry=self.lookup(place)
+		if entry==None:
+			return None
+		if entry.has_key('elements'):
+			if index>=len(entry['elements']):
+				return None
+			else:
+				if entry['elements'][index].has_key(value):
+					return entry['elements'][index][value]
+				else:
+					return None
+		else:
+			return  None	
