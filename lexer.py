@@ -311,7 +311,7 @@ def t_NOT_STR_OP(t):
 #     return t
 
 def t_VARIABLE(t):
-    r"[\$][a-zA-Z$_][\w$]*"							# not considering $#
+    r"\$[a-zA-Z$_][\w$]*"							# not considering $#
     t.type = reserved.get(t.value,'VARIABLE')    
     return t
 
