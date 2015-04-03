@@ -7,7 +7,6 @@ class Tac:
 
 	def quad_increment(self):
 		curr=self.symTable.get_current_scope()
-		print curr+"ijwnidncj"
 		self.quad[curr]=self.quad_next[curr]
 		self.quad_next[curr]=self.quad_next[curr]+1
 		return self.quad[curr]

@@ -1,4 +1,7 @@
-for($a=10;$a<12;$a=$a+1)
+sub hello
 {
-	print $a;
+	print "nik";
 }
+hello();
+
+

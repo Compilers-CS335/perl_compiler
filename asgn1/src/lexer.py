@@ -367,7 +367,9 @@ def runlexer(inputfile):
 	line2 = "#"
 	LineNum = 0;
 	for tok in iter(lexer.token, None):
+		
 		while tok.lineno!=LineNum:
+
 		 	LineNum+=1
 		 	if (line1 != ""):
 				print "%s\n%s\n" %(line1, line2)

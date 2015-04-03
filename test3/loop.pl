@@ -1,6 +1,6 @@
 #!/usr/local/bin/perl
  
-$a = 10;
+$a = 11;
 
 # while loop execution
 # while( $a < 20 ){
@@ -27,16 +27,43 @@ $a = 10;
 # }
 # }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#dowhile loop
+# do
+# {
+#   print "Value of a: $a\n";
+#   $a = $a + 1;  
+# } while($a>11);
+
+
+
+
+
 # until loop execution
-#until( $a > 10 ){
-#   printf "Value of a: $a\n";
+# until( $a > 10 ){
+#   print "Value of a: $a\n";
 #   $a = $a + 1;
-#}
+# }
 
 # for loop execution
-for( $a = 10;  $a<12 ; $a = $a + 1 ){
-    print ("value of a: $a\n");
-}
+# for( $a = 10;  $a<12 ; $a = $a + 1 ){
+#     print ("value of a: $a\n");
+# }
 
 # $a = 0;
 # $b = 0;
@@ -53,26 +80,30 @@ for( $a = 10;  $a<12 ; $a = $a + 1 ){
 #    print "Value of a = $a\n\n";
 # }
 
+
 #demostrating next
+
+$b=<>;
 while( $a < 20 ){
-   if( $a == 15)
-   {
+   
        # skip the iteration.
-       $a = $a + 1;
-       next;
-   }
+       
+      
+   
    print "value of a: $a\n";
-   $a = $a + 1;
+   $a = $a + "1";
+   last;
+   
 }
 
 # #demonstrating last
-while( $a < 20 ){
-   if( $a == 15)
-   {
-       # terminate the loop.
-       $a +=1;
-       last;
-   }
-   print "value of a: $a\n";
-   $a = $a + 1;
-}
+# while( $a < 20 ){
+#    if( $a == 15)
+#    {
+#        # terminate the loop.
+#        $a +=1;
+#        last;
+#    }
+#    print "value of a: $a\n";
+#    $a = $a + 1;
+# }

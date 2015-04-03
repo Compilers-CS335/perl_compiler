@@ -21,6 +21,8 @@ def p_start(p):
              | statements'''
 
     p[0] = p[1]
+    threeAddrCode.emit('','','EXIT','')
+    symTable.deletescope('root')
     
 
 def p_block(p):
@@ -39,6 +41,7 @@ def p_statments_single(p):
 	'statements : statement '
 
 	p[0] = p[1]
+	
 
 def p_empty(p):
     'empty :'
@@ -61,6 +64,9 @@ def p_statment(p):
                  | ifthen Marker
                  | ifthenelse Marker
                  | useStatement Marker
+                 | untillStatement Marker
+                 | dowhileStatement Marker
+                 | inputStatement Marker
                  | switchStatement Marker''' # implementinf ifthen and ifthenelse without nested loop
 
                  #    
@@ -96,11 +102,20 @@ def p_caselist(p):
                 | empty '''
     
 
+def p_inputStatement(p):
+	'inputStatement : VARIABLE ASSIGNMENT_OP USER_INPUT_OP SEMICOLON'
+
+	p[0]={'beginlist':[], 'nextlist':[],'endlist':[],'type':"VOID"}
+	threeAddrCode.emit('','','INPUT','')
+
+
+
+
 def p_ifthen(p):
 	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block'
 
 	if p[3]['type']!="BOOLEAN":
-		print "Expression is not bool"
+		print "line "+str(p.lineno(3))+" :Expression is not of boolean type"
 		exp_type="TYPE ERROR"
 	else:
 		exp_type="VOID"
@@ -115,7 +130,7 @@ def p_ifthenelse(p):
 	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  Markerif Marker block ELSE Markerelse block'
 
 	if p[3]['type']!="BOOLEAN":
-		print "Expression is not bool"
+		print "line "+str(p.lineno(3))+" :Expression is not of boolean type"
 		exp_type="TYPE ERROR"
 	else:
 		exp_type="VOID"
@@ -171,6 +186,7 @@ def p_Markerscope(p):
 		symTable.removehash(p[-1])
 		symTable.enterproc(p[-1])
 	threeAddrCode.createCode(p[-1])
+	threeAddrCode.emit('','',p[-1],'')
 	
 
 def p_functionCall(p):
@@ -185,9 +201,6 @@ def p_functionCall(p):
 		functiontype=symTable.getvalueofkey(p[1],'type')
 		if functiontype=="FUNCTION":
 			p[0]['type']=symTable.getvalueofkey(p[1],'returntype')
-			# label=symTable.getvalueofkey(p[1],symTable.get_current_scope())
-			# print label
-			# print "nikhil"
 			threeAddrCode.emit('','','GOTO_LABEL',p[1])
 		else:
 			print "This is not a function"
@@ -288,11 +301,8 @@ def p_assignment_adv(p):
 		p[1] = {'place':p[1], 'type':exp_type_left}
 		# Dealing with the binary operation
 		Adv_Op = p[2].split("=")[0]
-		if Adv_Op=='.':
-			if p[1]['type']!='STRING' or p[3]['type']!='STRING' :
-				print "ERROR: Concatenation operation works only on strings\n"
-				exp_type = "TYPE ERROR"
-		elif Adv_Op=='x':
+		
+		if Adv_Op=='x':
 			if p[3]['type']!='NUMBER' :
 				print "ERROR: How many times to repeat?.\n"
 				exp_type="TYPE ERROR"
@@ -308,7 +318,147 @@ def p_assignment_adv(p):
 		threeAddrCode.emit(p[1]['place'], p[1]['place'], Adv_Op, p[3]['place'])
 	else:
 		print "Some error occured in advanced assignment\n"
-	p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]} 
+	p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}
+
+
+
+def p_while(p):
+	'whileStatement : WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile  block'
+	
+	p[0]={'nextlist':[],'type' : 'VOID', 'beginlist':[], 'endlist':[]}
+
+	
+
+	if p[4]['type']=="BOOLEAN":
+		threeAddrCode.backpatch(p[7]['beginlist'],p[2]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[7].get('endlist',[]),p[7].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[6].get('falselist',[]),p[0].get('nextlist',[]))
+		threeAddrCode.emit('','','GOTO',p[2]['quad'])
+	else:
+		print "line "+str(p.lineno(4))+" :Expression is not of boolean type"
+
+def p_Markerwhile(p):
+	'Markerwhile : empty'
+	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
+	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
+
+
+def p_dowhileStatement(p):
+	'dowhileStatement : DO block WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerdowhile  SEMICOLON'
+
+	p[0]={'nextlist':[],'type' : 'VOID', 'beginlist':[], 'endlist':[]}
+
+	if p[6]['type']=="BOOLEAN":
+		threeAddrCode.backpatch(p[2]['beginlist'],p[4]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[2].get('endlist',[]),p[2].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[8].get('falselist',[]),p[0].get('nextlist',[]))	
+		threeAddrCode.emit('','','GOTO',p[4]['quad'])
+	else:
+		print "line "+str(p.lineno(6))+" :Expression is not of boolean type"
+
+def p_markerdowhile(p):
+	'Markerdowhile : empty'
+	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
+	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
+
+
+
+
+def p_untillStatement(p):
+	'untillStatement : UNTIL Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markeruntil  block'
+
+	p[0]={'nextlist':[],'type' : 'VOID', 'beginlist':[], 'endlist':[]}
+	
+
+	if p[4]['type']=="BOOLEAN":
+		threeAddrCode.backpatch(p[7]['beginlist'],p[2]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[7].get('endlist',[]),p[7].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[6].get('falselist',[]),p[0].get('nextlist',[]))
+		threeAddrCode.emit('','','GOTO',p[2]['quad'])
+	else:
+		print "line "+str(p.lineno(4))+" :Expression is not of boolean type"
+
+def p_Markeruntil(p):
+	'Markeruntil : empty'
+	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
+	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK2','-1')
+
+
+def p_for(p):
+	'forStatement : FOR  OPEN_PARANTHESIS assignment   Marker  expression  SEMICOLON  Marker  VARIABLE ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
+	
+	p[0]={}
+	if p[5]['type']=="BOOLEAN":
+		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
+		#threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[13].get('endlist',[]),p[13].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[12].get('falselist',[]),p[0].get('nextlist',[]))	    	
+	    # add entry in the symbol table and fill in the type
+		
+		p[8]={'type':p[10]['type'], 'place':p[8]}
+		
+		symTable.newvariableentry(p[8]['place'], p[8]['type'], 0)
+		threeAddrCode.emit(p[8]['place'], '',p[9], p[10]['place'])
+		threeAddrCode.emit('','','GOTO',p[4]['quad'])
+	else:
+		print "line "+str(p.lineno(5))+" :Expression is not of boolean type"
+	p[0]['beginlist']=[]
+	p[0]['endlist']=[]
+
+
+def p_for_advass(p):
+	'forStatement : FOR  OPEN_PARANTHESIS assignment   Marker  expression  SEMICOLON  Marker  VARIABLE ADV_ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
+	
+	p[0]={}
+	if p[5]['type']=="BOOLEAN":
+		
+		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
+		threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[13].get('endlist',[]),p[13].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[12].get('falselist',[]),p[0].get('nextlist',[]))	    	
+	    # add entry in the symbol table and fill in the type
+		
+
+		exp_type = "VOID"
+		varType = symTable.getvalueofkey_variable(p[8], 'type')
+		if varType==None:
+			print  "line "+str(p.lineno(8))+" : Variable does not exist\n"
+			exp_type_left = "TYPE ERROR"
+		else:
+			exp_type_left = varType
+		p[8] = {'place':p[8], 'type':exp_type_left}
+		# Dealing with the binary operation
+		Adv_Op = p[9].split("=")[0]
+		
+		
+		if p[8]['type']!='NUMBER' or p[10]['type']!='NUMBER' :
+			print  "line "+str(p.lineno(9))+": cannot perform operation\n"
+			exp_type="TYPE ERROR"
+	
+		if exp_type=="VOID":
+			threeAddrCode.emit(p[8]['place'], p[8]['place'], Adv_Op, p[10]['place'])
+		else:
+
+			print  "line "+str(p.lineno(9))+" : Some error occured in advanced assignment\n"	
+		threeAddrCode.emit('','','GOTO',p[4]['quad'])
+	else:
+		print "line "+str(p.lineno(5))+" :Expression is not of boolean type"
+	p[0]['beginlist']=[]
+	p[0]['endlist']=[]
+
+
+def p_Markerfor2(p):
+	'Markerfor2 : empty'
+
+
+def p_Markerfor(p):
+	'Markerfor : empty'
+	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
+	threeAddrCode.emit(p[-7]['place'],'','GOTO_MARK','-1')
+	
+def p_assignment_For_empty(p):
+	'assignment : empty'
+
 
 # def p_assignment_adv_specific(p):
 #     '''assignment : PRIVATE VARIABLE ADV_ASSIGNMENT_OP expression SEMICOLON
@@ -382,109 +532,9 @@ def p_termfunction(p):
 # 					| empty '''
 					#### KAISE START KARU. SPLIT KARNA PADEGA
 	
-def p_while(p):
-	'whileStatement : WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile  block'
-	
-	p[0]={'nextlist':[],'type' : 'VOID', 'beginlist':[], 'endlist':[]}
-
-	if p[4]['type']=="BOOLEAN":
-		threeAddrCode.backpatch(p[7]['beginlist'],p[2]['quad'])
-		p[0]['nextlist']=threeAddrCode.merge(p[7].get('endlist',[]),p[7].get('nextlist',[]))
-		p[0]['nextlist']=threeAddrCode.merge(p[6].get('falselist',[]),p[0].get('nextlist',[]))
-		threeAddrCode.emit('','','GOTO',p[2]['quad'])
-	else:
-		print "Expression not bool"
-
-def p_Markerwhile(p):
-	'Markerwhile : empty'
-	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
-	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
-
-def p_for(p):
-	'forStatement : FOR  OPEN_PARANTHESIS assignment   Marker  expression  SEMICOLON  Marker  VARIABLE ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
-	
-	p[0]={}
-	if p[5]['type']=="BOOLEAN":
-		print "in for"
-		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
-		#threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
-		p[0]['nextlist']=threeAddrCode.merge(p[13].get('endlist',[]),p[13].get('nextlist',[]))
-		p[0]['nextlist']=threeAddrCode.merge(p[12].get('falselist',[]),p[0].get('nextlist',[]))	    	
-	    # add entry in the symbol table and fill in the type
-		print p[10]
-		p[8]={'type':p[10]['type'], 'place':p[8]}
-		print p[8]
-		print "tatti"
-		symTable.newvariableentry(p[8]['place'], p[8]['type'], 0)
-		threeAddrCode.emit(p[8]['place'], '',p[9], p[10]['place'])
-		threeAddrCode.emit('','','GOTO',p[4]['quad'])
-	else:
-		print "Expression must be boolean"
-	p[0]['beginlist']=[]
-	p[0]['endlist']=[]
 
 
-def p_for_advass(p):
-	'forStatement : FOR  OPEN_PARANTHESIS assignment   Marker  expression  SEMICOLON  Marker  VARIABLE ADV_ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
-	
-	p[0]={}
-	if p[5]['type']=="BOOLEAN":
-		print "in for"
-		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
-		threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
-		p[0]['nextlist']=threeAddrCode.merge(p[13].get('endlist',[]),p[13].get('nextlist',[]))
-		p[0]['nextlist']=threeAddrCode.merge(p[12].get('falselist',[]),p[0].get('nextlist',[]))	    	
-	    # add entry in the symbol table and fill in the type
-		
 
-		exp_type = "VOID"
-		varType = symTable.getvalueofkey_variable(p[8], 'type')
-		if varType==None:
-			print "Variable does not exist\n"
-			exp_type_left = "TYPE ERROR"
-		else:
-			exp_type_left = varType
-		p[8] = {'place':p[8], 'type':exp_type_left}
-		# Dealing with the binary operation
-		Adv_Op = p[9].split("=")[0]
-		if Adv_Op=='.':
-			if p[8]['type']!='STRING' or p[10]['type']!='STRING' :
-				print "ERROR: Concatenation operation works only on strings\n"
-				exp_type = "TYPE ERROR"
-		elif Adv_Op=='x':
-			if p[10]['type']!='NUMBER' :
-				print "ERROR: How many times to repeat?.\n"
-				exp_type="TYPE ERROR"
-			elif p[8]['type']!='STRING' :
-				print "ERROR: You can only repeat a string.\n"
-				exp_type="TYPE ERROR"
-		else:
-			if p[8]['type']!='NUMBER' or p[10]['type']!='NUMBER' :
-				print "ERROR: cannot perform operation\n"
-				exp_type="TYPE ERROR"
-	
-		if exp_type=="VOID":
-			threeAddrCode.emit(p[8]['place'], p[8]['place'], Adv_Op, p[10]['place'])
-		else:
-			print "Some error occured in advanced assignment\n"	
-		threeAddrCode.emit('','','GOTO',p[4]['quad'])
-	else:
-		print "Expression must be boolean"
-	p[0]['beginlist']=[]
-	p[0]['endlist']=[]
-
-
-def p_Markerfor2(p):
-	'Markerfor2 : empty'
-
-
-def p_Markerfor(p):
-	'Markerfor : empty'
-	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
-	threeAddrCode.emit(p[-7]['place'],'','GOTO_MARK','-1')
-	
-def p_assignment_For_empty(p):
-	'assignment : empty'
 
 
 ### EXPRESSIONS
@@ -607,7 +657,7 @@ def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 	p[0] = {'place':symTable.newtmp()}
 
 	if p[2]['type']!='NUMBER' :
-		print "ERROR: Type error.\n"
+		print "line "+str(p.lineno(2))+" : Type error.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "NUMBER"
@@ -621,7 +671,7 @@ def p_expression_unary_notOp(p):
 	
 	p[0] = {'place':symTable.newtmp(), 'truelist':p[2]['falselist'], 'falselist':p[2]['truelist']}
 	if p[2]['type']!='BOOLEAN' :
-		print "ERROR: Type error in expression.\n"
+		print "line "+str(p.lineno(2))+" : Type error in expression.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
@@ -666,7 +716,7 @@ def p_exp_and_op(p):
 
 	p[0] = {'place':symTable.newtmp(), 'falselist':threeAddrCode.merge(p[1]['falselist'], p[4]['falselist']), 'truelist':p[4]['truelist']}
 	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
-		print "ERROR: Illegal expression\n"
+		print "line "+str(p.lineno(2))+" : Illegal expression\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
@@ -681,7 +731,7 @@ def p_exp_or_op(p):
 
 	p[0] = {'place':symTable.newtmp(), 'truelist':threeAddrCode.merge(p[1]['truelist'], p[4]['truelist']), 'falselist':p[4]['falselist']}
 	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
-		print "ERROR: Illegal expression\n"
+		print "line "+str(p.lineno(2))+" : Illegal expression\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
@@ -700,7 +750,7 @@ def p_expression_binary_relational(p):
 				  | expression LESS_EQUAL_OP expression'''
 
 	if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
-		print "ERROR: cannot compare\n"
+		print "line "+str(p.lineno(2))+" : cannot compare\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
@@ -726,7 +776,7 @@ def p_expression_math(p):
 
 	p[0] = {'place':symTable.newtmp()}
 	if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
-		print "ERROR: cannot perform operation\n"
+		print "line "+str(p.lineno(2))+" : cannot perform operation\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "NUMBER"
@@ -739,12 +789,12 @@ def p_expression_concat(p):
 	'expression : expression CONCATENATE expression'
 
 	p[0] = {'place':symTable.newtmp()}
-	if p[1]['type']!='STRING' or p[3]['type']!='STRING' :
-		print "ERROR: Concatenation operation works only on strings\n"
-		exp_type = "TYPE ERROR"
-	else:
-		exp_type = 'STRING'
-		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
+	# if p[1]['type']!='STRING' or p[3]['type']!='STRING' :
+	# 	print "ERROR: Concatenation operation works only on strings\n"
+	# 	exp_type = "TYPE ERROR"
+	# else:
+	exp_type = 'STRING'
+	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
@@ -754,10 +804,10 @@ def p_expression_repeatition(p):
 
  	p[0] = {'place':symTable.newtmp()}
 	if p[3]['type']!='NUMBER' :
-		print "ERROR: How many times to repeat?.\n"
+		print "line "+str(p.lineno(2))+" : How many times to repeat?.\n"
 		exp_type = "TYPE ERROR"
 	elif p[1]['type']!='STRING' :
-		print "ERROR: You can only repeat a string.\n"
+		print "line "+str(p.lineno(2))+" : You can only repeat a string.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "STRING"

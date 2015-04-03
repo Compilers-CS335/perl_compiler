@@ -140,7 +140,6 @@ class SymbolTable:
 
 	def deletescope(self,procname):
 		curr=self.entryscope.pop()
-		print "DELETESCOPE"
 		curr['width']=self.offset.pop()
 
 
