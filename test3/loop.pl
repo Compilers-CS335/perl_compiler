@@ -3,29 +3,29 @@
 $a = 10;
 
 # while loop execution
-while( $a < 20 ){
-   print "Value of a: $a\n";
-   $a = $a + 1;
-   if ($x == 7) {
-  print '$x is equal to 7!';
-  if($y == 9){
-    print $y;
-  }
-  else
-  {
-    print "Hello";
-  }
-}
-else{
-  if($y == 9){
-    print $y;
-  }
-  else
-  {
-    print "Hello";
-  }
-}
-}
+# while( $a < 20 ){
+#    print "Value of a: $a\n";
+#    $a = $a + 1;
+#    if ($x == 7) {
+#   print '$x is equal to 7!';
+#   if($y == 9){
+#     print $y;
+#   }
+#   else
+#   {
+#     print "Hello";
+#   }
+# }
+# else{
+#   if($y == 9){
+#     print $y;
+#   }
+#   else
+#   {
+#     print "Hello";
+#   }
+# }
+# }
 
 # until loop execution
 #until( $a > 10 ){
@@ -34,9 +34,9 @@ else{
 #}
 
 # for loop execution
-# for( $a = 10; ; $a = $a + 1 ){
-#     print ("value of a: $a\n";
-# }
+for( $a = 10;  $a<12 ; $a = $a + 1 ){
+    print ("value of a: $a\n");
+}
 
 # $a = 0;
 # $b = 0;
