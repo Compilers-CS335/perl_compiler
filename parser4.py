@@ -48,7 +48,7 @@ def p_empty(p):
 # 	'empty_statements : empty'
 
 def p_statment(p):
-    '''statement : assignment Marker
+    '''statement : assignment Marker 
     		     | declaration Marker
                  | returnStatement Marker
                  | functionCall Marker SEMICOLON
@@ -174,7 +174,7 @@ def p_Markerscope(p):
 	
 
 def p_functionCall(p):
-	'functionCall : IDENTIFIER OPEN_PARANTHESIS parameters CLOSE_PARANTHESIS ' 
+	'functionCall : IDENTIFIER OPEN_PARANTHESIS  CLOSE_PARANTHESIS ' 
 
 	p[0]={}
 
@@ -242,7 +242,7 @@ def p_assignment(p):
     	exp_type = "VOID"
     	threeAddrCode.emit(p[1]['place'], '',p[2], p[3]['place'])
 
-    p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}    
+    p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]} 
 
 def p_assignment_specific_local(p):
 	'assignment : LOCAL VARIABLE ASSIGNMENT_OP expression SEMICOLON'
@@ -376,10 +376,10 @@ def p_termfunction(p):
 	p[0]=p[1]	
 	
 
-def p_parameters(p):
-	'''parameters 	: expression COMMA parameters
-					| expression 
-					| empty '''
+# def p_parameters(p):
+# 	'''parameters 	: expression COMMA parameters
+# 					| expression 
+# 					| empty '''
 					#### KAISE START KARU. SPLIT KARNA PADEGA
 	
 def p_while(p):
@@ -401,8 +401,91 @@ def p_Markerwhile(p):
 	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
 
 def p_for(p):
-	'forStatement : FOR  OPEN_PARANTHESIS expression SEMICOLON expression SEMICOLON expression CLOSE_PARANTHESIS  block'
+	'forStatement : FOR  OPEN_PARANTHESIS assignment   Marker  expression  SEMICOLON  Marker  VARIABLE ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
 	
+	p[0]={}
+	if p[5]['type']=="BOOLEAN":
+		print "in for"
+		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
+		#threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[13].get('endlist',[]),p[13].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[12].get('falselist',[]),p[0].get('nextlist',[]))	    	
+	    # add entry in the symbol table and fill in the type
+		print p[10]
+		p[8]={'type':p[10]['type'], 'place':p[8]}
+		print p[8]
+		print "tatti"
+		symTable.newvariableentry(p[8]['place'], p[8]['type'], 0)
+		threeAddrCode.emit(p[8]['place'], '',p[9], p[10]['place'])
+		threeAddrCode.emit('','','GOTO',p[4]['quad'])
+	else:
+		print "Expression must be boolean"
+	p[0]['beginlist']=[]
+	p[0]['endlist']=[]
+
+
+def p_for_advass(p):
+	'forStatement : FOR  OPEN_PARANTHESIS assignment   Marker  expression  SEMICOLON  Marker  VARIABLE ADV_ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
+	
+	p[0]={}
+	if p[5]['type']=="BOOLEAN":
+		print "in for"
+		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
+		threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
+		p[0]['nextlist']=threeAddrCode.merge(p[13].get('endlist',[]),p[13].get('nextlist',[]))
+		p[0]['nextlist']=threeAddrCode.merge(p[12].get('falselist',[]),p[0].get('nextlist',[]))	    	
+	    # add entry in the symbol table and fill in the type
+		
+
+		exp_type = "VOID"
+		varType = symTable.getvalueofkey_variable(p[8], 'type')
+		if varType==None:
+			print "Variable does not exist\n"
+			exp_type_left = "TYPE ERROR"
+		else:
+			exp_type_left = varType
+		p[8] = {'place':p[8], 'type':exp_type_left}
+		# Dealing with the binary operation
+		Adv_Op = p[9].split("=")[0]
+		if Adv_Op=='.':
+			if p[8]['type']!='STRING' or p[10]['type']!='STRING' :
+				print "ERROR: Concatenation operation works only on strings\n"
+				exp_type = "TYPE ERROR"
+		elif Adv_Op=='x':
+			if p[10]['type']!='NUMBER' :
+				print "ERROR: How many times to repeat?.\n"
+				exp_type="TYPE ERROR"
+			elif p[8]['type']!='STRING' :
+				print "ERROR: You can only repeat a string.\n"
+				exp_type="TYPE ERROR"
+		else:
+			if p[8]['type']!='NUMBER' or p[10]['type']!='NUMBER' :
+				print "ERROR: cannot perform operation\n"
+				exp_type="TYPE ERROR"
+	
+		if exp_type=="VOID":
+			threeAddrCode.emit(p[8]['place'], p[8]['place'], Adv_Op, p[10]['place'])
+		else:
+			print "Some error occured in advanced assignment\n"	
+		threeAddrCode.emit('','','GOTO',p[4]['quad'])
+	else:
+		print "Expression must be boolean"
+	p[0]['beginlist']=[]
+	p[0]['endlist']=[]
+
+
+def p_Markerfor2(p):
+	'Markerfor2 : empty'
+
+
+def p_Markerfor(p):
+	'Markerfor : empty'
+	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
+	threeAddrCode.emit(p[-7]['place'],'','GOTO_MARK','-1')
+	
+def p_assignment_For_empty(p):
+	'assignment : empty'
+
 
 ### EXPRESSIONS
 	# associativity and precedence
