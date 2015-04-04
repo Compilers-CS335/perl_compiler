@@ -29,12 +29,13 @@ if ($x > 10) {
 	print "$x is greater than 10!";
 } else {
 	print "$x is not greater than 10!";
+	print "ABSE";
 }
 print "\n";
 
 # STRINGS ARE A LITTLE DIFFERENT
-if ($name eq "Sarah") {
-	print "Hello, $name!\n";
-} else {
-	print "You are not $name!\n";
-}
+# if ($name eq "Sarah") {
+# 	print "Hello, $name!\n";
+# } else {
+# 	print "You are not $name!\n";
+# }

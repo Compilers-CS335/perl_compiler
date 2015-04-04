@@ -100,7 +100,8 @@ tokens=[
 		"DECREMENT_OP",
 		"FILE_HANDLING_OPTIONS",
 		"ASSOCIATE_OP",
-		"NEXT"
+		"NEXT",
+		"VERSION"
 		] + list(reserved.values())
 
 t_ignore_WHITESPACE=r"\s"
@@ -376,6 +377,10 @@ def t_QUESTION_MARK(t):
 
 def t_COLON(t):
 	r"\:"
+	return t
+
+def t_VERSION(t):
+	r"(v)?[\d]\.(\d\.\d|00\d_00\d)"
 	return t
 
 def t_ignore_COMMENT(t):
