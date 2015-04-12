@@ -27,3 +27,4 @@ evince tmp
 > An array in our implementation can only contain elements of a single type... either all int, or all float or all string.
 > also, array can only be accessed using @array_name[index] ... and not $array_name[index]
 > Array assignment :-   @array_name = (...);   -: is mandatory
+> Can't use name parent root  type scope returntype scope_depth

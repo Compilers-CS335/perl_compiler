@@ -3,7 +3,7 @@ sub parent1{
     my $a = 10;
     sub child {
         $a = $a+1;
-        return "SDSDSD";
+        return $a;
     }
     print "\ninside and before:= ";
     print $a;

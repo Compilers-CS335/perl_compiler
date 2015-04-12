@@ -1,0 +1,32 @@
+# Perl Compiler
+A cross-compiler from 'perl' to 'x86' using 'python'
+
+Part3: run: python parser.py test/<file_name>
+
+--------------------------------------------------
+VARIATIONS IN IMPLEMENTATION
+--------------------------------------------------
+> not giving zero integer value to strings. 
+> Multiple assignments in a single statement are now not allowed
+> Functions do not take parameters. Since any variable defined WITHOUT "my" can be used by any function.
+> also, array can only be accessed using @array_name[index] ... and not $array_name[index]
+
+
+
+--------------------------------------------------
+UNIMPLEMENTED FEATURES 
+--------------------------------------------------
+> ++ and -- not implemented
+> Hash (%hashName) not implemented
+> repeat does not create arrays (i.e. only strings can be repeated)
+> The update assignment in FOR loops cannot take any variable in the RHS. ($a = $a+1 might not work correctly if $a has been modified inside the loop)
+> Array assignment :-   @array_name = (...);   -: is mandatory
+> Can't use the following names for functions:- parent, root, type, scope, returntype, scope_depth
+> Can't call functions by &function_name.
+> Functions cannot be called before definition.
+
+-------------------------------------------------
+COMMENT
+-------------------------------------------------
+> Only basic features have been implemented.
+> Most of the features that work in C are implemented. Perl is a very vast language, and similar things can be done in various ways.

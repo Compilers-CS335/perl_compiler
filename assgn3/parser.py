@@ -3,7 +3,7 @@ import symbolTable
 import tac
 
 from lexer import tokens,lexer
-import re
+
 
 # def p_start(p):
 #     '''start : block
@@ -17,15 +17,6 @@ symTable = symbolTable.SymbolTable()
 threeAddrCode = tac.Tac(symTable)
 switch_hash={}
 temp_line=0
-code_string=".section .text\n"
-code_string+=".globl _start"
-code_string+="\n"
-code_string+="_start:\n"
-data_string=".section .data\n"
-data_strings={}
-cod_strings={}
-
-
 def p_start(p):
     '''start : block
              | statements'''
@@ -120,7 +111,7 @@ def p_Marker_true(p):
 	'Marker_true : empty'
 	p[0]={}
 	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
-	#threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
+	threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
 	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
 
@@ -280,7 +271,7 @@ def p_MarkerUnless(p):
 	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
 	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
-	#threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
+	threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
 	# print "hsjb"+str(p[0]['truelist'])
 	# print "hsjbf"+str(p[0]['falselist'])
 
@@ -318,7 +309,7 @@ def p_Markerif(p):
 	'Markerif : empty'
 	p[0]={}
 	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
-	#threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
+	threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
 	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
 	# print "hsjb"+str(p[0]['truelist'])
@@ -484,7 +475,7 @@ def p_assignment_adv(p):
 	else:
 		varType = symTable.getvalueofkey_variable(p[1], 'type')
 		if varType==None:
-			print "Variable does not exist\n"
+			print "line "+str(p.lineno(3))+" :Variable does not exist\n"
 			exp_type_left = "TYPE ERROR"
 		else:
 			exp_type_left = varType
@@ -816,7 +807,7 @@ def p_term_var(p):
 
 	varType = symTable.getvalueofkey_variable(p[1], 'type')
 	if varType==None:
-		print "Variable does not exist\n"
+		print "line "+str(p.lineno(1))+" :Variable does not exist\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = varType
@@ -833,7 +824,7 @@ def p_term_arr_element(p):
 
 	varType = symTable.getvalueofkey_array(p[1],p[3],'type')
 	if varType==None:
-		print "Array element does not exist\n"
+		print "line "+str(p.lineno(1))+" :Array element does not exist\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = varType
@@ -1239,103 +1230,22 @@ def p_error(p):
 
 
 
-
-
-
-
 parser = yacc.yacc(debug=1)
 
-
-
-
-
-
-def genasm(taccode):
-	global code_string
-	global data_strings
-	global cod_strings
-	code_string+="pushl"+"\t"+"%ebp\n"
-	code_string+="movl"+"\t"+"%esp"+","+"%ebp\n"
-	flag=0
-	num_value_temp=0
-	for TAC in taccode['root1']:
-		if TAC[2]=="=":			
-			if type(TAC[3]) is int:
-				flag=0
-				code_string+= "movl"+"\t$"+str(TAC[3])+","+"%edi\n"
-				num_value_temp=TAC[3]
-			elif re.match(r'"*"',TAC[3]):
-				flag=1
-				string_value_temp=".ascii\t"+TAC[3]+"\n"
-				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0] \
-					+"_len = . - "+TAC[0]
-				cod_strings[TAC[0]]=TAC[3]
-			elif re.match(r'\'*\'',TAC[3]):
-				flag=1
-				string_value_temp=".ascii\t'"+re.match(r'\'*\'',TAC[3]).group(1)+"'\n"
-				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
-					+"_len = . - "+TAC[0]
-				cod_strings[TAC[0]]=TAC[3]
-			else:
-				if flag==0:
-					code_string+= "movl"+"\t"+"%edi,"+TAC[0].split('$')[1]+"\n"
-					data_strings[TAC[0].split('$')[1]]=TAC[0].split('$')[1]+":\n\t.long\t"+str(num_value_temp)
-				else:
-					string_value_temp=TAC[0].split('$')[1]+":\n"+string_value_temp+TAC[0].split('$')[1] \
-					+"_len = . - "+TAC[0].split('$')[1]
-					data_strings[TAC[0].split('$')[1]]=string_value_temp
-
-		if TAC[2]=="EXIT":
-			code_string+="movl\t$1,%eax\nmovl\t$0,%ebx\nint\t$0x80\n"
-		if TAC[2]=="print":
-			if TAC[0]=="NUMBER":###Deepak will give the function
-				code_string+="movl\t$4,%eax\nmovl\t$1,%ebx\n"
-				code_string+=TAC[3]+",%ecx\nmovl\t$4,%edx"
-				code_string+="int\t$0x80\n"
-			else:
-				code_string+="movl\t$4,%eax\nmovl\t$1,%ebx\n"
-				if re.search(r'\$',TAC[3]):
-					code_string+="movl\t"+TAC[3]+",%ecx\n"
-					code_string+="movl\t"+TAC[3]+"_len,%edx\n"
-					code_string+="int\t$0x80\n"
-				else:
-					code_string+="movl\t$"+TAC[3]+",%ecx\n"
-					code_string+="movl\t$"+TAC[3]+"_len,%edx\n"
-					code_string+="int\t$0x80\n"
-		
-
-		
-
-
-
-
-
-	
-			
-
 def runparser(inputfile):
-	global code_string
-	global data_string
-	global data_strings
 	program=open(inputfile).read()
 	result=parser.parse(program,lexer=lexer, debug=0)
 	# print result
-	print "\nSymbol Table :-\n"
-	print symTable.symbolTable
+	# print "\nSymbol Table :-\n"
+	# print symTable.symbolTable
 	print "\nThree Address Code:-\n"
 	# print threeAddrCode.code
 	for scopes in threeAddrCode.code:
 		count = 0
 		print "In the scope "+str(scopes)+" :-"
-
 		for TAC in threeAddrCode.code[scopes]:
 			print "\t"+str(count)+"\t"+str(TAC)
 			count+=1
-	genasm(threeAddrCode.code)
-	for item in data_strings:
-		code_string = data_strings[item]+"\n"+code_string
-	code_string = data_string+ code_string
-	print code_string
 
 if __name__=="__main__":
 	from sys import argv 
