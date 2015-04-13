@@ -122,6 +122,7 @@ class SymbolTable:
 		curr[varible]['returntype']="UNDEFINED"
 
 		temp1=self.offset.pop()
+		curr[varible]['offset']=temp1
 		temp1=temp1+tempwidth
 		self.offset.append(temp1)
 
@@ -189,6 +190,7 @@ class SymbolTable:
 		curr[place]['width']=tempwidth
 
 		temp1=self.offset.pop()
+		curr[place]['offset']=temp1
 		temp1=temp1+tempwidth
 		self.offset.append(temp1)
 

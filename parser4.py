@@ -3,6 +3,7 @@ import symbolTable
 import tac
 
 from lexer import tokens,lexer
+import re
 
 
 # def p_start(p):
@@ -225,7 +226,9 @@ def p_Marker_caselist(p):
 	if p[-1]['type']!='NUMBER' or switch_hash['type']!='NUMBER' :
 		print "line "+str(p.lineno(2))+" : cannot compare\n"
 	else:
-		threeAddrCode.emit(symTable.newtmp(), p[-1]['place'], '!=', switch_hash['LHS'])
+		variable_name = symTable.newtmp()
+		threeAddrCode.emit(variable_name, p[-1]['place'], '!=', switch_hash['LHS'])
+		symTable.newvariableentry(variable_name, "VOID", 1)
 	p[0]={'falselist':[threeAddrCode.pointer_quad_next()]}
 	threeAddrCode.emit('', '', 'GOTO_SWITCH', '-1')
 
@@ -538,7 +541,7 @@ def p_for(p):
 	'forStatement : FOR  OPEN_PARANTHESIS assignment SEMICOLON  Marker  expression  SEMICOLON  Marker  VARIABLE ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
 	
 	p[0]={}
-	if p[5]['type']=="BOOLEAN":
+	if p[6]['type']=="BOOLEAN":
 		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
 		#threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
 		p[0]['nextlist']=threeAddrCode.merge(p[14].get('endlist',[]),p[14].get('nextlist',[]))
@@ -742,11 +745,22 @@ def p_string(p):
 	'string : STRING'
 
 	p[0] = {'type':'STRING', 'value':p[1]}
+	print "The length of "+p[1]+" is "+str(len(p[1])-2)
 
 def p_res_string(p):
 	'string : RES_STRING'
+	# p[1] = "This is a string with \\n \n"
+	# string_value = re.search(r'\\\\', p[1])----
+	string_value = re.sub(r'\\t', '\t', p[1])
+	string_value = re.sub(r'\\a', '\a', string_value)
+	string_value = re.sub(r'\\n', '\n', string_value)
+	string_value = re.sub(r'\\\'', "\'", string_value)
+	string_value = re.sub(r'\\\"', '\"', string_value)
+	string_value = re.sub(r'\\\/', '/', string_value)
+	# string_value = re.sub(r'[\\]{2}', '\\', p[1]) 		// Not implemented backslach escaped
+	p[0] = {'type':'RES_STRING', 'value':string_value}
 
-	p[0] = {'type':'RES_STRING', 'value':p[1]}
+	print "The length of "+string_value+" is "+str(len(string_value)-2)
 	
 def p_number(p):
 	''' number  : NUMBER
@@ -773,6 +787,7 @@ def p_term(p):
 
 	p[0] = p[1]
 	p[0]['place'] = symTable.newtmp()
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	threeAddrCode.emit(p[0]['place'], '', '=', p[1]['value'])
 
 def p_term_var(p):
@@ -864,6 +879,7 @@ def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
 	p[0]['type']= exp_type
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	# p[0]['value']=str(p[1])+str(p[2]['value'])
 
 def p_expression_unary_notOp(p):
@@ -878,6 +894,7 @@ def p_expression_unary_notOp(p):
 		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
 
 	p[0]['type'] = exp_type
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	# p[0]['value']= str(p[1])+str(p[2]['value'])
 
 # def p_expression(p):
@@ -924,6 +941,7 @@ def p_exp_and_op(p):
 
 	threeAddrCode.backpatch(p[1]['truelist'], p[3]['quad'])
 	p[0]['type']=exp_type
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
 
 def p_exp_or_op(p):
@@ -939,6 +957,7 @@ def p_exp_or_op(p):
 
 	threeAddrCode.backpatch(p[1]['falselist'], p[3]['quad'])
 	p[0]['type']=exp_type
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
 
 def p_expression_binary_relational(p):
@@ -956,6 +975,7 @@ def p_expression_binary_relational(p):
 		exp_type = "BOOLEAN"
 
 	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[threeAddrCode.pointer_quad_next()], 'falselist':[1+threeAddrCode.pointer_quad_next()]}
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
@@ -983,6 +1003,7 @@ def p_expression_math(p):
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_expression_concat(p):
@@ -997,6 +1018,7 @@ def p_expression_concat(p):
 	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 def p_expression_repeatition(p):
@@ -1014,6 +1036,7 @@ def p_expression_repeatition(p):
 		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 
 	p[0]['type'] = exp_type
+	symTable.newvariableentry(p[0]['place'], p[0]['type'], 1)
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
@@ -1177,8 +1200,15 @@ def runparser(inputfile):
 	program=open(inputfile).read()
 	result=parser.parse(program,lexer=lexer, debug=1)
 	# print result
-	# print "\nSymbol Table :-\n"
+	print "\nSymbol Table :-\n"
 	# print symTable.symbolTable
+	print symTable.offset
+	for scopes in symTable.symbolTable:
+		count = 0
+		print "In the scope "+str(scopes)+" :-"
+		for symEntry in symTable.symbolTable[scopes]:
+			print "\t"+str(count)+"\t"+str(symEntry)+":\t"+str(symTable.symbolTable[scopes][symEntry])
+			count+=1
 	print "\nThree Address Code:-\n"
 	# print threeAddrCode.code
 	for scopes in threeAddrCode.code:

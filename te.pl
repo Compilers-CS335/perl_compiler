@@ -1,4 +1,4 @@
 
 {
-	print ("2");
+	print ('2 is an even number/\/\\\" and then tab \t newline \n');
 }

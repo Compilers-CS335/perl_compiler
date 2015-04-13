@@ -1,287 +1,84 @@
 PLY: PARSE DEBUG START
 
 State  : 0
-Stack  : . LexToken(VARIABLE,'$a',1,0)
-Action : Shift and goto state 54
+Stack  : . LexToken(BLOCK_BEGIN,'{',2,1)
+Action : Shift and goto state 48
 
-State  : 54
-Stack  : VARIABLE . LexToken(ASSIGNMENT_OP,'=',1,3)
-Action : Shift and goto state 140
-
-State  : 140
-Stack  : VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,3,1,5)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : VARIABLE ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [number -> NUMBER] with [3] and goto state 78
-Result : <dict @ 0x7f526e96e280> ({'type': 'NUMBER', 'value': 3})
-
-State  : 29
-Stack  : VARIABLE ASSIGNMENT_OP number . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e96e280>] and goto state 83
-Result : <dict @ 0x7f526e96e280> ({'place': 'temp1', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96e280>] and goto state 96
-Result : <dict @ 0x7f526e96e280> ({'place': 'temp1', 'type': 'NUMBER', 'va ...)
-
-State  : 211
-Stack  : VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$a','=',<dict @ 0x7f526e96e280>] and goto state 54
-Result : <dict @ 0x7f526e96e7f8> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 53
-Stack  : assignment . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 60
-Stack  : assignment empty . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e96e5c8> ({'quad': 2})
-
-State  : 136
-Stack  : assignment Marker . LexToken(SEMICOLON,';',1,6)
-Action : Shift and goto state 206
-
-State  : 206
-Stack  : assignment Marker SEMICOLON . LexToken(VARIABLE,'$a',2,8)
-Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7f526e96e7f8>,{'quad': 2},';'] and goto state 7
-Result : <dict @ 0x7f526e96e910> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 37
-Stack  : statement . LexToken(VARIABLE,'$a',2,8)
-Action : Shift and goto state 54
-
-State  : 54
-Stack  : statement VARIABLE . LexToken(EQUALS_OP,'==',2,11)
-Action : Reduce rule [term -> VARIABLE] with ['$a'] and goto state 85
-Result : <dict @ 0x7f526e96e168> ({'type': 'NUMBER', 'place': '$a'})
-
-State  : 13
-Stack  : statement term . LexToken(EQUALS_OP,'==',2,11)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96e168>] and goto state 96
-Result : <dict @ 0x7f526e96e168> ({'type': 'NUMBER', 'place': '$a'})
-
-State  : 23
-Stack  : statement expression . LexToken(EQUALS_OP,'==',2,11)
-Action : Shift and goto state 85
-
-State  : 85
-Stack  : statement expression EQUALS_OP . LexToken(NUMBER,4,2,14)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : statement expression EQUALS_OP NUMBER . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [number -> NUMBER] with [4] and goto state 78
-Result : <dict @ 0x7f526e96ea28> ({'type': 'NUMBER', 'value': 4})
-
-State  : 29
-Stack  : statement expression EQUALS_OP number . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e96ea28>] and goto state 83
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp2', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : statement expression EQUALS_OP term . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96ea28>] and goto state 96
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp2', 'type': 'NUMBER', 'va ...)
-
-State  : 161
-Stack  : statement expression EQUALS_OP expression . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [expression -> expression EQUALS_OP expression] with [<dict @ 0x7f526e96e168>,'==',<dict @ 0x7f526e96ea28>] and goto state 107
-Result : <dict @ 0x7f526e96e050> ({'truelist': [3], 'place': 'temp3', 'typ ...)
-
-State  : 23
-Stack  : statement expression . LexToken(QUESTION_MARK,'?',2,16)
-Action : Shift and goto state 95
-
-State  : 95
-Stack  : statement expression QUESTION_MARK . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 172
-Stack  : statement expression QUESTION_MARK empty . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [Marker_true -> empty] with [None] and goto state 28
-Result : <dict @ 0x7f526e96eb40> ({'truelist': [4], 'falselist': [5]})
-
-State  : 171
-Stack  : statement expression QUESTION_MARK Marker_true . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 60
-Stack  : statement expression QUESTION_MARK Marker_true empty . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e96ee88> ({'quad': 6})
-
-State  : 223
-Stack  : statement expression QUESTION_MARK Marker_true Marker . LexToken(VARIABLE,'$b',2,18)
-Action : Shift and goto state 248
-
-State  : 248
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE . LexToken(ASSIGNMENT_OP,'=',2,20)
-Action : Shift and goto state 219
-
-State  : 219
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,1,2,21)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP NUMBER . LexToken(COLON,':',2,23)
-Action : Reduce rule [number -> NUMBER] with [1] and goto state 78
-Result : <dict @ 0x7f526e96ea28> ({'type': 'NUMBER', 'value': 1})
-
-State  : 29
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP number . LexToken(COLON,':',2,23)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e96ea28>] and goto state 83
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp4', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP term . LexToken(COLON,':',2,23)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96ea28>] and goto state 96
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp4', 'type': 'NUMBER', 'va ...)
-
-State  : 211
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP expression . LexToken(COLON,':',2,23)
-Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$b','=',<dict @ 0x7f526e96ea28>] and goto state 54
-Result : <dict @ 0x7f526e9746e0> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 247
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment . LexToken(COLON,':',2,23)
-Action : Shift and goto state 263
-
-State  : 263
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON . LexToken(VARIABLE,'$b',2,25)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 276
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON empty . LexToken(VARIABLE,'$b',2,25)
-Action : Reduce rule [Marker_false -> empty] with [None] and goto state 29
-Result : <dict @ 0x7f526e9744b0> ({'quad': 9, 'nextlist': [8]})
-
-State  : 275
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false . LexToken(VARIABLE,'$b',2,25)
-Action : Shift and goto state 154
-
-State  : 154
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE . LexToken(ASSIGNMENT_OP,'=',2,27)
-Action : Shift and goto state 219
-
-State  : 219
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,2,2,28)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [number -> NUMBER] with [2] and goto state 78
-Result : <dict @ 0x7f526e974910> ({'type': 'NUMBER', 'value': 2})
-
-State  : 29
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP number . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e974910>] and goto state 83
-Result : <dict @ 0x7f526e974910> ({'place': 'temp5', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e974910>] and goto state 96
-Result : <dict @ 0x7f526e974910> ({'place': 'temp5', 'type': 'NUMBER', 'va ...)
-
-State  : 211
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$b','=',<dict @ 0x7f526e974910>] and goto state 54
-Result : <dict @ 0x7f526e974d70> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 285
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false assignment . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [ternaryStatement -> expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false assignment] with [<dict @ 0x7f526e96e050>,'?',<dict @ 0x7f526e96eb40>,{'quad': 6},<dict @ 0x7f526e9746e0>,':',<dict @ 0x7f526e9744b0>,<dict @ 0x7f526e974d70>] and goto state 27
-Result : <dict @ 0x7f526e9747f8> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 7
-Stack  : statement ternaryStatement . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 60
-Stack  : statement ternaryStatement empty . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e974a28> ({'quad': 11})
-
-State  : 70
-Stack  : statement ternaryStatement Marker . LexToken(SEMICOLON,';',2,29)
-Action : Shift and goto state 147
-
-State  : 147
-Stack  : statement ternaryStatement Marker SEMICOLON . LexToken(PRINT,'print',3,31)
-Action : Reduce rule [statement -> ternaryStatement Marker SEMICOLON] with [<dict @ 0x7f526e9747f8>,{'quad': 11},';'] and goto state 25
-Result : <dict @ 0x7f526e974b40> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 37
-Stack  : statement statement . LexToken(PRINT,'print',3,31)
+State  : 48
+Stack  : BLOCK_BEGIN . LexToken(PRINT,'print',3,4)
 Action : Shift and goto state 17
 
 State  : 17
-Stack  : statement statement PRINT . LexToken(VARIABLE,'$b',3,37)
-Action : Shift and goto state 64
+Stack  : BLOCK_BEGIN PRINT . LexToken(OPEN_PARANTHESIS,'(',3,10)
+Action : Shift and goto state 77
 
-State  : 64
-Stack  : statement statement PRINT VARIABLE . LexToken(SEMICOLON,';',3,39)
-Action : Reduce rule [term -> VARIABLE] with ['$b'] and goto state 85
-Result : <dict @ 0x7f526e974e88> ({'type': 'NUMBER', 'place': '$b'})
+State  : 77
+Stack  : BLOCK_BEGIN PRINT OPEN_PARANTHESIS . LexToken(STRING,'\'2 is an even number/\\/\\\\\\" and then tab \\t newline \\n\'',3,11)
+Action : Shift and goto state 52
+
+State  : 52
+Stack  : BLOCK_BEGIN PRINT OPEN_PARANTHESIS STRING . LexToken(CLOSE_PARANTHESIS,')',3,66)
+Action : Reduce rule [string -> STRING] with [<str @ 0x7f4ae5812690>] and goto state 76
+Result : <dict @ 0x7f4ae7034280> ({'type': 'STRING', 'value': '\'2 is an e ...)
+
+State  : 49
+Stack  : BLOCK_BEGIN PRINT OPEN_PARANTHESIS string . LexToken(CLOSE_PARANTHESIS,')',3,66)
+Action : Reduce rule [term -> string] with [<dict @ 0x7f4ae7034280>] and goto state 84
+Result : <dict @ 0x7f4ae7034280> ({'place': 'temp1', 'type': 'STRING', 'va ...)
 
 State  : 13
-Stack  : statement statement PRINT term . LexToken(SEMICOLON,';',3,39)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e974e88>] and goto state 96
-Result : <dict @ 0x7f526e974e88> ({'type': 'NUMBER', 'place': '$b'})
+Stack  : BLOCK_BEGIN PRINT OPEN_PARANTHESIS term . LexToken(CLOSE_PARANTHESIS,')',3,66)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f4ae7034280>] and goto state 96
+Result : <dict @ 0x7f4ae7034280> ({'place': 'temp1', 'type': 'STRING', 'va ...)
 
-State  : 78
-Stack  : statement statement PRINT expression . LexToken(SEMICOLON,';',3,39)
-Action : Shift and goto state 151
+State  : 146
+Stack  : BLOCK_BEGIN PRINT OPEN_PARANTHESIS expression . LexToken(CLOSE_PARANTHESIS,')',3,66)
+Action : Shift and goto state 208
 
-State  : 151
-Stack  : statement statement PRINT expression SEMICOLON . $end
-Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f526e974e88>,';'] and goto state 52
-Result : <dict @ 0x7f526e96eb40> ({'endlist': [], 'beginlist': [], 'type': ...)
+State  : 208
+Stack  : BLOCK_BEGIN PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . LexToken(SEMICOLON,';',3,67)
+Action : Shift and goto state 234
+
+State  : 234
+Stack  : BLOCK_BEGIN PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON . LexToken(BLOCK_ENDS,'}',4,69)
+Action : Reduce rule [printStatement -> PRINT OPEN_PARANTHESIS expression CLOSE_PARANTHESIS SEMICOLON] with ['print','(',<dict @ 0x7f4ae7034280>,')',';'] and goto state 51
+Result : <dict @ 0x7f4ae70344b0> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 20
-Stack  : statement statement printStatement . $end
+Stack  : BLOCK_BEGIN printStatement . LexToken(BLOCK_ENDS,'}',4,69)
 Action : Reduce rule [empty -> <empty>] with [] and goto state 6
 Result : <NoneType @ 0x920190> (None)
 
 State  : 60
-Stack  : statement statement printStatement empty . $end
+Stack  : BLOCK_BEGIN printStatement empty . LexToken(BLOCK_ENDS,'}',4,69)
 Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e96e7f8> ({'quad': 12})
+Result : <dict @ 0x7f4ae7034168> ({'quad': 2})
 
 State  : 80
-Stack  : statement statement printStatement Marker . $end
-Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f526e96eb40>,{'quad': 12}] and goto state 14
-Result : <dict @ 0x7f526e974a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+Stack  : BLOCK_BEGIN printStatement Marker . LexToken(BLOCK_ENDS,'}',4,69)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f4ae70344b0>,{'quad': 2}] and goto state 14
+Result : <dict @ 0x7f4ae7034a28> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 37
-Stack  : statement statement statement . $end
-Action : Reduce rule [statements -> statement] with [<dict @ 0x7f526e974a28>] and goto state 5
-Result : <dict @ 0x7f526e974a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+Stack  : BLOCK_BEGIN statement . LexToken(BLOCK_ENDS,'}',4,69)
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7f4ae7034a28>] and goto state 5
+Result : <dict @ 0x7f4ae7034a28> ({'endlist': [], 'beginlist': [], 'type': ...)
 
-State  : 123
-Stack  : statement statement statements . $end
-Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f526e974b40>,<dict @ 0x7f526e974a28>] and goto state 4
-Result : <dict @ 0x7f526e9747f8> ({'beginlist': [], 'endlist': []})
+State  : 129
+Stack  : BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',4,69)
+Action : Shift and goto state 195
 
-State  : 123
-Stack  : statement statements . $end
-Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f526e96e910>,<dict @ 0x7f526e9747f8>] and goto state 4
-Result : <dict @ 0x7f526e96e050> ({'beginlist': [], 'endlist': []})
+State  : 195
+Stack  : BLOCK_BEGIN statements BLOCK_ENDS . $end
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',<dict @ 0x7f4ae7034a28>,'}'] and goto state 3
+Result : <dict @ 0x7f4ae7034a28> ({'endlist': [], 'beginlist': [], 'type': ...)
 
-State  : 25
-Stack  : statements . $end
-Action : Reduce rule [start -> statements] with [<dict @ 0x7f526e96e050>] and goto state 2
-Result : <dict @ 0x7f526e96e050> ({'beginlist': [], 'endlist': []})
+State  : 24
+Stack  : block . $end
+Action : Reduce rule [start -> block] with [<dict @ 0x7f4ae7034a28>] and goto state 1
+Result : <dict @ 0x7f4ae7034a28> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 35
 Stack  : start . $end
-Done   : Returning <dict @ 0x7f526e96e050> ({'beginlist': [], 'endlist': []})
+Done   : Returning <dict @ 0x7f4ae7034a28> ({'endlist': [], 'beginlist': [], 'type': ...)
 PLY: PARSE DEBUG END

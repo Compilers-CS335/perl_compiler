@@ -27,3 +27,16 @@ evince tmp
 > An array in our implementation can only contain elements of a single type... either all int, or all float or all string.
 > also, array can only be accessed using @array_name[index] ... and not $array_name[index]
 > Array assignment :-   @array_name = (...);   -: is mandatory
+
+
+
+*** Remember that you cannot name a function root1, or other any name mentioned among the prohibited names for a variable.
+
++---------------------------------------------------------------+
+|###############################################################|
++---------------------------------------------------------------+
+|						CODE GENERATION							|
++---------------------------------------------------------------+
+
+
+> The responsive string will not respond to embedded variables and array values... for that you need to concatenate them with strings.
