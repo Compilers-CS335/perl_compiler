@@ -36,6 +36,25 @@ pushl %edi
 pushl %esi
 pushl %ebp
 
+    cmpl $0, %ecx
+    jge positive_print
+    notl     %ecx   #Take BIT wise NOT
+    inc %ecx
+    movl %ecx, %edi
+
+    movl    $45, %eax
+    pushl   %eax
+
+    movl $4, %eax
+    movl $1, %ebx
+    movl %esp, %ecx
+    movl $1, %edx
+    int $0x80
+    popl %eax
+    movl %edi, %ecx
+
+
+    positive_print:
 
    #movl %ecx, %edi  #store the number in % edi as %ebx would be modified here
   

@@ -2,6 +2,8 @@
 .section .data
 number:
 	.long -8888
+number:
+    .ascii "Hello"
 value1:
 	.long 1
 value2:

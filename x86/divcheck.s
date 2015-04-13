@@ -1,45 +1,40 @@
 .section .data
 c:
-    .long   -14
+	.long	2
 .section .text
 true:
-movl    $1,%eax
+movl	$1,%eax
 ret
 .globl _start
 _start:
-pushl   %ebp
-#call    printIntNumber
-movl    %esp,%ebp
-movl    c, %ecx
-movl    %ecx,-4(%ebp)
-movl    $1,-8(%ebp)
-movl    -4(%ebp),%eax
-imull   -8(%ebp),%eax
-movl    %eax,-12(%ebp)
-movl    -12(%ebp),%eax
-movl    %eax,c
+pushl	%ebp
+movl	%esp,%ebp
+movl	$4,-4(%ebp)
+movl	$2,-8(%ebp)
+movl	-4(%ebp),%eax
+cdq
+idivl	-8(%ebp)
+movl	%eax,-12(%ebp)
+movl	-12(%ebp),%eax
+movl	%eax,c
 movl    c, %ecx
 call printIntNumber
-movl    $1,%eax
-movl    $0,%ebx
-int $0x80
-
-
-
-
+movl	$1,%eax
+movl	$0,%ebx
+int	$0x80
 
 
 
 jmp EndPrintNum
 printIntNumber:
-    pushl %eax #save the  registers
-    pushl %ebx
-    pushl %ecx
-    pushl %edx
-    pushl %edi
-    pushl %esi
-    pushl %ebp
-    
+	pushl %eax #save the  registers
+	pushl %ebx
+	pushl %ecx
+	pushl %edx
+	pushl %edi
+	pushl %esi
+	pushl %ebp
+	
     cmpl $0, %ecx
     jge positive_print
     notl     %ecx   #Take BIT wise NOT
@@ -59,6 +54,7 @@ printIntNumber:
 
 
     positive_print:
+
     movl %ecx, %eax #storing number in %eax to divide it by 10 and extract digits one by one
     movl %esp, %esi   #storing the initial position of the stack pointer in %esi register
     labl:

@@ -1,61 +1,57 @@
 .section .data
 c:
-    .long   -14
+    .long 9
 .section .text
 true:
-movl    $1,%eax
+movl	$1,%eax
 ret
 .globl _start
 _start:
-pushl   %ebp
-#call    printIntNumber
-movl    %esp,%ebp
-movl    c, %ecx
-movl    %ecx,-4(%ebp)
-movl    $1,-8(%ebp)
-movl    -4(%ebp),%eax
-imull   -8(%ebp),%eax
-movl    %eax,-12(%ebp)
-movl    -12(%ebp),%eax
-movl    %eax,c
+pushl	%ebp
+movl	%esp,%ebp
+movl	$9,-4(%ebp)
+movl	-4(%ebp),%eax
+movl	%eax,c
+movl	$2,-8(%ebp)
+movl	c,%eax
+cdq
+idivl	-8(%ebp)
+movl	%eax,c
 movl    c, %ecx
 call printIntNumber
-movl    $1,%eax
-movl    $0,%ebx
-int $0x80
-
-
-
-
+movl	$1,%eax
+movl	$0,%ebx
+int	$0x80
 
 
 
 jmp EndPrintNum
 printIntNumber:
-    pushl %eax #save the  registers
-    pushl %ebx
-    pushl %ecx
-    pushl %edx
-    pushl %edi
-    pushl %esi
-    pushl %ebp
-    
-    cmpl $0, %ecx
+	pushl %eax #save the  registers
+	pushl %ebx
+	pushl %ecx
+	pushl %edx
+	pushl %edi
+	pushl %esi
+	pushl %ebp
+	
+	
+	cmpl $0, %ecx
     jge positive_print
     notl     %ecx   #Take BIT wise NOT
-    inc %ecx
-    movl %ecx, %edi
+    inc %ecx  #Increment to take negative
+    movl %ecx, %edi  #Save the ecx value
 
-    movl    $45, %eax
-    pushl   %eax
-
+    movl    $45, %eax   #45 for - sign
+    pushl   %eax  # add eax to the stack to print
+#Print Routine
     movl $4, %eax
     movl $1, %ebx
     movl %esp, %ecx
     movl $1, %edx
     int $0x80
-    popl %eax
-    movl %edi, %ecx
+    popl %eax  #Remove the top from the stack
+    movl %edi, %ecx  #Restore %ecx back 
 
 
     positive_print:
@@ -101,3 +97,4 @@ printIntNumber:
     popl %eax
     ret  
     EndPrintNum:
+

@@ -28,6 +28,8 @@ cod_strings={}
 temp_add={}
 global_vars=[]
 
+
+#USE OF THIS FUNCTION: put the number to print in %ecx and call this function
 printIntCode = "\n\n\njmp EndPrintNum\n\
 printIntNumber:\n\
 	pushl %eax #save the  registers\n\
@@ -38,6 +40,26 @@ printIntNumber:\n\
 	pushl %esi\n\
 	pushl %ebp\n\
 	\n\
+	\n\
+	cmpl $0, %ecx\n\
+    jge positive_print\n\
+    notl     %ecx   #Take BIT wise NOT\n\
+    inc %ecx  #Increment to take negative\n\
+    movl %ecx, %edi  #Save the ecx value\n\
+\n\
+    movl    $45, %eax   #45 for - sign\n\
+    pushl   %eax  # add eax to the stack to print\n\
+#Print Routine\n\
+    movl $4, %eax\n\
+    movl $1, %ebx\n\
+    movl %esp, %ecx\n\
+    movl $1, %edx\n\
+    int $0x80\n\
+    popl %eax  #Remove the top from the stack\n\
+    movl %edi, %ecx  #Restore %ecx back \n\
+\n\
+\n\
+    positive_print:\n\
     movl %ecx, %eax #storing number in %eax to divide it by 10 and extract digits one by one\n\
     movl %esp, %esi   #storing the initial position of the stack pointer in %esi register\n\
     labl:\n\
@@ -1447,6 +1469,30 @@ def genasm(taccode):
 				temp_add[temp_key]=str(offset)+"(%ebp)"
 
 
+
+
+############################DIVISION###############################################
+		
+		if TAC[2]=="/":
+			if TAC[1] in global_vars:
+				code_string+="movl\t"+TAC[1].split('$')[1]+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if TAC[3] in global_vars:
+				code_string+="cdq\n"
+				code_string+="idivl\t"+TAC[3].split('$')[1]+"\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="cdq\n"
+				code_string+="idivl\t"+get_offset+"\n"
+			if TAC[0] in global_vars:
+				code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"\n"
+			else:
+				offset=offset-4
+				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
 
 
 		
