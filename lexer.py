@@ -327,7 +327,7 @@ def t_ARRAY(t):
     return t
 
 def t_IDENTIFIER(t):
-    r"[&]?[a-zA-Z$_][\w$]*"
+    r"(\&)?[a-zA-Z$_][\w$]*"
     t.type = reserved.get(t.value,'IDENTIFIER')    
     return t
 

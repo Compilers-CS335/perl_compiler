@@ -39,13 +39,16 @@ class SymbolTable:
 		return self.entryscope[len(self.entryscope)-1]['scope']
 
 	def lookup(self,entry):
+
 		return self.lookup_scope(entry,len(self.entryscope)-1)
 
 	def lookup_scope(self,entry,location):
 		if location==-1:
+			
 			return None
 
 		scope_now=self.entryscope[location]
+		
 		if scope_now.has_key(entry):
 			return scope_now[entry]
 
@@ -99,8 +102,8 @@ class SymbolTable:
 			curr=self.entryscope[0]
 			# print curr
 
-
-		if curr.has_key(varible)==0:
+		
+		if not (curr.has_key(varible)):
 			curr[varible]={}
 
 		if variabletype=="NUMBER":
@@ -116,7 +119,8 @@ class SymbolTable:
 		else :
 			tempwidth=0
 
-		curr[varible]['type']=variabletype
+		
+		curr[varible]['type']=str(variabletype)
 		curr[varible]['scope']=curr['scope']
 		curr[varible]['width']=tempwidth
 		curr[varible]['returntype']="UNDEFINED"
