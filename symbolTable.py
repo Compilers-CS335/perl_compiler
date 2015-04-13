@@ -39,13 +39,16 @@ class SymbolTable:
 		return self.entryscope[len(self.entryscope)-1]['scope']
 
 	def lookup(self,entry):
+
 		return self.lookup_scope(entry,len(self.entryscope)-1)
 
 	def lookup_scope(self,entry,location):
 		if location==-1:
+			
 			return None
 
 		scope_now=self.entryscope[location]
+		
 		if scope_now.has_key(entry):
 			return scope_now[entry]
 

@@ -18,14 +18,15 @@ threeAddrCode = tac.Tac(symTable)
 switch_hash={}
 temp_line=0
 code_string=".section .text\n"
+code_string+="true:\nmovl\t$1,%eax\nret\n"
 code_string+=".globl _start"
 code_string+="\n"
 code_string+="_start:\n"
 data_string=".section .data\n"
 data_strings={}
 cod_strings={}
-
-
+temp_add={}
+global_vars=[]
 def p_start(p):
     '''start : block
              | statements'''
@@ -1254,15 +1255,26 @@ def genasm(taccode):
 	global code_string
 	global data_strings
 	global cod_strings
+	global global_vars
 	code_string+="pushl"+"\t"+"%ebp\n"
 	code_string+="movl"+"\t"+"%esp"+","+"%ebp\n"
 	flag=0
-	num_value_temp=0
+	num_value_temp=0	
+	offset=0
 	for TAC in taccode['root1']:
+		try:
+			code_string+= TAC[4]+":\n"
+		except IndexError:
+			code_string+= ""
 		if TAC[2]=="=":			
 			if type(TAC[3]) is int:
 				flag=0
-				code_string+= "movl"+"\t$"+str(TAC[3])+","+"%edi\n"
+				offset=offset-4
+				code_string+= "movl"+"\t$"+str(TAC[3])+","+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
+				print TAC[0]
+				print temp_add[TAC[0]]
 				num_value_temp=TAC[3]
 			elif re.match(r'"*"',TAC[3]):
 				flag=1
@@ -1270,28 +1282,41 @@ def genasm(taccode):
 				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0] \
 					+"_len = . - "+TAC[0]
 				cod_strings[TAC[0]]=TAC[3]
+			elif re.match(r'\'(.*)\'',TAC[3]):
+				flag=1
+				string_value_temp=".ascii\t\""+re.match(r'\'(.*)\'',TAC[3]).group(1)+"\"\n"
+				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+					+"_len = . - "+TAC[0]
+				cod_strings[TAC[0]]=TAC[3]
 			elif re.match(r'\'*\'',TAC[3]):
 				flag=1
-				string_value_temp=".ascii\t'"+re.match(r'\'*\'',TAC[3]).group(1)+"'\n"
+				string_value_temp=".ascii\t\""+re.match(r'\'*\'',TAC[3]).group()+"\"\n"
 				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
 					+"_len = . - "+TAC[0]
 				cod_strings[TAC[0]]=TAC[3]
 			else:
 				if flag==0:
-					code_string+= "movl"+"\t"+"%edi,"+TAC[0].split('$')[1]+"\n"
 					data_strings[TAC[0].split('$')[1]]=TAC[0].split('$')[1]+":\n\t.long\t"+str(num_value_temp)
+					global_vars.append(TAC[0])
+					get_offset=temp_add[str(TAC[3])]		
+					code_string+= "movl"+"\t"+get_offset+","+"%eax\n"
+					code_string+="movl\t%eax,"+TAC[0].split('$')[1]+"\n"
+					
 				else:
+					global_vars.append(TAC[0])
 					string_value_temp=TAC[0].split('$')[1]+":\n"+string_value_temp+TAC[0].split('$')[1] \
 					+"_len = . - "+TAC[0].split('$')[1]
 					data_strings[TAC[0].split('$')[1]]=string_value_temp
 
+
+###################EXIT##############################################################
+
 		if TAC[2]=="EXIT":
 			code_string+="movl\t$1,%eax\nmovl\t$0,%ebx\nint\t$0x80\n"
+##################PRINT##############################################################
 		if TAC[2]=="print":
 			if TAC[0]=="NUMBER":###Deepak will give the function
-				code_string+="movl\t$4,%eax\nmovl\t$1,%ebx\n"
-				code_string+=TAC[3]+",%ecx\nmovl\t$4,%edx"
-				code_string+="int\t$0x80\n"
+				print "DEEPAk"
 			else:
 				code_string+="movl\t$4,%eax\nmovl\t$1,%ebx\n"
 				if re.search(r'\$',TAC[3]):
@@ -1301,17 +1326,76 @@ def genasm(taccode):
 				else:
 					code_string+="movl\t$"+TAC[3]+",%ecx\n"
 					code_string+="movl\t$"+TAC[3]+"_len,%edx\n"
-					code_string+="int\t$0x80\n"
+					code_string+="int\t$0x80\n"	
+#######################ADDITION######################################################
+
+		if TAC[2]=="+":
+			if TAC[1] in global_vars:
+				code_string+="movl\t"+TAC[1].split('$')[1]+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if TAC[3] in global_vars:
+				code_string+="addl\t"+TAC[3].split('$')[1]+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="addl\t"+get_offset+",%eax\n"
+			if TAC[0] in global_vars:
+				code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"\n"
+			else:
+				offset=offset-4
+				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
+############################SUBTRACTION###############################################
 		
-
+		if TAC[2]=="-":
+			if TAC[1] in global_vars:
+				code_string+="movl\t"+TAC[1].split('$')[1]+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if TAC[3] in global_vars:
+				code_string+="subl\t"+TAC[3].split('$')[1]+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="subl\t"+get_offset+",%eax\n"
+			if TAC[0] in global_vars:
+				code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"\n"
+			else:
+				offset=offset-4
+				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
 		
+######################################COMPARISON######################################
+		
+		if TAC[2]==">":
+			code_string+="movl\t$0,%eax\n"
+			if TAC[1] in global_vars:
+				code_string+="movl\t"+TAC[1].split('$')[1]+",%ebx\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%ebx\n"
+			if TAC[3] in global_vars:
+				code_string+="movl\t"+TAC[3].split('$')[1]+",%ecx\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="movl\t"+get_offset+",%ecx\n"
+
+			code_string+="cmpl\t%ebx,%ecx\n"
+			code_string+="jg\ttrue\n"
+			if TAC[0] in global_vars:
+				code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"\n"
+			else:
+				offset=offset-4
+				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
 
 
 
 
-
-	
-			
 
 def runparser(inputfile):
 	global code_string
@@ -1331,6 +1415,44 @@ def runparser(inputfile):
 		for TAC in threeAddrCode.code[scopes]:
 			print "\t"+str(count)+"\t"+str(TAC)
 			count+=1
+
+	for scopes in threeAddrCode.code:
+		count = 0
+		for TAC in threeAddrCode.code[scopes]:
+			if TAC[2]=="FALSE_GOTO":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_END":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_SWITCH":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_MARK":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_MARK2":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			count+=1
+
+	for scopes in threeAddrCode.code:
+		count = 0
+		print "In the scope "+str(scopes)+" :-"
+
+		for TAC in threeAddrCode.code[scopes]:
+			print "\t"+str(count)+"\t"+str(TAC)
+			count+=1
+
 	genasm(threeAddrCode.code)
 	for item in data_strings:
 		code_string = data_strings[item]+"\n"+code_string

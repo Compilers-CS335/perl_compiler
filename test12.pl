@@ -1,5 +1,6 @@
-print "hello";
-$a="world";
-print $a;
-
-
+$a=10;
+$b=19;
+if(($a>$b)&&($b>0))
+{
+	$a+=1;
+}
