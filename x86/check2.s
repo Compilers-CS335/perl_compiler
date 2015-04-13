@@ -1,40 +1,43 @@
-# imultest.s - An example of the IMUL instruction formats
 .section .data
-number:
-	.long -8888
-value1:
-	.long 1
-value2:
-	.long 3530000
-
+c:
+    .long   30
 .section .text
+true:
+movl    $1,%eax
+ret
 .globl _start
 _start:
-movl value1, %ebx
-movl value2, %ecx
-imul %ebx, %ecx
-#movl value3, %edx
-#imull $2, %edx, %eax
-#movl number, %ecx
-movl %ecx, %ecx
+pushl   %ebp
+movl    %esp,%ebp
+movl    $40,-4(%ebp)
+movl    $30,-8(%ebp)
+movl    -4(%ebp),%eax
+imull   -8(%ebp),%eax
+movl    %eax,-12(%ebp)
+movl    -12(%ebp),%eax
+movl    %eax,c
+movl    c, %ecx
 call printIntNumber
-
-movl $0, %ebx
-#movl %ecx, %ebx
-movl $1, %eax
+movl    $1,%eax
+movl    $0,%ebx
 int $0x80
 
 
 
 jmp EndPrintNum
 printIntNumber:
-   #movl %ecx, %edi  #store the number in % edi as %ebx would be modified here
-  
-# code to print the number -> same as in question 1    
-    movl %ecx, %eax #storing number in %eax to divide it by 10 and extract digits one by one                  
+    pushl %eax #save the  registers
+    pushl %ebx
+    pushl %ecx
+    pushl %edx
+    pushl %edi
+    pushl %esi
+    pushl %ebp
+    
+    movl %ecx, %eax #storing number in %eax to divide it by 10 and extract digits one by one
     movl %esp, %esi   #storing the initial position of the stack pointer in %esi register
     labl:
-    #%eax has quotient after div and %edx has the remainder after division. div R1 does %eax / R1 
+    #%eax has quotient after div and %edx has the remainder after division. div R1 does %eax / R1
     cdq    # preparing to divide
     movl $10, %ebx    # store 10 in %ebx register which is the divisor             
     idivl %ebx   #divide number by 10.remainder and quotient are stored in %edx and %eax resp. 
@@ -64,5 +67,12 @@ printIntNumber:
                      # starting to push any value
     jne print_num   #if stack pointer has not reached the initial position of stack, we jump 
                     #back to print_num label to pop more values and print them.
+    popl %ebp #restore the registers
+    popl %esi
+    popl %edi
+    popl %edx
+    popl %ecx
+    popl %ebx
+    popl %eax
     ret  
-EndPrintNum:
+    EndPrintNum:

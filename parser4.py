@@ -27,6 +27,62 @@ data_strings={}
 cod_strings={}
 temp_add={}
 global_vars=[]
+
+printIntCode = "\n\n\njmp EndPrintNum\n\
+printIntNumber:\n\
+	pushl %eax #save the  registers\n\
+	pushl %ebx\n\
+	pushl %ecx\n\
+	pushl %edx\n\
+	pushl %edi\n\
+	pushl %esi\n\
+	pushl %ebp\n\
+	\n\
+    movl %ecx, %eax #storing number in %eax to divide it by 10 and extract digits one by one\n\
+    movl %esp, %esi   #storing the initial position of the stack pointer in %esi register\n\
+    labl:\n\
+    #%eax has quotient after div and %edx has the remainder after division. div R1 does %eax / R1\n\
+    cdq    # preparing to divide\n\
+    movl $10, %ebx    # store 10 in %ebx register which is the divisor             \n\
+    idivl %ebx   #divide number by 10.remainder and quotient are stored in %edx and %eax resp. \n\
+                 #Remainder is the least significant digit of the current number \n\
+    pushl %edx   # pushing the least significant digit (remainder) into stack\n\
+    cmpl $0, %eax #comparing quotient with 0 to ascertain whether have we extracted all digits\n\
+    jne labl #If q not equal to zero,then we still need to continue extracting more digits,so\n\
+             # jump back to labl  \n\
+    jmp print_num   # if q=0, then jump to print_num\n\
+    \n\
+ print_num:\n\
+    popl %edx  # poping the topmost element from stack which would be the highest significant \n\
+               # digit of our number as it was pushed last into the stack\n\
+    addl $48, %edx  # converting the digit to ascii character by adding 48 to that digit \n\
+                   # as, 48 is the ascii code for digit 0, 49 for 1, 50 for 2 and so on...\n\
+    pushl %edx # s is randomly chosen memory location to store it\n\
+                      # we store it in a memory location to print it by using sytem call no.4 \n\
+    \n\
+    movl $4, %eax  # 4 is sys call number\n\
+    movl $1, %ebx  # 1 refers to stdout\n\
+    movl %esp, %ecx  # number+50 refers to location where the digit is stored in memory \n\
+    movl $1, %edx    # size of buffer =1, as we print one digit at a time \n\
+    int $0x80\n\
+    popl %edx       # Pop the digit on the top  \n\
+    cmp %esp, %esi   # checking if the current stack pointer has reached the initial postion\n\
+                     # of stack pointer which we stored in %esi at the beginning, before \n\
+                     # starting to push any value\n\
+    jne print_num   #if stack pointer has not reached the initial position of stack, we jump \n\
+                    #back to print_num label to pop more values and print them.\n\
+    popl %ebp #restore the registers\n\
+    popl %esi\n\
+    popl %edi\n\
+    popl %edx\n\
+    popl %ecx\n\
+    popl %ebx\n\
+    popl %eax\n\
+    ret  \n\
+    EndPrintNum:\n"
+
+
+
 def p_start(p):
     '''start : block
              | statements'''
@@ -1367,6 +1423,32 @@ def genasm(taccode):
 				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
 				temp_key=str(TAC[0])
 				temp_add[temp_key]=str(offset)+"(%ebp)"
+
+
+############################MULTIPLICATION###############################################
+		
+		if TAC[2]=="*":
+			if TAC[1] in global_vars:
+				code_string+="movl\t"+TAC[1].split('$')[1]+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if TAC[3] in global_vars:
+				code_string+="imull\t"+TAC[3].split('$')[1]+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="imull\t"+get_offset+",%eax\n"
+			if TAC[0] in global_vars:
+				code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"\n"
+			else:
+				offset=offset-4
+				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
+
+
+
+
 		
 ######################################COMPARISON######################################
 		
@@ -1458,6 +1540,7 @@ def runparser(inputfile):
 	for item in data_strings:
 		code_string = data_strings[item]+"\n"+code_string
 	code_string = data_string+ code_string
+	code_string += printIntCode  #Append the line to print the code of the printing number
 	print code_string
 
 if __name__=="__main__":

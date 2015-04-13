@@ -13,6 +13,7 @@ _start:
 movl number, %ecx
 call printIntNumber
 
+
 #EXIT CODE
 movl $1, %eax         # system call number for exit
 movl $0, %ebx         # value written to terminal
@@ -26,6 +27,16 @@ int $0x80
 
 jmp EndPrintNum
 printIntNumber:
+
+pushl %eax
+pushl %ebx
+pushl %ecx
+pushl %edx
+pushl %edi
+pushl %esi
+pushl %ebp
+
+
    #movl %ecx, %edi  #store the number in % edi as %ebx would be modified here
   
 # code to print the number -> same as in question 1    
@@ -61,7 +72,15 @@ printIntNumber:
                      # of stack pointer which we stored in %esi at the beginning, before 
                      # starting to push any value
     jne print_num   #if stack pointer has not reached the initial position of stack, we jump 
-                    #back to print_num label to pop more values and print them.
+
+                        #back to print_num label to pop more values and print them.
+    popl %ebp
+    popl %esi
+    popl %edi
+    popl %edx
+    popl %ecx
+    popl %ebx
+    popl %eax
     ret  
 EndPrintNum:
 
