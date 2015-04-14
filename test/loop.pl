@@ -3,14 +3,14 @@
 $a = 10;
 
 # while loop execution
-while( $a < 20 )
-{
+# while( $a < 20 )
+# {
   
    
-   print "temp";
-   #next;
-   $a = $a + 1;
-}
+#    print "temp";
+#    #next;
+#    $a = $a + 1;
+# }
 
 # # until loop execution
 # until( $a > 10 ){
@@ -19,9 +19,10 @@ while( $a < 20 )
 # }
 
 # # # for loop execution
-# for( $a = 10; $a < 20; $a = $a + 1 ){
-#     print "value of a: $a\n";
-# }
+for( $a = 10; $a > -10; $a = $a - 1 ){
+    # print "value of a: $a\n";
+    print $a;
+}
 
 # $a = 0;
 # $b = 0;
