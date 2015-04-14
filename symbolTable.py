@@ -91,6 +91,8 @@ class SymbolTable:
 		self.entryscope.append(curr[name])	
 		self.proclist[name]=curr[name]
 		self.offset.append(0)
+		current=self.entryscope[0]
+		current[name]['scope_depth']=temp
 
 
 	def newvariableentry(self,varible,variabletype,isPrivate):

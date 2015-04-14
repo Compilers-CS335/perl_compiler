@@ -1342,7 +1342,6 @@ def scopecode(name,taccode):
 		code_string+="pushl %eax\npushl %ecx\npushl %edx\npushl %edi\npushl %esi\n"
 	code_string+="pushl"+"\t"+"%ebp\n"
 	code_string+="movl"+"\t"+"%esp"+","+"%ebp\n"
-	code_string+="subl\t$2000,%esp\n"
 		
 	offset=0
 	for TAC in taccode[name]:
@@ -1387,7 +1386,7 @@ def scopecode(name,taccode):
 				global_strings[TAC[0]]=re.match(r'\'*\'',TAC[3]).group()
 				cod_strings[TAC[0]]=TAC[3]
 			elif function_list_linear.has_key(TAC[3]):
-				if global_vars.has_key(function_list_linear[TAC[3]]):
+				if global_vars.has_key(TAC[3]):
 					if global_vars[TAC[3]]=="NUMBER":
 						flag=0
 						offset=offset-4
@@ -1416,8 +1415,8 @@ def scopecode(name,taccode):
 			elif re.match(r'\$.*',TAC[3]):
 				flag=0
 				offset=offset-4
-				code_string+= "movl\t"+TAC[3].split('$')[1]+"_num__ber__"++",%eax\n"
-				code_string+="movl\t%eax,"+str(offset)+"(%ebp)\n"
+				code_string+= "movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%edi\n"
+				code_string+="movl\t%edi,"+str(offset)+"(%ebp)\n"
 				temp_key=str(TAC[0])
 				temp_add[temp_key]=str(offset)+"(%ebp)"
 				print TAC[0]
@@ -1430,8 +1429,8 @@ def scopecode(name,taccode):
 					data_strings[str(TAC[0].split('$')[1])+"_num__ber__"]=TAC[0].split('$')[1]+"_num__ber__:\n\t.long\t"+str(0)
 					global_vars[TAC[0]]="NUMBER"
 					get_offset=temp_add[str(TAC[3])]	
-					code_string+= "movl"+"\t"+get_offset+","+"%eax\n"
-					code_string+="movl\t%eax,"+TAC[0].split('$')[1]+"_num__ber__"+"\n"
+					code_string+= "movl"+"\t"+get_offset+","+"%edi\n"
+					code_string+="movl\t%edi,"+TAC[0].split('$')[1]+"_num__ber__"+"\n"
 
 				else:
 					global_vars[TAC[0]]="STRING"
@@ -1677,11 +1676,7 @@ def scopecode(name,taccode):
 		if TAC[2]=="return":
 			if global_vars.has_key(TAC[0]):
 				if global_vars[TAC[0]]=="NUMBER":
-					function_list_linear[name]=TAC[0]
-					print function_list_linear
-					print "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
-					print global_vars
-					print "NNNNNNNNNNNNNNNNNNNNNNNNNNN"
+					function_list_linear[name]=TAC[0].split('$')[1]+"_num__ber__"
 				else:
 					if re.match(r'\$.*', TAC[0]):
 						# print TAC[0]

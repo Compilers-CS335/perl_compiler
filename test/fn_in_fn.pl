@@ -11,13 +11,16 @@ sub parent1{
     print "\n inside and after:= ";
     print $a;
     $b = child();
-    $b = 10*$b;
+    # $b = 10*$b;
     return $b;
 }
 
 sub child2{
     $a = $a+1;
     return $a;
+    sub child45{
+        print "hello";
+    }
 }
 
 

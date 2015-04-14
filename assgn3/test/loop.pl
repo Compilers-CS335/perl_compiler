@@ -17,7 +17,7 @@ until( $a > 10 ){
 }
 
 # # for loop execution
-for( $a = 10; $a < 20; $a = $a + 1 ){
+for( $a = 10; $a < 20; $a+= 1 ){
     print "value of a: $a\n";
 }
 
