@@ -28,3 +28,20 @@ evince tmp
 > also, array can only be accessed using @array_name[index] ... and not $array_name[index]
 > Array assignment :-   @array_name = (...);   -: is mandatory
 > Can't use name parent root  type scope returntype scope_depth
+
+
+
+
+
+
+
+
+-----------------------UPDATE OVER AVIKALP's README-------------------------------
+> You cannot use return more than once in a function. What ever you want to return, boil it down to a single variable and then return that variable
+> It goes without saying that you can return only one kind of value from a function (else it will give trouble even where it is called)... {This has to be stated because a programmer may switch the return value type based on context inside a Functions}
+
+
+HOW TO RUN:-
+python parser.py <perl_file_destination> 
+as -32 output.s -o output.o
+ld -m elf_i386 output.o -o output

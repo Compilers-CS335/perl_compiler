@@ -8,6 +8,13 @@ $var = 10;
 print $var;
 
 
+# %hash = ('key1' => 10, 'key2' => 20);
+
+
+print $var;
+
+
+
 
 
 switch($var){
@@ -18,3 +25,4 @@ switch($var){
    # case (\%hash)     { print "entry in hash" }
    else              { print "previous case not true"; }
 }
+

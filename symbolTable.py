@@ -60,6 +60,8 @@ class SymbolTable:
 		# name="\'"+name+"\'"
 		# print name
 		curr[name]=value
+		current=self.entryscope[0]
+		current[self.get_current_scope()][name]=value
 	
 
 	def ifexist(self,entry):

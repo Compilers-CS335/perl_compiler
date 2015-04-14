@@ -20,6 +20,7 @@ switch($a){
         print "You typed 1.0\n";
     }
     else {
-        print "Stop typing random bullshit\n";
+
+        print "Stop typing random things\n";
     }
 }

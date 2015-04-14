@@ -1,0 +1,40 @@
+COMPILERS CS335: Assignment 2
+------------------------------------------------
+
+
+
+------------------------------------------------
+HOW TO RUN:
+------------------------------------------------
+python parser3.py Test/file.pl > answer.dot
+python makedot2.py | dot -Tps > tmp
+evince tmp
+
+OR
+
+python parser3.py Test/file.pl > answer.py
+echo "}" >> answer.dot
+dot -Tps answer.dot > tmp
+evince tmp
+
+
+--------------------------------------------------
+Implemented Features
+--------------------------------------------------
+Implemented specifications:
+1. Arithmetic Expressions
+2. If then elseif else (with nesting)
+3. Loops:
+	- While loop (with nesting)
+	- For loop with nesting
+	- Loops with Next
+	- Loops with Last
+4. Sub (Functions)
+	- Call to functions
+5. Switch Case
+6. Array & Hash
+7. Increment operation with +=, -=, etc
+
+
+
+
