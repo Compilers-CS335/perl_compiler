@@ -1,287 +1,1045 @@
 PLY: PARSE DEBUG START
 
 State  : 0
-Stack  : . LexToken(VARIABLE,'$a',1,0)
-Action : Shift and goto state 54
+Stack  : . LexToken(SUB,'sub',1,0)
+Action : Shift and goto state 26
 
-State  : 54
-Stack  : VARIABLE . LexToken(ASSIGNMENT_OP,'=',1,3)
-Action : Shift and goto state 140
+State  : 26
+Stack  : SUB . LexToken(IDENTIFIER,'add',1,4)
+Action : Shift and goto state 110
 
-State  : 140
-Stack  : VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,3,1,5)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : VARIABLE ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [number -> NUMBER] with [3] and goto state 78
-Result : <dict @ 0x7f526e96e280> ({'type': 'NUMBER', 'value': 3})
-
-State  : 29
-Stack  : VARIABLE ASSIGNMENT_OP number . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e96e280>] and goto state 83
-Result : <dict @ 0x7f526e96e280> ({'place': 'temp1', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96e280>] and goto state 96
-Result : <dict @ 0x7f526e96e280> ({'place': 'temp1', 'type': 'NUMBER', 'va ...)
-
-State  : 211
-Stack  : VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$a','=',<dict @ 0x7f526e96e280>] and goto state 54
-Result : <dict @ 0x7f526e96e7f8> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 53
-Stack  : assignment . LexToken(SEMICOLON,';',1,6)
+State  : 110
+Stack  : SUB IDENTIFIER . LexToken(BLOCK_BEGIN,'{',1,8)
 Action : Reduce rule [empty -> <empty>] with [] and goto state 6
 Result : <NoneType @ 0x920190> (None)
 
-State  : 60
-Stack  : assignment empty . LexToken(SEMICOLON,';',1,6)
-Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e96e5c8> ({'quad': 2})
+State  : 184
+Stack  : SUB IDENTIFIER empty . LexToken(BLOCK_BEGIN,'{',1,8)
+Action : Reduce rule [Markerscope -> empty] with [None] and goto state 49
+Result : <dict @ 0x7fac39ad5168> ({'type': 'FUNCTION'})
 
-State  : 136
-Stack  : assignment Marker . LexToken(SEMICOLON,';',1,6)
-Action : Shift and goto state 206
+State  : 183
+Stack  : SUB IDENTIFIER Markerscope . LexToken(BLOCK_BEGIN,'{',1,8)
+Action : Shift and goto state 48
 
-State  : 206
-Stack  : assignment Marker SEMICOLON . LexToken(VARIABLE,'$a',2,8)
-Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7f526e96e7f8>,{'quad': 2},';'] and goto state 7
-Result : <dict @ 0x7f526e96e910> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 37
-Stack  : statement . LexToken(VARIABLE,'$a',2,8)
-Action : Shift and goto state 54
-
-State  : 54
-Stack  : statement VARIABLE . LexToken(EQUALS_OP,'==',2,11)
-Action : Reduce rule [term -> VARIABLE] with ['$a'] and goto state 85
-Result : <dict @ 0x7f526e96e168> ({'type': 'NUMBER', 'place': '$a'})
-
-State  : 13
-Stack  : statement term . LexToken(EQUALS_OP,'==',2,11)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96e168>] and goto state 96
-Result : <dict @ 0x7f526e96e168> ({'type': 'NUMBER', 'place': '$a'})
-
-State  : 23
-Stack  : statement expression . LexToken(EQUALS_OP,'==',2,11)
-Action : Shift and goto state 85
-
-State  : 85
-Stack  : statement expression EQUALS_OP . LexToken(NUMBER,4,2,14)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : statement expression EQUALS_OP NUMBER . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [number -> NUMBER] with [4] and goto state 78
-Result : <dict @ 0x7f526e96ea28> ({'type': 'NUMBER', 'value': 4})
-
-State  : 29
-Stack  : statement expression EQUALS_OP number . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e96ea28>] and goto state 83
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp2', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : statement expression EQUALS_OP term . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96ea28>] and goto state 96
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp2', 'type': 'NUMBER', 'va ...)
-
-State  : 161
-Stack  : statement expression EQUALS_OP expression . LexToken(QUESTION_MARK,'?',2,16)
-Action : Reduce rule [expression -> expression EQUALS_OP expression] with [<dict @ 0x7f526e96e168>,'==',<dict @ 0x7f526e96ea28>] and goto state 107
-Result : <dict @ 0x7f526e96e050> ({'truelist': [3], 'place': 'temp3', 'typ ...)
-
-State  : 23
-Stack  : statement expression . LexToken(QUESTION_MARK,'?',2,16)
-Action : Shift and goto state 95
-
-State  : 95
-Stack  : statement expression QUESTION_MARK . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 172
-Stack  : statement expression QUESTION_MARK empty . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [Marker_true -> empty] with [None] and goto state 28
-Result : <dict @ 0x7f526e96eb40> ({'truelist': [4], 'falselist': [5]})
-
-State  : 171
-Stack  : statement expression QUESTION_MARK Marker_true . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 60
-Stack  : statement expression QUESTION_MARK Marker_true empty . LexToken(VARIABLE,'$b',2,18)
-Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e96ee88> ({'quad': 6})
-
-State  : 223
-Stack  : statement expression QUESTION_MARK Marker_true Marker . LexToken(VARIABLE,'$b',2,18)
-Action : Shift and goto state 248
-
-State  : 248
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE . LexToken(ASSIGNMENT_OP,'=',2,20)
-Action : Shift and goto state 219
-
-State  : 219
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,1,2,21)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP NUMBER . LexToken(COLON,':',2,23)
-Action : Reduce rule [number -> NUMBER] with [1] and goto state 78
-Result : <dict @ 0x7f526e96ea28> ({'type': 'NUMBER', 'value': 1})
-
-State  : 29
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP number . LexToken(COLON,':',2,23)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e96ea28>] and goto state 83
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp4', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP term . LexToken(COLON,':',2,23)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e96ea28>] and goto state 96
-Result : <dict @ 0x7f526e96ea28> ({'place': 'temp4', 'type': 'NUMBER', 'va ...)
-
-State  : 211
-Stack  : statement expression QUESTION_MARK Marker_true Marker VARIABLE ASSIGNMENT_OP expression . LexToken(COLON,':',2,23)
-Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$b','=',<dict @ 0x7f526e96ea28>] and goto state 54
-Result : <dict @ 0x7f526e9746e0> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 247
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment . LexToken(COLON,':',2,23)
-Action : Shift and goto state 263
-
-State  : 263
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON . LexToken(VARIABLE,'$b',2,25)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 276
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON empty . LexToken(VARIABLE,'$b',2,25)
-Action : Reduce rule [Marker_false -> empty] with [None] and goto state 29
-Result : <dict @ 0x7f526e9744b0> ({'quad': 9, 'nextlist': [8]})
-
-State  : 275
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false . LexToken(VARIABLE,'$b',2,25)
-Action : Shift and goto state 154
-
-State  : 154
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE . LexToken(ASSIGNMENT_OP,'=',2,27)
-Action : Shift and goto state 219
-
-State  : 219
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,2,2,28)
-Action : Shift and goto state 47
-
-State  : 47
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [number -> NUMBER] with [2] and goto state 78
-Result : <dict @ 0x7f526e974910> ({'type': 'NUMBER', 'value': 2})
-
-State  : 29
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP number . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [term -> number] with [<dict @ 0x7f526e974910>] and goto state 83
-Result : <dict @ 0x7f526e974910> ({'place': 'temp5', 'type': 'NUMBER', 'va ...)
-
-State  : 13
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e974910>] and goto state 96
-Result : <dict @ 0x7f526e974910> ({'place': 'temp5', 'type': 'NUMBER', 'va ...)
-
-State  : 211
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$b','=',<dict @ 0x7f526e974910>] and goto state 54
-Result : <dict @ 0x7f526e974d70> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 285
-Stack  : statement expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false assignment . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [ternaryStatement -> expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false assignment] with [<dict @ 0x7f526e96e050>,'?',<dict @ 0x7f526e96eb40>,{'quad': 6},<dict @ 0x7f526e9746e0>,':',<dict @ 0x7f526e9744b0>,<dict @ 0x7f526e974d70>] and goto state 27
-Result : <dict @ 0x7f526e9747f8> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 7
-Stack  : statement ternaryStatement . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [empty -> <empty>] with [] and goto state 6
-Result : <NoneType @ 0x920190> (None)
-
-State  : 60
-Stack  : statement ternaryStatement empty . LexToken(SEMICOLON,';',2,29)
-Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e974a28> ({'quad': 11})
-
-State  : 70
-Stack  : statement ternaryStatement Marker . LexToken(SEMICOLON,';',2,29)
-Action : Shift and goto state 147
-
-State  : 147
-Stack  : statement ternaryStatement Marker SEMICOLON . LexToken(PRINT,'print',3,31)
-Action : Reduce rule [statement -> ternaryStatement Marker SEMICOLON] with [<dict @ 0x7f526e9747f8>,{'quad': 11},';'] and goto state 25
-Result : <dict @ 0x7f526e974b40> ({'endlist': [], 'beginlist': [], 'type': ...)
-
-State  : 37
-Stack  : statement statement . LexToken(PRINT,'print',3,31)
+State  : 48
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN . LexToken(PRINT,'print',2,14)
 Action : Shift and goto state 17
 
 State  : 17
-Stack  : statement statement PRINT . LexToken(VARIABLE,'$b',3,37)
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT . LexToken(VARIABLE,'$b',2,20)
 Action : Shift and goto state 64
 
 State  : 64
-Stack  : statement statement PRINT VARIABLE . LexToken(SEMICOLON,';',3,39)
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT VARIABLE . LexToken(CONCATENATE,'.',2,22)
 Action : Reduce rule [term -> VARIABLE] with ['$b'] and goto state 85
-Result : <dict @ 0x7f526e974e88> ({'type': 'NUMBER', 'place': '$b'})
+Result : <dict @ 0x7fac39ad1d70> ({'type': 'TYPE ERROR', 'place': '$b'})
 
 State  : 13
-Stack  : statement statement PRINT term . LexToken(SEMICOLON,';',3,39)
-Action : Reduce rule [expression -> term] with [<dict @ 0x7f526e974e88>] and goto state 96
-Result : <dict @ 0x7f526e974e88> ({'type': 'NUMBER', 'place': '$b'})
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT term . LexToken(CONCATENATE,'.',2,22)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad1d70>] and goto state 96
+Result : <dict @ 0x7fac39ad1d70> ({'type': 'TYPE ERROR', 'place': '$b'})
 
 State  : 78
-Stack  : statement statement PRINT expression . LexToken(SEMICOLON,';',3,39)
-Action : Shift and goto state 151
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression . LexToken(CONCATENATE,'.',2,22)
+Action : Shift and goto state 105
 
-State  : 151
-Stack  : statement statement PRINT expression SEMICOLON . $end
-Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f526e974e88>,';'] and goto state 52
-Result : <dict @ 0x7f526e96eb40> ({'endlist': [], 'beginlist': [], 'type': ...)
+State  : 105
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE . LexToken(RES_STRING,'" "',2,23)
+Action : Shift and goto state 15
+
+State  : 15
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE RES_STRING . LexToken(CONCATENATE,'.',2,26)
+Action : Reduce rule [string -> RES_STRING] with ['" "'] and goto state 77
+Result : <dict @ 0x7fac39ad56e0> ({'type': 'RES_STRING', 'value': '" "'})
+
+State  : 49
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE string . LexToken(CONCATENATE,'.',2,26)
+Action : Reduce rule [term -> string] with [<dict @ 0x7fac39ad56e0>] and goto state 84
+Result : <dict @ 0x7fac39ad56e0> ({'place': 'temp1', 'type': 'RES_STRING', ...)
+
+State  : 13
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE term . LexToken(CONCATENATE,'.',2,26)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad56e0>] and goto state 96
+Result : <dict @ 0x7fac39ad56e0> ({'place': 'temp1', 'type': 'RES_STRING', ...)
+
+State  : 178
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE expression . LexToken(CONCATENATE,'.',2,26)
+Action : Reduce rule [expression -> expression CONCATENATE expression] with [<dict @ 0x7fac39ad1d70>,'.',<dict @ 0x7fac39ad56e0>] and goto state 122
+Result : <dict @ 0x7fac39ad5b40> ({'type': 'STRING', 'place': 'temp2'})
+
+State  : 78
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression . LexToken(CONCATENATE,'.',2,26)
+Action : Shift and goto state 105
+
+State  : 105
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE . LexToken(VARIABLE,'$c',2,27)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE VARIABLE . LexToken(CONCATENATE,'.',2,29)
+Action : Reduce rule [term -> VARIABLE] with ['$c'] and goto state 85
+Result : <dict @ 0x7fac39ad57f8> ({'type': 'TYPE ERROR', 'place': '$c'})
+
+State  : 13
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE term . LexToken(CONCATENATE,'.',2,29)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad57f8>] and goto state 96
+Result : <dict @ 0x7fac39ad57f8> ({'type': 'TYPE ERROR', 'place': '$c'})
+
+State  : 178
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE expression . LexToken(CONCATENATE,'.',2,29)
+Action : Reduce rule [expression -> expression CONCATENATE expression] with [<dict @ 0x7fac39ad5b40>,'.',<dict @ 0x7fac39ad57f8>] and goto state 122
+Result : <dict @ 0x7fac39ad8168> ({'type': 'STRING', 'place': 'temp3'})
+
+State  : 78
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression . LexToken(CONCATENATE,'.',2,29)
+Action : Shift and goto state 105
+
+State  : 105
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE . LexToken(RES_STRING,'"\\n"',2,30)
+Action : Shift and goto state 15
+
+State  : 15
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE RES_STRING . LexToken(SEMICOLON,';',2,34)
+Action : Reduce rule [string -> RES_STRING] with ['"\\n"'] and goto state 77
+Result : <dict @ 0x7fac39ad5a28> ({'type': 'RES_STRING', 'value': '"\\n"'})
+
+State  : 49
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE string . LexToken(SEMICOLON,';',2,34)
+Action : Reduce rule [term -> string] with [<dict @ 0x7fac39ad5a28>] and goto state 84
+Result : <dict @ 0x7fac39ad5a28> ({'place': 'temp4', 'type': 'RES_STRING', ...)
+
+State  : 13
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE term . LexToken(SEMICOLON,';',2,34)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad5a28>] and goto state 96
+Result : <dict @ 0x7fac39ad5a28> ({'place': 'temp4', 'type': 'RES_STRING', ...)
+
+State  : 178
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression CONCATENATE expression . LexToken(SEMICOLON,';',2,34)
+Action : Reduce rule [expression -> expression CONCATENATE expression] with [<dict @ 0x7fac39ad8168>,'.',<dict @ 0x7fac39ad5a28>] and goto state 122
+Result : <dict @ 0x7fac39ad5b40> ({'type': 'STRING', 'place': 'temp5'})
+
+State  : 78
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression . LexToken(SEMICOLON,';',2,34)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN PRINT expression SEMICOLON . LexToken(VARIABLE,'$a',3,40)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7fac39ad5b40>,';'] and goto state 52
+Result : <dict @ 0x7fac39ad5e88> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 20
-Stack  : statement statement printStatement . $end
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN printStatement . LexToken(VARIABLE,'$a',3,40)
 Action : Reduce rule [empty -> <empty>] with [] and goto state 6
 Result : <NoneType @ 0x920190> (None)
 
 State  : 60
-Stack  : statement statement printStatement empty . $end
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN printStatement empty . LexToken(VARIABLE,'$a',3,40)
 Action : Reduce rule [Marker -> empty] with [None] and goto state 113
-Result : <dict @ 0x7f526e96e7f8> ({'quad': 12})
+Result : <dict @ 0x7fac39ad56e0> ({'quad': 7})
 
 State  : 80
-Stack  : statement statement printStatement Marker . $end
-Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f526e96eb40>,{'quad': 12}] and goto state 14
-Result : <dict @ 0x7f526e974a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN printStatement Marker . LexToken(VARIABLE,'$a',3,40)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7fac39ad5e88>,{'quad': 7}] and goto state 14
+Result : <dict @ 0x7fac39ad8168> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 37
-Stack  : statement statement statement . $end
-Action : Reduce rule [statements -> statement] with [<dict @ 0x7f526e974a28>] and goto state 5
-Result : <dict @ 0x7f526e974a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement . LexToken(VARIABLE,'$a',3,40)
+Action : Shift and goto state 54
 
-State  : 123
-Stack  : statement statement statements . $end
-Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f526e974b40>,<dict @ 0x7f526e974a28>] and goto state 4
-Result : <dict @ 0x7f526e9747f8> ({'beginlist': [], 'endlist': []})
+State  : 54
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE . LexToken(ASSIGNMENT_OP,'=',3,43)
+Action : Shift and goto state 136
 
-State  : 123
-Stack  : statement statements . $end
-Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f526e96e910>,<dict @ 0x7f526e9747f8>] and goto state 4
-Result : <dict @ 0x7f526e96e050> ({'beginlist': [], 'endlist': []})
+State  : 136
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP . LexToken(VARIABLE,'$b',3,45)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP VARIABLE . LexToken(PLUS_OP,'+',3,48)
+Action : Reduce rule [term -> VARIABLE] with ['$b'] and goto state 85
+Result : <dict @ 0x7fac39ad8398> ({'type': 'TYPE ERROR', 'place': '$b'})
+
+State  : 13
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP term . LexToken(PLUS_OP,'+',3,48)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad8398>] and goto state 96
+Result : <dict @ 0x7fac39ad8398> ({'type': 'TYPE ERROR', 'place': '$b'})
+
+State  : 203
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP expression . LexToken(PLUS_OP,'+',3,48)
+Action : Shift and goto state 92
+
+State  : 92
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP expression PLUS_OP . LexToken(VARIABLE,'$c',3,50)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP expression PLUS_OP VARIABLE . LexToken(SEMICOLON,';',3,52)
+Action : Reduce rule [term -> VARIABLE] with ['$c'] and goto state 85
+Result : <dict @ 0x7fac39ad5a28> ({'type': 'TYPE ERROR', 'place': '$c'})
+
+State  : 13
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP expression PLUS_OP term . LexToken(SEMICOLON,';',3,52)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad5a28>] and goto state 96
+Result : <dict @ 0x7fac39ad5a28> ({'type': 'TYPE ERROR', 'place': '$c'})
+
+State  : 164
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP expression PLUS_OP expression . LexToken(SEMICOLON,';',3,52)
+Action : Reduce rule [expression -> expression PLUS_OP expression] with [<dict @ 0x7fac39ad8398>,'+',<dict @ 0x7fac39ad5a28>] and goto state 114
+Result : <dict @ 0x7fac39ad56e0> ({'type': 'TYPE ERROR', 'place': 'temp6'})
+
+State  : 203
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',3,52)
+Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$a','=',<dict @ 0x7fac39ad56e0>] and goto state 54
+Result : <dict @ 0x7fac39ad5e88> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 53
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement assignment . LexToken(SEMICOLON,';',3,52)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement assignment empty . LexToken(SEMICOLON,';',3,52)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad8050> ({'quad': 7})
+
+State  : 132
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement assignment Marker . LexToken(SEMICOLON,';',3,52)
+Action : Shift and goto state 198
+
+State  : 198
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement assignment Marker SEMICOLON . LexToken(RETURN,'return',4,58)
+Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7fac39ad5e88>,{'quad': 7},';'] and goto state 7
+Result : <dict @ 0x7fac39ad8398> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement . LexToken(RETURN,'return',4,58)
+Action : Shift and goto state 14
+
+State  : 14
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement RETURN . LexToken(VARIABLE,'$a',4,65)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement RETURN VARIABLE . LexToken(SEMICOLON,';',4,67)
+Action : Reduce rule [term -> VARIABLE] with ['$a'] and goto state 85
+Result : <dict @ 0x7fac39ad86e0> ({'type': 'TYPE ERROR', 'place': '$a'})
+
+State  : 13
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement RETURN term . LexToken(SEMICOLON,';',4,67)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad86e0>] and goto state 96
+Result : <dict @ 0x7fac39ad86e0> ({'type': 'TYPE ERROR', 'place': '$a'})
+
+State  : 75
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement RETURN expression . LexToken(SEMICOLON,';',4,67)
+Action : Shift and goto state 145
+
+State  : 145
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement RETURN expression SEMICOLON . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Reduce rule [returnStatement -> RETURN expression SEMICOLON] with ['return',<dict @ 0x7fac39ad86e0>,';'] and goto state 53
+Result : <dict @ 0x7fac39ad5a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 12
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement returnStatement . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement returnStatement empty . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad84b0> ({'quad': 8})
+
+State  : 74
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement returnStatement Marker . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Reduce rule [statement -> returnStatement Marker] with [<dict @ 0x7fac39ad5a28>,{'quad': 8}] and goto state 10
+Result : <dict @ 0x7fac39ad8050> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement statement . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7fac39ad8050>] and goto state 5
+Result : <dict @ 0x7fac39ad8050> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 119
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement statements . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad8398>,<dict @ 0x7fac39ad8050>] and goto state 4
+Result : <dict @ 0x7fac39ad5e88> ({'beginlist': [], 'endlist': []})
+
+State  : 119
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statements . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad8168>,<dict @ 0x7fac39ad5e88>] and goto state 4
+Result : <dict @ 0x7fac39ad5b40> ({'beginlist': [], 'endlist': []})
+
+State  : 129
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',5,69)
+Action : Shift and goto state 195
+
+State  : 195
+Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statements BLOCK_ENDS . LexToken(SUB,'sub',7,72)
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',<dict @ 0x7fac39ad5b40>,'}'] and goto state 3
+Result : <dict @ 0x7fac39ad5b40> ({'beginlist': [], 'endlist': []})
+
+State  : 218
+Stack  : SUB IDENTIFIER Markerscope block . LexToken(SUB,'sub',7,72)
+Action : Reduce rule [functionStatement -> SUB IDENTIFIER Markerscope block] with ['sub','add',<dict @ 0x7fac39ad5168>,<dict @ 0x7fac39ad5b40>] and goto state 48
+Result : <dict @ 0x7fac39ad1c58> ({'beginlist': [], 'endlist': []})
+
+State  : 46
+Stack  : functionStatement . LexToken(SUB,'sub',7,72)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : functionStatement empty . LexToken(SUB,'sub',7,72)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad86e0> ({'quad': 0})
+
+State  : 128
+Stack  : functionStatement Marker . LexToken(SUB,'sub',7,72)
+Action : Reduce rule [statement -> functionStatement Marker] with [<dict @ 0x7fac39ad1c58>,{'quad': 0}] and goto state 15
+Result : <dict @ 0x7fac39ad5a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement . LexToken(SUB,'sub',7,72)
+Action : Shift and goto state 26
+
+State  : 26
+Stack  : statement SUB . LexToken(IDENTIFIER,'Lin',7,76)
+Action : Shift and goto state 110
+
+State  : 110
+Stack  : statement SUB IDENTIFIER . LexToken(BLOCK_BEGIN,'{',7,80)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 184
+Stack  : statement SUB IDENTIFIER empty . LexToken(BLOCK_BEGIN,'{',7,80)
+Action : Reduce rule [Markerscope -> empty] with [None] and goto state 49
+Result : <dict @ 0x7fac39b1ed70> ({'type': 'FUNCTION'})
+
+State  : 183
+Stack  : statement SUB IDENTIFIER Markerscope . LexToken(BLOCK_BEGIN,'{',7,80)
+Action : Shift and goto state 48
+
+State  : 48
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN . LexToken(SUB,'sub',8,86)
+Action : Shift and goto state 26
+
+State  : 26
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB . LexToken(IDENTIFIER,'Sub',8,90)
+Action : Shift and goto state 110
+
+State  : 110
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER . LexToken(BLOCK_BEGIN,'{',8,93)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 184
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER empty . LexToken(BLOCK_BEGIN,'{',8,93)
+Action : Reduce rule [Markerscope -> empty] with [None] and goto state 49
+Result : <dict @ 0x7fac39ad5168> ({'type': 'FUNCTION'})
+
+State  : 183
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope . LexToken(BLOCK_BEGIN,'{',8,93)
+Action : Shift and goto state 48
+
+State  : 48
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN . LexToken(VARIABLE,'$a',9,103)
+Action : Shift and goto state 54
+
+State  : 54
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE . LexToken(ASSIGNMENT_OP,'=',9,106)
+Action : Shift and goto state 136
+
+State  : 136
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP . LexToken(VARIABLE,'$b',9,108)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP VARIABLE . LexToken(MINUS_OP,'-',9,110)
+Action : Reduce rule [term -> VARIABLE] with ['$b'] and goto state 85
+Result : <dict @ 0x7fac39ad57f8> ({'type': 'TYPE ERROR', 'place': '$b'})
+
+State  : 13
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP term . LexToken(MINUS_OP,'-',9,110)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad57f8>] and goto state 96
+Result : <dict @ 0x7fac39ad57f8> ({'type': 'TYPE ERROR', 'place': '$b'})
+
+State  : 203
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP expression . LexToken(MINUS_OP,'-',9,110)
+Action : Shift and goto state 91
+
+State  : 91
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP expression MINUS_OP . LexToken(VARIABLE,'$c',9,111)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP expression MINUS_OP VARIABLE . LexToken(SEMICOLON,';',9,113)
+Action : Reduce rule [term -> VARIABLE] with ['$c'] and goto state 85
+Result : <dict @ 0x7fac39ad8a28> ({'type': 'TYPE ERROR', 'place': '$c'})
+
+State  : 13
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP expression MINUS_OP term . LexToken(SEMICOLON,';',9,113)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad8a28>] and goto state 96
+Result : <dict @ 0x7fac39ad8a28> ({'type': 'TYPE ERROR', 'place': '$c'})
+
+State  : 163
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP expression MINUS_OP expression . LexToken(SEMICOLON,';',9,113)
+Action : Reduce rule [expression -> expression MINUS_OP expression] with [<dict @ 0x7fac39ad57f8>,'-',<dict @ 0x7fac39ad8a28>] and goto state 115
+Result : <dict @ 0x7fac39ad8d70> ({'type': 'TYPE ERROR', 'place': 'temp7'})
+
+State  : 203
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',9,113)
+Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$a','=',<dict @ 0x7fac39ad8d70>] and goto state 54
+Result : <dict @ 0x7fac39ad8b40> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 53
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN assignment . LexToken(SEMICOLON,';',9,113)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN assignment empty . LexToken(SEMICOLON,';',9,113)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad87f8> ({'quad': 1})
+
+State  : 132
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN assignment Marker . LexToken(SEMICOLON,';',9,113)
+Action : Shift and goto state 198
+
+State  : 198
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN assignment Marker SEMICOLON . LexToken(RETURN,'return',10,123)
+Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7fac39ad8b40>,{'quad': 1},';'] and goto state 7
+Result : <dict @ 0x7fac39ad57f8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement . LexToken(RETURN,'return',10,123)
+Action : Shift and goto state 14
+
+State  : 14
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement RETURN . LexToken(VARIABLE,'$a',10,130)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement RETURN VARIABLE . LexToken(SEMICOLON,';',10,132)
+Action : Reduce rule [term -> VARIABLE] with ['$a'] and goto state 85
+Result : <dict @ 0x7fac39add168> ({'type': 'TYPE ERROR', 'place': '$a'})
+
+State  : 13
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement RETURN term . LexToken(SEMICOLON,';',10,132)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39add168>] and goto state 96
+Result : <dict @ 0x7fac39add168> ({'type': 'TYPE ERROR', 'place': '$a'})
+
+State  : 75
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement RETURN expression . LexToken(SEMICOLON,';',10,132)
+Action : Shift and goto state 145
+
+State  : 145
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement RETURN expression SEMICOLON . LexToken(BLOCK_ENDS,'}',11,138)
+Action : Reduce rule [returnStatement -> RETURN expression SEMICOLON] with ['return',<dict @ 0x7fac39add168>,';'] and goto state 53
+Result : <dict @ 0x7fac39ad8a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 12
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement returnStatement . LexToken(BLOCK_ENDS,'}',11,138)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement returnStatement empty . LexToken(BLOCK_ENDS,'}',11,138)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad8e88> ({'quad': 2})
+
+State  : 74
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement returnStatement Marker . LexToken(BLOCK_ENDS,'}',11,138)
+Action : Reduce rule [statement -> returnStatement Marker] with [<dict @ 0x7fac39ad8a28>,{'quad': 2}] and goto state 10
+Result : <dict @ 0x7fac39ad87f8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statement . LexToken(BLOCK_ENDS,'}',11,138)
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7fac39ad87f8>] and goto state 5
+Result : <dict @ 0x7fac39ad87f8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 119
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statement statements . LexToken(BLOCK_ENDS,'}',11,138)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad57f8>,<dict @ 0x7fac39ad87f8>] and goto state 4
+Result : <dict @ 0x7fac39ad8b40> ({'beginlist': [], 'endlist': []})
+
+State  : 129
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',11,138)
+Action : Shift and goto state 195
+
+State  : 195
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope BLOCK_BEGIN statements BLOCK_ENDS . LexToken(LOCAL,'local',12,144)
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',<dict @ 0x7fac39ad8b40>,'}'] and goto state 3
+Result : <dict @ 0x7fac39ad8b40> ({'beginlist': [], 'endlist': []})
+
+State  : 218
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN SUB IDENTIFIER Markerscope block . LexToken(LOCAL,'local',12,144)
+Action : Reduce rule [functionStatement -> SUB IDENTIFIER Markerscope block] with ['sub','Sub',<dict @ 0x7fac39ad5168>,<dict @ 0x7fac39ad8b40>] and goto state 48
+Result : <dict @ 0x7fac39ad8168> ({'beginlist': [], 'endlist': []})
+
+State  : 46
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN functionStatement . LexToken(LOCAL,'local',12,144)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN functionStatement empty . LexToken(LOCAL,'local',12,144)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad8d70> ({'quad': 1})
+
+State  : 128
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN functionStatement Marker . LexToken(LOCAL,'local',12,144)
+Action : Reduce rule [statement -> functionStatement Marker] with [<dict @ 0x7fac39ad8168>,{'quad': 1}] and goto state 15
+Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement . LexToken(LOCAL,'local',12,144)
+Action : Shift and goto state 55
+
+State  : 55
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL . LexToken(VARIABLE,'$b',12,150)
+Action : Shift and goto state 138
+
+State  : 138
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL VARIABLE . LexToken(COMMA,',',12,152)
+Action : Shift and goto state 135
+
+State  : 135
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL VARIABLE COMMA . LexToken(LOCAL,'local',12,153)
+ERROR: Error  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL VARIABLE COMMA . LexToken(LOCAL,'local',12,153)
+
+State  : 135
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL VARIABLE COMMA . error
+ERROR: Error  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL VARIABLE COMMA . error
+
+State  : 138
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL VARIABLE . error
+ERROR: Error  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL VARIABLE . error
+
+State  : 55
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL . error
+ERROR: Error  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement LOCAL . error
+
+State  : 37
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement . error
+ERROR: Error  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN statement . error
+
+State  : 48
+Stack  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN . error
+ERROR: Error  : statement SUB IDENTIFIER Markerscope BLOCK_BEGIN . error
+
+State  : 183
+Stack  : statement SUB IDENTIFIER Markerscope . error
+ERROR: Error  : statement SUB IDENTIFIER Markerscope . error
+
+State  : 110
+Stack  : statement SUB IDENTIFIER . error
+ERROR: Error  : statement SUB IDENTIFIER . error
+
+State  : 26
+Stack  : statement SUB . error
+ERROR: Error  : statement SUB . error
+
+State  : 37
+Stack  : statement . error
+ERROR: Error  : statement . error
+
+State  : 0
+Stack  : . error
+ERROR: Error  : . error
+
+State  : 0
+Stack  : . LexToken(VARIABLE,'$c',12,159)
+Action : Shift and goto state 54
+
+State  : 54
+Stack  : VARIABLE . LexToken(SEMICOLON,';',12,161)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 137
+Stack  : VARIABLE empty . LexToken(SEMICOLON,';',12,161)
+Action : Reduce rule [decList -> empty] with [None] and goto state 74
+Result : <list @ 0x7fac39b15a28> ([])
+
+State  : 133
+Stack  : VARIABLE decList . LexToken(SEMICOLON,';',12,161)
+Action : Shift and goto state 199
+
+State  : 199
+Stack  : VARIABLE decList SEMICOLON . LexToken(VARIABLE,'$b',13,167)
+Action : Reduce rule [declaration -> VARIABLE decList SEMICOLON] with ['$c',[],';'] and goto state 70
+Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 43
+Stack  : declaration . LexToken(VARIABLE,'$b',13,167)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : declaration empty . LexToken(VARIABLE,'$b',13,167)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad8910> ({'quad': 2})
+
+State  : 125
+Stack  : declaration Marker . LexToken(VARIABLE,'$b',13,167)
+Action : Reduce rule [statement -> declaration Marker] with [<dict @ 0x7fac39ad84b0>,{'quad': 2}] and goto state 8
+Result : <dict @ 0x7fac39ad5280> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement . LexToken(VARIABLE,'$b',13,167)
+Action : Shift and goto state 54
+
+State  : 54
+Stack  : statement VARIABLE . LexToken(ASSIGNMENT_OP,'=',13,170)
+Action : Shift and goto state 136
+
+State  : 136
+Stack  : statement VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,10,13,172)
+Action : Shift and goto state 47
+
+State  : 47
+Stack  : statement VARIABLE ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',13,174)
+Action : Reduce rule [number -> NUMBER] with [10] and goto state 78
+Result : <dict @ 0x7fac39ad8d70> ({'type': 'NUMBER', 'value': 10})
+
+State  : 29
+Stack  : statement VARIABLE ASSIGNMENT_OP number . LexToken(SEMICOLON,';',13,174)
+Action : Reduce rule [term -> number] with [<dict @ 0x7fac39ad8d70>] and goto state 83
+Result : <dict @ 0x7fac39ad8d70> ({'place': 'temp8', 'type': 'NUMBER', 'va ...)
+
+State  : 13
+Stack  : statement VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',13,174)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad8d70>] and goto state 96
+Result : <dict @ 0x7fac39ad8d70> ({'place': 'temp8', 'type': 'NUMBER', 'va ...)
+
+State  : 203
+Stack  : statement VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',13,174)
+Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$b','=',<dict @ 0x7fac39ad8d70>] and goto state 54
+Result : <dict @ 0x7fac39b20168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 53
+Stack  : statement assignment . LexToken(SEMICOLON,';',13,174)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement assignment empty . LexToken(SEMICOLON,';',13,174)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad5168> ({'quad': 4})
+
+State  : 132
+Stack  : statement assignment Marker . LexToken(SEMICOLON,';',13,174)
+Action : Shift and goto state 198
+
+State  : 198
+Stack  : statement assignment Marker SEMICOLON . LexToken(VARIABLE,'$c',14,180)
+Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7fac39b20168>,{'quad': 4},';'] and goto state 7
+Result : <dict @ 0x7fac39ad8280> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement statement . LexToken(VARIABLE,'$c',14,180)
+Action : Shift and goto state 54
+
+State  : 54
+Stack  : statement statement VARIABLE . LexToken(ASSIGNMENT_OP,'=',14,183)
+Action : Shift and goto state 136
+
+State  : 136
+Stack  : statement statement VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,2,14,185)
+Action : Shift and goto state 47
+
+State  : 47
+Stack  : statement statement VARIABLE ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',14,186)
+Action : Reduce rule [number -> NUMBER] with [2] and goto state 78
+Result : <dict @ 0x7fac39ad8398> ({'type': 'NUMBER', 'value': 2})
+
+State  : 29
+Stack  : statement statement VARIABLE ASSIGNMENT_OP number . LexToken(SEMICOLON,';',14,186)
+Action : Reduce rule [term -> number] with [<dict @ 0x7fac39ad8398>] and goto state 83
+Result : <dict @ 0x7fac39ad8398> ({'place': 'temp9', 'type': 'NUMBER', 'va ...)
+
+State  : 13
+Stack  : statement statement VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',14,186)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad8398>] and goto state 96
+Result : <dict @ 0x7fac39ad8398> ({'place': 'temp9', 'type': 'NUMBER', 'va ...)
+
+State  : 203
+Stack  : statement statement VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',14,186)
+Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$c','=',<dict @ 0x7fac39ad8398>] and goto state 54
+Result : <dict @ 0x7fac39ad5168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 53
+Stack  : statement statement assignment . LexToken(SEMICOLON,';',14,186)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement statement assignment empty . LexToken(SEMICOLON,';',14,186)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad86e0> ({'quad': 6})
+
+State  : 132
+Stack  : statement statement assignment Marker . LexToken(SEMICOLON,';',14,186)
+Action : Shift and goto state 198
+
+State  : 198
+Stack  : statement statement assignment Marker SEMICOLON . LexToken(VARIABLE,'$d',15,192)
+Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7fac39ad5168>,{'quad': 6},';'] and goto state 7
+Result : <dict @ 0x7fac39ad5a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement statement statement . LexToken(VARIABLE,'$d',15,192)
+Action : Shift and goto state 54
+
+State  : 54
+Stack  : statement statement statement VARIABLE . LexToken(ASSIGNMENT_OP,'=',15,195)
+Action : Shift and goto state 136
+
+State  : 136
+Stack  : statement statement statement VARIABLE ASSIGNMENT_OP . LexToken(IDENTIFIER,'add',15,197)
+Action : Shift and goto state 39
+
+State  : 39
+Stack  : statement statement statement VARIABLE ASSIGNMENT_OP IDENTIFIER . LexToken(OPEN_PARANTHESIS,'(',15,200)
+Action : Shift and goto state 122
+
+State  : 122
+Stack  : statement statement statement VARIABLE ASSIGNMENT_OP IDENTIFIER OPEN_PARANTHESIS . LexToken(CLOSE_PARANTHESIS,')',15,201)
+Action : Shift and goto state 190
+
+State  : 190
+Stack  : statement statement statement VARIABLE ASSIGNMENT_OP IDENTIFIER OPEN_PARANTHESIS CLOSE_PARANTHESIS . LexToken(SEMICOLON,';',15,202)
+Action : Reduce rule [functionCall -> IDENTIFIER OPEN_PARANTHESIS CLOSE_PARANTHESIS] with ['add','(',')'] and goto state 50
+Result : <dict @ 0x7fac39ad8a28> ({'place': 'add', 'beginlist': [], 'type' ...)
+
+State  : 63
+Stack  : statement statement statement VARIABLE ASSIGNMENT_OP functionCall . LexToken(SEMICOLON,';',15,202)
+Action : Reduce rule [term -> functionCall] with [<dict @ 0x7fac39ad8a28>] and goto state 75
+Result : <dict @ 0x7fac39ad8a28> ({'place': 'add', 'beginlist': [], 'type' ...)
+
+State  : 13
+Stack  : statement statement statement VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',15,202)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad8a28>] and goto state 96
+Result : <dict @ 0x7fac39ad8a28> ({'place': 'add', 'beginlist': [], 'type' ...)
+
+State  : 203
+Stack  : statement statement statement VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',15,202)
+Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$d','=',<dict @ 0x7fac39ad8a28>] and goto state 54
+Result : <dict @ 0x7fac39ad5168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 53
+Stack  : statement statement statement assignment . LexToken(SEMICOLON,';',15,202)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement statement statement assignment empty . LexToken(SEMICOLON,';',15,202)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad5910> ({'quad': 7})
+
+State  : 132
+Stack  : statement statement statement assignment Marker . LexToken(SEMICOLON,';',15,202)
+Action : Shift and goto state 198
+
+State  : 198
+Stack  : statement statement statement assignment Marker SEMICOLON . LexToken(PRINT,'print',16,208)
+Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7fac39ad5168>,{'quad': 7},';'] and goto state 7
+Result : <dict @ 0x7fac39ad57f8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement statement statement statement . LexToken(PRINT,'print',16,208)
+Action : Shift and goto state 17
+
+State  : 17
+Stack  : statement statement statement statement PRINT . LexToken(VARIABLE,'$d',16,214)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement statement statement statement PRINT VARIABLE . LexToken(CONCATENATE,'.',16,216)
+Action : Reduce rule [term -> VARIABLE] with ['$d'] and goto state 85
+Result : <dict @ 0x7fac39ad8e88> ({'type': 'TYPE ERROR', 'place': '$d'})
+
+State  : 13
+Stack  : statement statement statement statement PRINT term . LexToken(CONCATENATE,'.',16,216)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad8e88>] and goto state 96
+Result : <dict @ 0x7fac39ad8e88> ({'type': 'TYPE ERROR', 'place': '$d'})
+
+State  : 78
+Stack  : statement statement statement statement PRINT expression . LexToken(CONCATENATE,'.',16,216)
+Action : Shift and goto state 105
+
+State  : 105
+Stack  : statement statement statement statement PRINT expression CONCATENATE . LexToken(RES_STRING,'"\\n"',16,217)
+Action : Shift and goto state 15
+
+State  : 15
+Stack  : statement statement statement statement PRINT expression CONCATENATE RES_STRING . LexToken(SEMICOLON,';',16,221)
+Action : Reduce rule [string -> RES_STRING] with ['"\\n"'] and goto state 77
+Result : <dict @ 0x7fac39ad86e0> ({'type': 'RES_STRING', 'value': '"\\n"'})
+
+State  : 49
+Stack  : statement statement statement statement PRINT expression CONCATENATE string . LexToken(SEMICOLON,';',16,221)
+Action : Reduce rule [term -> string] with [<dict @ 0x7fac39ad86e0>] and goto state 84
+Result : <dict @ 0x7fac39ad86e0> ({'place': 'temp10', 'type': 'RES_STRING' ...)
+
+State  : 13
+Stack  : statement statement statement statement PRINT expression CONCATENATE term . LexToken(SEMICOLON,';',16,221)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad86e0>] and goto state 96
+Result : <dict @ 0x7fac39ad86e0> ({'place': 'temp10', 'type': 'RES_STRING' ...)
+
+State  : 178
+Stack  : statement statement statement statement PRINT expression CONCATENATE expression . LexToken(SEMICOLON,';',16,221)
+Action : Reduce rule [expression -> expression CONCATENATE expression] with [<dict @ 0x7fac39ad8e88>,'.',<dict @ 0x7fac39ad86e0>] and goto state 122
+Result : <dict @ 0x7fac39ad87f8> ({'type': 'STRING', 'place': 'temp11'})
+
+State  : 78
+Stack  : statement statement statement statement PRINT expression . LexToken(SEMICOLON,';',16,221)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement PRINT expression SEMICOLON . LexToken(VARIABLE,'$d',17,227)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7fac39ad87f8>,';'] and goto state 52
+Result : <dict @ 0x7fac39ad5168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 20
+Stack  : statement statement statement statement printStatement . LexToken(VARIABLE,'$d',17,227)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement statement statement statement printStatement empty . LexToken(VARIABLE,'$d',17,227)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad8398> ({'quad': 10})
+
+State  : 80
+Stack  : statement statement statement statement printStatement Marker . LexToken(VARIABLE,'$d',17,227)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7fac39ad5168>,{'quad': 10}] and goto state 14
+Result : <dict @ 0x7fac39ad8e88> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement statement statement statement statement . LexToken(VARIABLE,'$d',17,227)
+Action : Shift and goto state 54
+
+State  : 54
+Stack  : statement statement statement statement statement VARIABLE . LexToken(ASSIGNMENT_OP,'=',17,230)
+Action : Shift and goto state 136
+
+State  : 136
+Stack  : statement statement statement statement statement VARIABLE ASSIGNMENT_OP . LexToken(IDENTIFIER,'Sub',17,232)
+Action : Shift and goto state 39
+
+State  : 39
+Stack  : statement statement statement statement statement VARIABLE ASSIGNMENT_OP IDENTIFIER . LexToken(OPEN_PARANTHESIS,'(',17,235)
+Action : Shift and goto state 122
+
+State  : 122
+Stack  : statement statement statement statement statement VARIABLE ASSIGNMENT_OP IDENTIFIER OPEN_PARANTHESIS . LexToken(CLOSE_PARANTHESIS,')',17,236)
+Action : Shift and goto state 190
+
+State  : 190
+Stack  : statement statement statement statement statement VARIABLE ASSIGNMENT_OP IDENTIFIER OPEN_PARANTHESIS CLOSE_PARANTHESIS . LexToken(SEMICOLON,';',17,237)
+Action : Reduce rule [functionCall -> IDENTIFIER OPEN_PARANTHESIS CLOSE_PARANTHESIS] with ['Sub','(',')'] and goto state 50
+Result : <dict @ 0x7fac39add398> ({'place': 'Sub', 'beginlist': [], 'type' ...)
+
+State  : 63
+Stack  : statement statement statement statement statement VARIABLE ASSIGNMENT_OP functionCall . LexToken(SEMICOLON,';',17,237)
+Action : Reduce rule [term -> functionCall] with [<dict @ 0x7fac39add398>] and goto state 75
+Result : <dict @ 0x7fac39add398> ({'place': 'Sub', 'beginlist': [], 'type' ...)
+
+State  : 13
+Stack  : statement statement statement statement statement VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',17,237)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39add398>] and goto state 96
+Result : <dict @ 0x7fac39add398> ({'place': 'Sub', 'beginlist': [], 'type' ...)
+
+State  : 203
+Stack  : statement statement statement statement statement VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',17,237)
+Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$d','=',<dict @ 0x7fac39add398>] and goto state 54
+Result : <dict @ 0x7fac39ad5168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 53
+Stack  : statement statement statement statement statement assignment . LexToken(SEMICOLON,';',17,237)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement statement statement statement statement assignment empty . LexToken(SEMICOLON,';',17,237)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad8d70> ({'quad': 11})
+
+State  : 132
+Stack  : statement statement statement statement statement assignment Marker . LexToken(SEMICOLON,';',17,237)
+Action : Shift and goto state 198
+
+State  : 198
+Stack  : statement statement statement statement statement assignment Marker SEMICOLON . LexToken(PRINT,'print',18,243)
+Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7fac39ad5168>,{'quad': 11},';'] and goto state 7
+Result : <dict @ 0x7fac39ad1e88> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement statement statement statement statement statement . LexToken(PRINT,'print',18,243)
+Action : Shift and goto state 17
+
+State  : 17
+Stack  : statement statement statement statement statement statement PRINT . LexToken(VARIABLE,'$d',18,249)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement statement statement statement statement statement PRINT VARIABLE . LexToken(CONCATENATE,'.',18,251)
+Action : Reduce rule [term -> VARIABLE] with ['$d'] and goto state 85
+Result : <dict @ 0x7fac39add5c8> ({'type': 'TYPE ERROR', 'place': '$d'})
+
+State  : 13
+Stack  : statement statement statement statement statement statement PRINT term . LexToken(CONCATENATE,'.',18,251)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39add5c8>] and goto state 96
+Result : <dict @ 0x7fac39add5c8> ({'type': 'TYPE ERROR', 'place': '$d'})
+
+State  : 78
+Stack  : statement statement statement statement statement statement PRINT expression . LexToken(CONCATENATE,'.',18,251)
+Action : Shift and goto state 105
+
+State  : 105
+Stack  : statement statement statement statement statement statement PRINT expression CONCATENATE . LexToken(RES_STRING,'"\\n"',18,252)
+Action : Shift and goto state 15
+
+State  : 15
+Stack  : statement statement statement statement statement statement PRINT expression CONCATENATE RES_STRING . LexToken(SEMICOLON,';',18,256)
+Action : Reduce rule [string -> RES_STRING] with ['"\\n"'] and goto state 77
+Result : <dict @ 0x7fac39ad8398> ({'type': 'RES_STRING', 'value': '"\\n"'})
+
+State  : 49
+Stack  : statement statement statement statement statement statement PRINT expression CONCATENATE string . LexToken(SEMICOLON,';',18,256)
+Action : Reduce rule [term -> string] with [<dict @ 0x7fac39ad8398>] and goto state 84
+Result : <dict @ 0x7fac39ad8398> ({'place': 'temp12', 'type': 'RES_STRING' ...)
+
+State  : 13
+Stack  : statement statement statement statement statement statement PRINT expression CONCATENATE term . LexToken(SEMICOLON,';',18,256)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7fac39ad8398>] and goto state 96
+Result : <dict @ 0x7fac39ad8398> ({'place': 'temp12', 'type': 'RES_STRING' ...)
+
+State  : 178
+Stack  : statement statement statement statement statement statement PRINT expression CONCATENATE expression . LexToken(SEMICOLON,';',18,256)
+Action : Reduce rule [expression -> expression CONCATENATE expression] with [<dict @ 0x7fac39add5c8>,'.',<dict @ 0x7fac39ad8398>] and goto state 122
+Result : <dict @ 0x7fac39add4b0> ({'type': 'STRING', 'place': 'temp13'})
+
+State  : 78
+Stack  : statement statement statement statement statement statement PRINT expression . LexToken(SEMICOLON,';',18,256)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement statement statement PRINT expression SEMICOLON . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7fac39add4b0>,';'] and goto state 52
+Result : <dict @ 0x7fac39ad5168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 20
+Stack  : statement statement statement statement statement statement printStatement . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : statement statement statement statement statement statement printStatement empty . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39add280> ({'quad': 14})
+
+State  : 80
+Stack  : statement statement statement statement statement statement printStatement Marker . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7fac39ad5168>,{'quad': 14}] and goto state 14
+Result : <dict @ 0x7fac39add5c8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement statement statement statement statement statement statement . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7fac39add5c8>] and goto state 5
+Result : <dict @ 0x7fac39add5c8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 119
+Stack  : statement statement statement statement statement statement statements . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad1e88>,<dict @ 0x7fac39add5c8>] and goto state 4
+Result : <dict @ 0x7fac39ad8d70> ({'beginlist': [], 'endlist': []})
+
+State  : 119
+Stack  : statement statement statement statement statement statements . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad8e88>,<dict @ 0x7fac39ad8d70>] and goto state 4
+Result : <dict @ 0x7fac39ad87f8> ({'beginlist': [], 'endlist': []})
+
+State  : 119
+Stack  : statement statement statement statement statements . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad57f8>,<dict @ 0x7fac39ad87f8>] and goto state 4
+Result : <dict @ 0x7fac39ad5910> ({'beginlist': [], 'endlist': []})
+
+State  : 119
+Stack  : statement statement statement statements . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad5a28>,<dict @ 0x7fac39ad5910>] and goto state 4
+Result : <dict @ 0x7fac39ad8168> ({'beginlist': [], 'endlist': []})
+
+State  : 119
+Stack  : statement statement statements . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad8280>,<dict @ 0x7fac39ad8168>] and goto state 4
+Result : <dict @ 0x7fac39b20168> ({'beginlist': [], 'endlist': []})
+
+State  : 119
+Stack  : statement statements . LexToken(BLOCK_ENDS,'}',19,258)
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7fac39ad5280>,<dict @ 0x7fac39b20168>] and goto state 4
+Result : <dict @ 0x7fac39ad84b0> ({'beginlist': [], 'endlist': []})
+
+State  : 25
+Stack  : statements . LexToken(BLOCK_ENDS,'}',19,258)
+ERROR: Error  : statements . LexToken(BLOCK_ENDS,'}',19,258)
+
+State  : 25
+Stack  : statements . error
+ERROR: Error  : statements . error
+
+State  : 0
+Stack  : . error
+ERROR: Error  : . error
+
+State  : 0
+Stack  : . LexToken(IDENTIFIER,'Lin',21,261)
+Action : Shift and goto state 39
+
+State  : 39
+Stack  : IDENTIFIER . LexToken(OPEN_PARANTHESIS,'(',21,264)
+Action : Shift and goto state 122
+
+State  : 122
+Stack  : IDENTIFIER OPEN_PARANTHESIS . LexToken(CLOSE_PARANTHESIS,')',21,265)
+Action : Shift and goto state 190
+
+State  : 190
+Stack  : IDENTIFIER OPEN_PARANTHESIS CLOSE_PARANTHESIS . LexToken(SEMICOLON,';',21,266)
+Action : Reduce rule [functionCall -> IDENTIFIER OPEN_PARANTHESIS CLOSE_PARANTHESIS] with ['Lin','(',')'] and goto state 50
+Result : <dict @ 0x7fac39ad5a28> ({'place': 'Lin', 'beginlist': [], 'type' ...)
+
+State  : 10
+Stack  : functionCall . LexToken(SEMICOLON,';',21,266)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 60
+Stack  : functionCall empty . LexToken(SEMICOLON,';',21,266)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 113
+Result : <dict @ 0x7fac39ad8e88> ({'quad': 15})
+
+State  : 73
+Stack  : functionCall Marker . LexToken(SEMICOLON,';',21,266)
+Action : Shift and goto state 144
+
+State  : 144
+Stack  : functionCall Marker SEMICOLON . $end
+Action : Reduce rule [statement -> functionCall Marker SEMICOLON] with [<dict @ 0x7fac39ad5a28>,{'quad': 15},';'] and goto state 11
+Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 37
+Stack  : statement . $end
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7fac39ad84b0>] and goto state 5
+Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 25
 Stack  : statements . $end
-Action : Reduce rule [start -> statements] with [<dict @ 0x7f526e96e050>] and goto state 2
-Result : <dict @ 0x7f526e96e050> ({'beginlist': [], 'endlist': []})
+Action : Reduce rule [start -> statements] with [<dict @ 0x7fac39ad84b0>] and goto state 2
+Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 35
 Stack  : start . $end
-Done   : Returning <dict @ 0x7f526e96e050> ({'beginlist': [], 'endlist': []})
+Done   : Returning <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
 PLY: PARSE DEBUG END
