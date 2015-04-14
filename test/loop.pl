@@ -5,16 +5,16 @@ $a = 10;
 # while loop execution
 # while( $a < 20 )
 # {
-  
-   
-#    print "temp";
+#     print "\nValue of a: ";
+#    print $a;
 #    #next;
 #    $a = $a + 1;
 # }
 
-# # until loop execution
+# # # until loop execution
 # until( $a > 10 ){
-#    print "Value of a: $a\n";
+#    print "\nValue of a: ";
+#    print $a;
 #    $a = $a + 1;
 # }
 
@@ -22,6 +22,10 @@ $a = 10;
 for( $a = 10; $a > -10; $a = $a - 1 ){
     # print "value of a: $a\n";
     print $a;
+}
+for( $a = 10; $a < 20; $a = $a + 1 ){
+    # print "\nValue of a: ";
+   print $a;
 }
 
 # $a = 0;
@@ -32,11 +36,15 @@ for( $a = 10; $a > -10; $a = $a - 1 ){
 #    $b = 0;
 #    # inner while loop
 #    while( $b < 3 ){
-#       print "value of a = $a, b = $b\n";
+#    print "\nValue of a: ";
+#    print $a;
+#     print "\nValue of b: ";
+#    print $b;
 #       $b = $b + 1;
 #    }
 #    $a = $a + 1;
-#    print "Value of a = $a\n\n";
+#     print "\nValue of a: ";
+#    print $a;
 # }
 
 # # #demostrating next
@@ -47,18 +55,20 @@ for( $a = 10; $a > -10; $a = $a - 1 ){
 #        $a = $a + 1;
 #        next;
 #    }
-#    print "value of a: $a\n";
+#     print "\nValue of a: ";
+#    print $a;
 #    $a = $a + 1;
 # }
 
 # # #demonstrating last
-# 	while( $a < 20 ){
-# 	   if( $a == 15)
-# 	   {
-# 	       # terminate the loop.
-# 	       $a = $a + 1;
-# 	       last;
-# 	   }
-# 	   print "value of a: $a\n";
-# 	   $a = $a + 1;
-# 	}
+	# while( $a < 20 ){
+	#    if( $a == 15)
+	#    {
+	#        # terminate the loop.
+	#        $a = $a + 1;
+	#        last;
+	#    }
+	#     print "\nValue of a: ";
+ #   print $a;
+	#    $a = $a + 1;
+	# }

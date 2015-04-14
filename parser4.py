@@ -543,8 +543,8 @@ def p_assignment(p):
     if p[3].has_key('value'):
     	p[1]['value']=p[3]['value']
     	global_strings[p[1]['place']]=p[3]['value']
-    	print "KOKOKOKOKOKOKOKOKOKOKOKKKKKKKOKO"
-    	print global_strings
+    	#print "KOKOKOKOKOKOKOKOKOKOKOKKKKKKKOKO"
+    	#print global_strings
 
 
 def p_assignment_to_array_elements(p):
@@ -691,75 +691,98 @@ def p_Markeruntil(p):
 
 
 def p_for(p):
-	'forStatement : FOR  OPEN_PARANTHESIS assignment SEMICOLON  Marker  expression  SEMICOLON  Markerfor2  Marker VARIABLE ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
+	'forStatement : FOR  OPEN_PARANTHESIS assignment SEMICOLON  MarkerQ1  expression  SEMICOLON  MarkerQ2  assignment CLOSE_PARANTHESIS  MarkerQ3  block'
 	
 	p[0]={}
 	if p[6]['type']=="BOOLEAN":
-		threeAddrCode.backpatch(p[14]['beginlist'],p[5]['quad'])
-		#threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
-		p[0]['nextlist']=threeAddrCode.merge(p[14].get('endlist',[]),p[14].get('nextlist',[]))
-		p[0]['nextlist']=threeAddrCode.merge(p[13].get('falselist',[]),p[0].get('nextlist',[]))	    	
+		threeAddrCode.backpatch(p[8]['truelist'],p[11]['quad'])
+		# threeAddrCode.backpatch(p[8]['falselist'],p[7]['quad'])
+		p[0]['nextlist']=p[8].get('falselist',[])
+		# p[0]['nextlist']=threeAddrCode.merge(p[13].get('falselist',[]),p[0].get('nextlist',[]))	    	
 	    # add entry in the symbol table and fill in the type
 		
-		p[9]={'type':p[11]['type'], 'place':p[9]}
+		# p[9]={'type':p[11]['type'], 'place':p[9]}
 		
-		symTable.newvariableentry(p[9]['place'], p[9]['type'], 0)
-		threeAddrCode.emit(p[9]['place'], '',p[10], p[11]['place'])
-		threeAddrCode.emit('','','GOTO',p[5]['quad'])
+		# symTable.newvariableentry(p[9]['place'], p[9]['type'], 0)
+		# threeAddrCode.emit(p[9]['place'], '',p[10], p[11]['place'])
+		threeAddrCode.emit('','','GOTO',p[8]['quad'])
 	else:
 		print "ERROR: line "+str(p.lineno(6))+" :Expression is not of boolean type"
 	p[0]['beginlist']=[]
 	p[0]['endlist']=[]
 
+def p_Marker_q1(p):
+	'MarkerQ1 : empty'
 
-def p_for_advass(p):
-	'forStatement : FOR  OPEN_PARANTHESIS assignment  SEMICOLON  Marker  expression  SEMICOLON  Markerfor2  VARIABLE ADV_ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
-	
+	p[0]={'quad': threeAddrCode.pointer_quad_next()}
+
+def p_Marker_q2(p):
+	'MarkerQ2 : empty'
+
 	p[0]={}
-	if p[6]['type']=="BOOLEAN":
-		
-		threeAddrCode.backpatch(p[14]['beginlist'],p[5]['quad'])
-		threeAddrCode.backpatch(p[14]['endlist'],p[8]['quad'])
-		p[0]['nextlist']=threeAddrCode.merge(p[14].get('endlist',[]),p[14].get('nextlist',[]))
-		p[0]['nextlist']=threeAddrCode.merge(p[13].get('falselist',[]),p[0].get('nextlist',[]))	    	
-	    # add entry in the symbol table and fill in the type
-		
-
-		exp_type = "VOID"
-		varType = symTable.getvalueofkey_variable(p[9], 'type')
-		if varType==None:
-			print  "ERROR: line "+str(p.lineno(9))+" : Variable does not exist\n"
-			exp_type_left = "TYPE ERROR"
-		else:
-			exp_type_left = varType
-		p[9] = {'place':p[9], 'type':exp_type_left}
-		# Dealing with the binary operation
-		Adv_Op = p[10].split("=")[0]
-		
-		
-		if p[9]['type']!='NUMBER' or p[11]['type']!='NUMBER' :
-			print  "ERROR: line "+str(p.lineno(10))+": cannot perform operation\n"
-			exp_type="TYPE ERROR"
+	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
+	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
+	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
+	threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
 	
-		if exp_type=="VOID":
-			threeAddrCode.emit(p[9]['place'], p[9]['place'], Adv_Op, p[11]['place'])
-		else:
 
-			print  "ERROR: line "+str(p.lineno(10))+" : Some error occured in advanced assignment\n"	
-		threeAddrCode.emit('','','GOTO',p[5]['quad'])
-	else:
-		print "ERROR: line "+str(p.lineno(6))+" :Expression is not of boolean type"
-	p[0]['beginlist']=[]
-	p[0]['endlist']=[]
-def p_Markerfor2(p):
-	'Markerfor2 : empty'
-	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()+1]}
-	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
+	p[0]['quad']=threeAddrCode.pointer_quad_next()
 
-def p_Markerfor(p):
-	'Markerfor : empty'
-	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
-	threeAddrCode.emit(p[-7]['place'],'','GOTO_MARK','-1')
+def p_Marker_q3(p):
+	'MarkerQ3 : empty'
+
+	threeAddrCode.emit('', '', 'GOTO', p[-6]['quad'])
+	p[0]={'quad': threeAddrCode.pointer_quad_next()}
+
+
+# def p_for_advass(p):
+# 	'forStatement : FOR  OPEN_PARANTHESIS assignment  SEMICOLON  Marker  expression  SEMICOLON  Markerfor2  VARIABLE ADV_ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
+	
+# 	p[0]={}
+# 	if p[6]['type']=="BOOLEAN":
+		
+# 		threeAddrCode.backpatch(p[14]['beginlist'],p[5]['quad'])
+# 		threeAddrCode.backpatch(p[14]['endlist'],p[8]['quad'])
+# 		p[0]['nextlist']=threeAddrCode.merge(p[14].get('endlist',[]),p[14].get('nextlist',[]))
+# 		p[0]['nextlist']=threeAddrCode.merge(p[13].get('falselist',[]),p[0].get('nextlist',[]))	    	
+# 	    # add entry in the symbol table and fill in the type
+		
+
+# 		exp_type = "VOID"
+# 		varType = symTable.getvalueofkey_variable(p[9], 'type')
+# 		if varType==None:
+# 			print  "ERROR: line "+str(p.lineno(9))+" : Variable does not exist\n"
+# 			exp_type_left = "TYPE ERROR"
+# 		else:
+# 			exp_type_left = varType
+# 		p[9] = {'place':p[9], 'type':exp_type_left}
+# 		# Dealing with the binary operation
+# 		Adv_Op = p[10].split("=")[0]
+		
+		
+# 		if p[9]['type']!='NUMBER' or p[11]['type']!='NUMBER' :
+# 			print  "ERROR: line "+str(p.lineno(10))+": cannot perform operation\n"
+# 			exp_type="TYPE ERROR"
+	
+# 		if exp_type=="VOID":
+# 			threeAddrCode.emit(p[9]['place'], p[9]['place'], Adv_Op, p[11]['place'])
+# 		else:
+
+# 			print  "ERROR: line "+str(p.lineno(10))+" : Some error occured in advanced assignment\n"	
+# 		threeAddrCode.emit('','','GOTO',p[5]['quad'])
+# 	else:
+# 		print "ERROR: line "+str(p.lineno(6))+" :Expression is not of boolean type"
+# 	p[0]['beginlist']=[]
+# 	p[0]['endlist']=[]
+# # def p_Markerfor2(p):
+# 	'Markerfor2 : empty'
+# 	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()+1]}
+# 	threeAddrCode.emit(p[-2]['place'],'','GOTO_MARK','-1')
+
+# def p_Markerfor(p):
+# 	'Markerfor : empty'
+# 	p[0]={'falselist' : [threeAddrCode.pointer_quad_next()]}
+# 	threeAddrCode.emit(p[-7]['place'],'','GOTO_MARK','-1')
 	
 def p_assignment_For_empty(p):
 	'assignment : empty'
@@ -945,8 +968,8 @@ def p_term(p):
 	threeAddrCode.emit(p[0]['place'], '', '=', p[1]['value'])
 	global global_strings
 	global_strings[p[0]['place']]=p[1]['value']
-	print global_strings
-	print "NNIIINNNNNNNNNNNNNNNNNIIIIIIIIIIIIIIIIIII"
+	#print global_strings
+	#print "NNIIINNNNNNNNNNNNNNNNNIIIIIIIIIIIIIIIIIII"
 
 def p_term_var(p):
 	'term : VARIABLE'
@@ -961,13 +984,13 @@ def p_term_var(p):
 	p[0] = {'place':p[1], 'type':exp_type}
 	p[0]['place'] = symTable.newtmp()
 	threeAddrCode.emit(p[0]['place'], '', '=', p[1])
-	print p[1]
-	print "qawwsxedefmngvjnnnnnnnnnnnnnnnnnnnntjm"
+	#print p[1]
+	#print "qawwsxedefmngvjnnnnnnnnnnnnnnnnnnnntjm"
 	global global_strings
 	if global_strings.has_key(p[1]):
 		global_strings[p[0]['place']]=global_strings[p[1]]
-		print "QWERTYUIOPASDFGHJKZXCVBNM<"
-		print global_strings
+		#print "QWERTYUIOPASDFGHJKZXCVBNM<"
+		#print global_strings
 
 
 def p_term_exp(p):
@@ -1418,8 +1441,8 @@ def scopecode(name,taccode):
 
 		if TAC[2]=="=":	
 
-			print global_vars
-			print "11111111111111112222222222222222222222222"		
+			#print global_vars
+			#print "11111111111111112222222222222222222222222"		
 			if type(TAC[3]) is int:
 				flag=0
 				offset=offset-4
@@ -1458,9 +1481,9 @@ def scopecode(name,taccode):
 
 
 			elif re.match(r'\$.*',TAC[3]):
-				print TAC[3]
-				print TAC[0]
-				print "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+				#print TAC[3]
+				#print TAC[0]
+				#print "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
 				if global_vars.has_key(TAC[3]):
 					if global_vars[TAC[3]]=="NUMBER":
 						flag=0
@@ -1472,7 +1495,7 @@ def scopecode(name,taccode):
 					else:
 						flag=1
 						global_vars[TAC[0]]="STRING"
-						print global_strings
+						#print global_strings
 						string_value_temp=global_strings[str(TAC[3].split("$")[1])+"_str__ing__"]
 						data_strings[TAC[0]]=TAC[0]+":\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0]\
 							+"_len = . - "+TAC[0]
@@ -1488,34 +1511,34 @@ def scopecode(name,taccode):
 				# num_value_temp=TAC[3]
 
 			elif function_list_linear.has_key(TAC[3]):
-				print function_list_linear
-				print "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+				#print function_list_linear
+				#print "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
 				temp12=function_list_linear[TAC[3]]
 				temp13=temp12.split('_')[0]
 				if re.match(r'temp\d+',temp13):
 					temp14=temp13
 				else:
 					temp14="$"+temp13
-				print temp14
-				print TAC[0]
-				print symTable.symbolTable['root'][TAC[3]]['returntype']
-				print "WWWWWWWWWWWWWWWWWWQQQQQQQQQQQQQQQQQQQQQQ"
-				print global_vars
+				#print temp14
+				#print TAC[0]
+				#print symTable.symbolTable['root'][TAC[3]]['returntype']
+				#print "WWWWWWWWWWWWWWWWWWQQQQQQQQQQQQQQQQQQQQQQ"
+				#print global_vars
 				if global_vars.has_key(temp14):
-					print "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
-					print global_vars[temp14]
+					#print "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+					#print global_vars[temp14]
 					# if global_vars[symTable.symbolTable['root'][TAC[3]]['returntype']]=="NUMBER":
 					if global_vars[temp14]=="NUMBER":
 						flag=0
 						offset=offset-4
-						print "QWERTYUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-						code_string+= "movl\t"+function_list_linear[TAC[3]]+",%edi\nmovl\t%edi,"+str(offset)+"(%ebp)\n"
+						#print "QWERTYUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+						#code_string+= "movl\t"+function_list_linear[TAC[3]]+",%edi\nmovl\t%edi,"+str(offset)+"(%ebp)\n"
 						temp_key=str(TAC[0])
 						temp_add[temp_key]=str(offset)+"(%ebp)"
 						# num_value_temp=TAC[3]
 					else:
-						print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
-						print global_strings
+						#print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+						#print global_strings
 						flag=1
 						global_vars[TAC[0]]="STRING"
 						# if backPatchingStrings.has_key(temp14):
@@ -1570,8 +1593,8 @@ def scopecode(name,taccode):
 					code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__,%ecx\n"
 					code_string+="call printIntNumber\n"
 				else:
-					print temp_add
-					print "QWERTYUI!@#$%^&*()^&*("
+					#print temp_add
+					#print "QWERTYUI!@#$%^&*()^&*("
 					get_offset=temp_add[str(TAC[3])]	
 					code_string+= "movl"+"\t"+get_offset+","+"%ecx\n"
 					code_string+="call printIntNumber\n"
@@ -1809,6 +1832,9 @@ def scopecode(name,taccode):
 			else:
 				code_string+=""
 
+		if TAC[2]=="TRUE_GOTO":
+			code_string+= "jmp\t"+"label_"+str(TAC[3])+"\n"
+
 		if TAC[2]=="GOTO_MARK":
 			if temp_operator==">":
 				code_string+= "jg\t"+"label_"+str(TAC[3])+"\n"
@@ -1964,6 +1990,10 @@ def runparser(inputfile):
 				temp=TAC[3]
 				temp1="label_"+str(temp)
 				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="TRUE_GOTO":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
 			if TAC[2]=="GOTO_END":
 				temp=TAC[3]
 				temp1="label_"+str(temp)
@@ -2012,23 +2042,23 @@ def runparser(inputfile):
 	# 	for TAC in threeAddrCode.code[scopes]:
 	# 		print "\t"+str(count)+"\t"+str(TAC)
 	# 		count+=1
-	print global_strings
-	print "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[["
+	#print global_strings
+	#print "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[["
 	for item in global_strings:
-		print global_strings[item]
-		print "____________________________"
+		#print global_strings[item]
+		#print "____________________________"
 		if not isinstance(global_strings[item],int):
 			if re.match(r'\'(.*)\'',global_strings[item]):
-				print "XXXXXXXXXXXXXXXXXXXXXXXX"
+				#print "XXXXXXXXXXXXXXXXXXXXXXXX"
 				global_strings[item]=re.match(r'\'(.*)\'',global_strings[item]).group(1)
 			if re.match(r'\"(.*)\"',global_strings[item]):
-				print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+				#print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
 				global_strings[item]=re.match(r'\"(.*)\"',global_strings[item]).group(1)
 	genasm(threeAddrCode.code)
-	print function_list
-	print function_list_linear
-	print "qwertyuiopasdfghjklzxcvbnm"
-	print global_vars
+	#print function_list
+	#print function_list_linear
+	#print "qwertyuiopasdfghjklzxcvbnm"
+	#print global_vars
 	for item in data_strings:
 		code_string = data_strings[item]+"\n"+code_string
 	code_string = data_string+ code_string
