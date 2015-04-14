@@ -15,6 +15,8 @@ from lexer import tokens,lexer
 #              | statements'''
 
 
+
+
 # def p_block(p):
 # 	'block :BLOCK_BEGIN statements BLOCK_ENDS'
 
@@ -37,6 +39,7 @@ function_list[0]=['root1']
 function_list_linear={'root1':"VOID"}
 global_strings={}
 print_flag=0
+backPatchingStrings={}
 
 ###############Print Number##############################################
 
@@ -498,6 +501,9 @@ def p_return(p):
     	print "ERROR: You have returned a function from a function indirectly\n\tMake sure that it does not form infinite loop\n"
     	print "\n\tHINT:: If there is no infinite loop, try placing the assignment \n\t\tstatement of returned variable with numerical or string value\n\t\t closer to the return statement than the assignment of \n\t\tthe returned variable to a function\n"
     threeAddrCode.emit(p[2]['place'],'',p[1],'')
+    global global_strings 
+    # if p[2].has_key('value'):
+    # 	global_strings[p[2]['place']]=
     
 def p_assignment(p):
     'assignment : VARIABLE ASSIGNMENT_OP expression '
@@ -511,7 +517,15 @@ def p_assignment(p):
     	exp_type = "VOID"
     	threeAddrCode.emit(p[1]['place'], '',p[2], p[3]['place'])
 
-    p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}    
+    p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}
+    
+    global global_strings 
+    if p[3].has_key('value'):
+    	p[1]['value']=p[3]['value']
+    	global_strings[p[1]['place']]=p[3]['value']
+    	print "KOKOKOKOKOKOKOKOKOKOKOKKKKKKKOKO"
+    	print global_strings
+
 
 def p_assignment_to_array_elements(p):
     'assignment : ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET ASSIGNMENT_OP expression '
@@ -540,6 +554,7 @@ def p_assignment_specific_local(p):
 		threeAddrCode.emit(p[2]['place'], '',p[3], p[4]['place'])
 
 	p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}
+	p[1]={}
 
 def p_assignment_specific(p):
     'assignment : PRIVATE VARIABLE ASSIGNMENT_OP expression '
@@ -554,6 +569,7 @@ def p_assignment_specific(p):
     	threeAddrCode.emit(p[2]['place'], '',p[3], p[4]['place'])
 
     p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}
+    p[1]={}
 
 def p_assignment_adv(p):
 	'assignment : VARIABLE ADV_ASSIGNMENT_OP expression '
@@ -869,11 +885,13 @@ def p_string(p):
 	# print string_value
 	# print "AAAAAAAAAAAAAAAAAAAAAAAAA"
 	# p[0] = {'type':'STRING', 'value':string_value}
+	temp=re.match(r'\'(.*)\'',p[1]).group(1)
 	p[0] = {'type':'STRING', 'value':p[1]}
 
 def p_res_string(p):
 	'string : RES_STRING'
 
+	temp=re.match(r'\"(.*)\"',p[1]).group(1)
 	p[0] = {'type':'RES_STRING', 'value':p[1]}
 	
 def p_number(p):
@@ -902,6 +920,10 @@ def p_term(p):
 	p[0] = p[1]
 	p[0]['place'] = symTable.newtmp()
 	threeAddrCode.emit(p[0]['place'], '', '=', p[1]['value'])
+	global global_strings
+	global_strings[p[0]['place']]=p[1]['value']
+	print global_strings
+	print "NNIIINNNNNNNNNNNNNNNNNIIIIIIIIIIIIIIIIIII"
 
 def p_term_var(p):
 	'term : VARIABLE'
@@ -914,6 +936,16 @@ def p_term_var(p):
 		exp_type = varType
 
 	p[0] = {'place':p[1], 'type':exp_type}
+	p[0]['place'] = symTable.newtmp()
+	threeAddrCode.emit(p[0]['place'], '', '=', p[1])
+	print p[1]
+	print "qawwsxedefmngvjnnnnnnnnnnnnnnnnnnnntjm"
+	global global_strings
+	if global_strings.has_key(p[1]):
+		global_strings[p[0]['place']]=global_strings[p[1]]
+		print "QWERTYUIOPASDFGHJKZXCVBNM<"
+		print global_strings
+
 
 def p_term_exp(p):
 	'term : OPEN_PARANTHESIS expression CLOSE_PARANTHESIS'
@@ -1032,7 +1064,9 @@ def p_expression_term(p):
 	'expression : term'
 
 	p[0] = p[1]
+
 	
+
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
 # def p_expression_bin_dig(p):
 # 	'''expression :  expression XOR_STR_OP expression
@@ -1359,7 +1393,10 @@ def scopecode(name,taccode):
 			code_string+= ""
 
 
-		if TAC[2]=="=":			
+		if TAC[2]=="=":	
+
+			print global_vars
+			print "11111111111111112222222222222222222222222"		
 			if type(TAC[3]) is int:
 				flag=0
 				offset=offset-4
@@ -1372,50 +1409,98 @@ def scopecode(name,taccode):
 			elif re.match(r'"*"',TAC[3]):
 				flag=1
 				global_vars[TAC[0]]="STRING"
-				string_value_temp=".ascii\t"+TAC[3]+"\n"
-				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0] \
+				string_value_temp=re.match(r'\"(.*)\"',TAC[3]).group(1)
+				data_strings[TAC[0]]=TAC[0]+":\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0] \
 					+"_len = . - "+TAC[0]
 				global_strings[TAC[0]] = re.match(r'\"(.*)\"',TAC[3]).group(1)
 				cod_strings[TAC[0]]=TAC[3]
 			elif re.match(r'\'(.*)\'',TAC[3]):
 				flag=1
 				global_vars[TAC[0]]="STRING"
-				string_value_temp=".ascii\t\""+re.match(r'\'(.*)\'',TAC[3]).group(1)+"\"\n"
-				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+				string_value_temp=re.match(r'\'(.*)\'',TAC[3]).group(1)
+				data_strings[TAC[0]]=TAC[0]+":\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0]\
 					+"_len = . - "+TAC[0]
 				global_strings[TAC[0]]=re.match(r'\'(.*)\'',TAC[3]).group(1)
 				cod_strings[TAC[0]]=TAC[3]
 			elif re.match(r'\'*\'',TAC[3]):
 				flag=1
 				global_vars[TAC[0]]="STRING"
-				string_value_temp=".ascii\t\""+re.match(r'\'*\'',TAC[3]).group()+"\"\n"
-				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+				string_value_temp=re.match(r'\'*\'',TAC[3]).group()
+				data_strings[TAC[0]]=TAC[0]+":\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0]\
 					+"_len = . - "+TAC[0]
 				global_strings[TAC[0]]=re.match(r'\'*\'',TAC[3]).group()
 				cod_strings[TAC[0]]=TAC[3]
+
+
+
+
+			elif re.match(r'\$.*',TAC[3]):
+				print TAC[3]
+				print TAC[0]
+				print "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"
+				if global_vars.has_key(TAC[3]):
+					if global_vars[TAC[3]]=="NUMBER":
+						flag=0
+						offset=offset-4
+						code_string+= "movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%edi\n"
+						code_string+="movl\t%edi,"+str(offset)+"(%ebp)\n"
+						temp_key=str(TAC[0])
+						temp_add[temp_key]=str(offset)+"(%ebp)"
+					else:
+						flag=1
+						global_vars[TAC[0]]="STRING"
+						print global_strings
+						string_value_temp=global_strings[str(TAC[3].split("$")[1])+"_str__ing__"]
+						data_strings[TAC[0]]=TAC[0]+":\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0]\
+							+"_len = . - "+TAC[0]
+						# string_value_temp=".ascii\t\""+global_strings[str(TAC[3].split("$")[1])+"_str__ing__"]+"\"\n"
+						# data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+						# 	+"_len = . - "+TAC[0]
+						global_strings[TAC[0]]=string_value_temp
+						# cod_strings[TAC[0]]="\'"+global_strings[function_list_linear[TAC[3]]]+"\'"
+				else:
+					print "ERROR: Variable not available\n"
+				# print TAC[0]
+				# print temp_add[TAC[0]]
+				# num_value_temp=TAC[3]
+
 			elif function_list_linear.has_key(TAC[3]):
-				# print function_list_linear
+				print function_list_linear
+				print "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
 				temp12=function_list_linear[TAC[3]]
 				temp13=temp12.split('_')[0]
-				temp14="$"+temp13
-				# print temp14
-				# print TAC[0]
-				# print symTable.symbolTable['root'][TAC[3]]['returntype']
-				# print "WWWWWWWWWWWWWWWWWWQQQQQQQQQQQQQQQQQQQQQQ"
+				if re.match(r'temp\d+',temp13):
+					temp14=temp13
+				else:
+					temp14="$"+temp13
+				print temp14
+				print TAC[0]
+				print symTable.symbolTable['root'][TAC[3]]['returntype']
+				print "WWWWWWWWWWWWWWWWWWQQQQQQQQQQQQQQQQQQQQQQ"
+				print global_vars
 				if global_vars.has_key(temp14):
+					print "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+					print global_vars[temp14]
 					# if global_vars[symTable.symbolTable['root'][TAC[3]]['returntype']]=="NUMBER":
 					if global_vars[temp14]=="NUMBER":
 						flag=0
 						offset=offset-4
-						code_string+= "movl\t"+function_list_linear[TAC[3]]+","+str(offset)+"(%ebp)\n"
+						print "QWERTYUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+						code_string+= "movl\t"+function_list_linear[TAC[3]]+",%edi\nmovl\t%edi,"+str(offset)+"(%ebp)\n"
 						temp_key=str(TAC[0])
 						temp_add[temp_key]=str(offset)+"(%ebp)"
 						# num_value_temp=TAC[3]
 					else:
+						print "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII"
+						print global_strings
 						flag=1
 						global_vars[TAC[0]]="STRING"
-						string_value_temp=".ascii\t\""+global_strings[function_list_linear[TAC[3]]]+"\"\n"
-						data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+						# if backPatchingStrings.has_key(temp14):
+						# 	backPatchingStrings[temp14].append(TAC[0])
+						# else:
+						# 	backPatchingStrings[temp14]=[TAC[0]]
+						string_value_temp=global_strings[function_list_linear[TAC[3]]]
+						data_strings[TAC[0]]=TAC[0]+":\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0]\
 							+"_len = . - "+TAC[0]
 						global_strings[TAC[0]]=global_strings[function_list_linear[TAC[3]]]
 						cod_strings[TAC[0]]="\'"+global_strings[function_list_linear[TAC[3]]]+"\'"
@@ -1429,30 +1514,23 @@ def scopecode(name,taccode):
 					# print temp_add[TAC[0]]
 					# num_value_temp=TAC[3]
 
-			elif re.match(r'\$.*',TAC[3]):
-				flag=0
-				offset=offset-4
-				code_string+= "movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%edi\n"
-				code_string+="movl\t%edi,"+str(offset)+"(%ebp)\n"
-				temp_key=str(TAC[0])
-				temp_add[temp_key]=str(offset)+"(%ebp)"
-				# print TAC[0]
-				# print temp_add[TAC[0]]
-				# num_value_temp=TAC[3]
 
 			else:
 				if flag==0:
 					# print TAC[0]
-					data_strings[str(TAC[0].split('$')[1])+"_num__ber__"]=TAC[0].split('$')[1]+"_num__ber__:\n\t.long\t"+str(0)
-					global_vars[TAC[0]]="NUMBER"
-					get_offset=temp_add[str(TAC[3])]	
-					code_string+= "movl"+"\t"+get_offset+","+"%edi\n"
-					code_string+="movl\t%edi,"+TAC[0].split('$')[1]+"_num__ber__"+"\n"
+					if re.match(r'\$.*',TAC[0]):
+						data_strings[str(TAC[0].split('$')[1])+"_num__ber__"]=TAC[0].split('$')[1]+"_num__ber__:\n\t.long\t"+str(0)
+						global_vars[TAC[0]]="NUMBER"
+						get_offset=temp_add[str(TAC[3])]	
+						code_string+= "movl"+"\t"+get_offset+","+"%edi\n"
+						code_string+="movl\t%edi,"+TAC[0].split('$')[1]+"_num__ber__"+"\n"
+					else:
+						print "ERROR: "
 
 				else:
 					global_vars[TAC[0]]="STRING"
 					global_strings[TAC[0].split('$')[1]+"_str__ing__"]=string_value_temp
-					string_value_temp=TAC[0].split('$')[1]+"_str__ing__:\n"+string_value_temp+TAC[0].split('$')[1] \
+					string_value_temp=TAC[0].split('$')[1]+"_str__ing__:\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0].split('$')[1] \
 					+"_len = . - "+TAC[0].split('$')[1]+"_str__ing__"
 					data_strings[str(TAC[0].split('$')[1])+"_str__ing__"]=string_value_temp
 
@@ -1469,6 +1547,8 @@ def scopecode(name,taccode):
 					code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__,%ecx\n"
 					code_string+="call printIntNumber\n"
 				else:
+					print temp_add
+					print "QWERTYUI!@#$%^&*()^&*("
 					get_offset=temp_add[str(TAC[3])]	
 					code_string+= "movl"+"\t"+get_offset+","+"%ecx\n"
 					code_string+="call printIntNumber\n"
@@ -1478,12 +1558,12 @@ def scopecode(name,taccode):
 				# print TAC[3]
 				# print "AAAAAAAAAAAAAAAAAAAAAAAAA"
 				if re.search(r'\$',TAC[3]):
-					code_string+="movl\t"+TAC[3].split('$')[1]+"_str__ing__"+",%ecx\n"
-					code_string+="movl\t"+TAC[3].split('$')[1]+"_len,%edx\n"
+					code_string+="movl\t$"+TAC[3].split('$')[1]+"_str__ing__"+",%ecx\n"
+					code_string+="movl\t$"+TAC[3].split('$')[1]+"_len,%edx\n"
 					code_string+="int\t$0x80\n"
 				else:
-					code_string+="movl\t"+TAC[3]+",%ecx\n"
-					code_string+="movl\t"+TAC[3]+"_len,%edx\n"
+					code_string+="movl\t$"+TAC[3]+",%ecx\n"
+					code_string+="movl\t$"+TAC[3]+"_len,%edx\n"
 					code_string+="int\t$0x80\n"	
 			elif TAC[0]=="RES_STRING":
 				code_string+="movl\t$4,%eax\nmovl\t$1,%ebx\n"
@@ -1491,12 +1571,12 @@ def scopecode(name,taccode):
 				# print TAC[3]
 				# print "AAAAAAAAAAAAAAAAAAAAAAAAA"
 				if re.search(r'\$',TAC[3]):
-					code_string+="movl\t"+TAC[3].split('$')[1]+"_str__ing__"+",%ecx\n"
-					code_string+="movl\t"+TAC[3].split('$')[1]+"_len,%edx\n"
+					code_string+="movl\t$"+TAC[3].split('$')[1]+"_str__ing__"+",%ecx\n"
+					code_string+="movl\t$"+TAC[3].split('$')[1]+"_len,%edx\n"
 					code_string+="int\t$0x80\n"
 				else:
-					code_string+="movl\t"+TAC[3]+",%ecx\n"
-					code_string+="movl\t"+TAC[3]+"_len,%edx\n"
+					code_string+="movl\t$"+TAC[3]+",%ecx\n"
+					code_string+="movl\t$"+TAC[3]+"_len,%edx\n"
 					code_string+="int\t$0x80\n"	
 			else:
 				print "ERROR: You are trying to print the UNPRINTABLE :D\n"
@@ -1720,6 +1800,12 @@ def scopecode(name,taccode):
 					else:
 						function_list_linear[name]=TAC[0]
 
+						# for target in backPatchingStrings[TAC[0]]:
+						# 	string_value_temp = global_strings[TAC[0]]
+						# 	data_strings[target]=target+":\n.ascii\t\""+string_value_temp+"\"\n"+target\
+						# 		+"_len = . - "+target+"\n"
+						# 	global_strings[target]=global_strings[TAC[0]]
+
 			else:
 				get_offset=temp_add[str(TAC[0])]	
 				code_string+= "movl"+"\t"+get_offset+","+"%ebx\n"
@@ -1760,6 +1846,19 @@ def write_into_file(name, Str_to_write):
 		print "ERROR: Somehow the file"+str(name)+"could not be generated\n"
 		sys.exit(0)
 
+def format_symTable(hashName, work_string, depth):
+	for element in hashName:
+		# print element
+		# print hashName[element]
+		if isinstance(element, dict):
+			depth+=1;
+			work_string+=format_symTable(element, work_string, depth)
+		else:
+			for x in xrange(1,depth):
+				work_string+="\t"
+			work_string+= "\t"+str(element)+" : "+str(hashName[element])+"\n"
+	return work_string
+
 def runparser(inputfile):
 	global code_string
 	global data_string
@@ -1770,7 +1869,10 @@ def runparser(inputfile):
 	# print result
 	print "\nGenerating Symbol Table ...\n"
 	# print symTable.symbolTable
-	symbol_table_string = str(symTable.symbolTable)
+	symbol_table_string = ""
+	for scopes in symTable.symbolTable:
+		symbol_table_string += format_symTable(symTable.symbolTable[scopes], symbol_table_string, 0)
+
 	write_into_file("symbolTable.gen", symbol_table_string)
 	print "\nGenerating Three Address Code...\n"
 	# print threeAddrCode.code
@@ -1818,15 +1920,20 @@ def runparser(inputfile):
 				temp = re.match(r'\$(.*)',TAC[0])
 				if temp:
 					if symTable.symbolTable['root'][scopes]['returntype']=="NUMBER":
+						global_vars[TAC[0]]="NUMBER"
 						function_list_linear[scopes]=str(temp.group(1))+"_num__ber__"
 					elif symTable.symbolTable['root'][scopes]['returntype']=="STRING":
+						global_vars[TAC[0]]="STRING"
 						function_list_linear[scopes]=str(temp.group(1))+"_str__ing__"
 					elif symTable.symbolTable['root'][scopes]['returntype']=="RES_STRING":
+						global_vars[TAC[0]]="STRING"
 						function_list_linear[scopes]=str(temp.group(1))+"_str__ing__"
 					else:
 						print "ERROR: You cannot return values in VOID functions\n\tYou returned value of type: "+symTable.symbolTable['root'][scopes]['returntype']+"\n"
 				else:
 					function_list_linear[scopes]=TAC[0]
+					global_vars[TAC[0]]="STRING"      # Because in case of Numbers, we will not use the global
+
 
 			count+=1
 
@@ -1837,7 +1944,18 @@ def runparser(inputfile):
 	# 	for TAC in threeAddrCode.code[scopes]:
 	# 		print "\t"+str(count)+"\t"+str(TAC)
 	# 		count+=1
-
+	print global_strings
+	print "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[["
+	for item in global_strings:
+		print global_strings[item]
+		print "____________________________"
+		if not isinstance(global_strings[item],int):
+			if re.match(r'\'(.*)\'',global_strings[item]):
+				print "XXXXXXXXXXXXXXXXXXXXXXXX"
+				global_strings[item]=re.match(r'\'(.*)\'',global_strings[item]).group(1)
+			if re.match(r'\"(.*)\"',global_strings[item]):
+				print "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLL"
+				global_strings[item]=re.match(r'\"(.*)\"',global_strings[item]).group(1)
 	genasm(threeAddrCode.code)
 	print function_list
 	print function_list_linear

@@ -1,1 +1,11 @@
-{'root': {'parent': 'root1', '$i': {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'NUMBER', 'width': 4}, '$ret': {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'NUMBER', 'width': 4}, '$a': {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'NUMBER', 'width': 4}, 'width': 20, 'giveTwenty': {'parent': 'root1', 'width': 4, 'scope_depth': 1, 'returntype': 'NUMBER', 'scope': 'giveTwenty', 'type': 'FUNCTION'}, 'scope_depth': 0, 'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'FUNCTION'}}
+	parent : root1
+	$i : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'NUMBER', 'width': 4}
+	$b : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'RES_STRING', 'width': 8}
+	$ret : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'RES_STRING', 'width': 8}
+	$a : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'NUMBER', 'width': 4}
+	width : 24
+	giveTwenty : {'parent': 'root1', 'width': 8, 'scope_depth': 1, 'returntype': 'RES_STRING', 'scope': 'giveTwenty', 'type': 'FUNCTION'}
+	scope_depth : 0
+	returntype : UNDEFINED
+	scope : root1
+	type : FUNCTION

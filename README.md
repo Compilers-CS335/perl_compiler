@@ -39,9 +39,14 @@ evince tmp
 -----------------------UPDATE OVER AVIKALP's README-------------------------------
 > You cannot use return more than once in a function. What ever you want to return, boil it down to a single variable and then return that variable
 > It goes without saying that you can return only one kind of value from a function (else it will give trouble even where it is called)... {This has to be stated because a programmer may switch the return value type based on context inside a Functions}
+> Additionally you cannot change the type of a variable to which you are returning from a function.
 
 
 HOW TO RUN:-
 python parser.py <perl_file_destination> 
-as -32 output.s -o output.o
-ld -m elf_i386 output.o -o output
+./output
+
+
+##################### Not necessary now.. only for reference #################
+	as -32 output.s -o output.o
+	ld -m elf_i386 output.o -o output
