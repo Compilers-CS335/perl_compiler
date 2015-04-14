@@ -342,7 +342,7 @@ def p_marker_quit(p):
 	'Marker_quit : empty'
 
 	p[0] = {'nextlist':[threeAddrCode.pointer_quad_next()]}
-	threeAddrCode.emit('', '', 'GOTO_SWITCH', '-1')
+	threeAddrCode.emit('', '', 'GOTO_END', '-1')
 	p[0]['quad']= threeAddrCode.pointer_quad_next()
 
 def p_inputStatement(p):
@@ -615,10 +615,6 @@ def p_assignment_adv(p):
 				exp_type="TYPE ERROR"
 			elif p[1]['type']!='STRING' :
 				print "ERROR: line "+str(p.lineno(2))+"  You can only repeat a string.\n"
-				exp_type="TYPE ERROR"
-		elif Adv_Op=='.':
-			if (p[1]['type']!='STRING' and p[1]['type']!= 'RES_STRING') or (p[3]['type']!='STRING' and p[3]['type']!= 'RES_STRING') :
-				print "ERROR: line "+str(p.lineno(2))+"  cannot perform operation\n"
 				exp_type="TYPE ERROR"
 		else:
 			if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
@@ -1908,6 +1904,8 @@ def scopecode(name,taccode):
 			code_string+="jmp\tlabel_"+str(TAC[3])+"\n"
 		if TAC[2]=="GOTO_END":
 			code_string+="jmp\tlabel_"+str(TAC[3])+"\n"
+		if TAC[2]=="GOTO_SWITCH":
+			code_string+="jne\tlabel_"+str(TAC[3])+"\n"
 
 ################################FUNCTION###################################################
 

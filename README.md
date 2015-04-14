@@ -34,7 +34,8 @@ evince tmp
 
 
 
-
+> Concatenate can only occur on strings (although there is no restriction on the number of strings that can be concatenated at a time)
+>Functions cannnot return just an integer like return 5; 
 
 
 

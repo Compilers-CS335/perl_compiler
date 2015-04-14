@@ -19,9 +19,8 @@ until( $a > 10 ){
 }
 
 # # # for loop execution
-for( $a = 10; $a > 2; $a += 1 ){
+for( $a = 10; $a > -10; $a -= 1 ){
     # print "value of a: $a\n";
-    $a /= 2;
     print $a;
 }
 for( $a = 10; $a < 20; $a = $a + 1 ){

@@ -1,6 +1,8 @@
 	parent : root1
-	$a : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'NUMBER', 'width': 4}
-	width : 8
+	$b : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'RES_STRING', 'width': 8}
+	$c : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'STRING', 'width': 8}
+	$a : {'returntype': 'UNDEFINED', 'scope': 'root1', 'type': 'RES_STRING', 'width': 8}
+	width : 24
 	scope_depth : 0
 	returntype : UNDEFINED
 	scope : root1

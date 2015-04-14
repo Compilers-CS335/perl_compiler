@@ -16,7 +16,7 @@ $a = 10;
 while( $a < 20 )
 {
    print "Value of a: $a\\n";
-   next;
+   # next;
    $a = $a + 1;
 }
 $a=10;
