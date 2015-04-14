@@ -1,31 +1,5 @@
 .section .data
-ret_str__ing__:
-.ascii	"aavik"
-ret_len = . - ret_str__ing__
-temp8:
-.ascii	"aavik"
-temp8_len = . - temp8
-temp14:
-.ascii	"aavik"
-temp14_len = . - temp14
-temp15:
-.ascii	"aavik"
-temp15_len = . - temp15
 a_num__ber__:
-	.long	0
-temp11:
-.ascii	"\n"
-temp11_len = . - temp11
-temp12:
-.ascii	"aavik"
-temp12_len = . - temp12
-temp13:
-.ascii	"aavik"
-temp13_len = . - temp13
-b_str__ing__:
-.ascii	"aavik"
-b_len = . - b_str__ing__
-i_num__ber__:
 	.long	0
 .section .text
 true:
@@ -38,74 +12,38 @@ movl	%esp,%ebp
 movl	$10,-4(%ebp)
 movl	-4(%ebp),%edi
 movl	%edi,a_num__ber__
-movl	$1,-8(%ebp)
+movl	$10,-8(%ebp)
 movl	-8(%ebp),%edi
-movl	%edi,i_num__ber__
-call giveTwenty
-movl	$4,%eax
-movl	$1,%ebx
-movl	$temp15,%ecx
-movl	$temp15_len,%edx
-int	$0x80
+movl	%edi,a_num__ber__
+label_4:
+movl	a_num__ber__,%edi
+movl	%edi,-12(%ebp)
+movl	$20,-16(%ebp)
+movl	-12(%ebp),%eax
+movl	-16(%ebp),%ebx
+cmpl	%eax,%ebx
+jl	label_17
+jmp	label_14
+label_9:
+movl	a_num__ber__,%edi
+movl	%edi,-20(%ebp)
+movl	$1,-24(%ebp)
+movl	-20(%ebp),%eax
+addl	-24(%ebp),%eax
+movl	%eax,-28(%ebp)
+movl	-28(%ebp),%edi
+movl	%edi,a_num__ber__
+jmp	label_4
+label_14:
+movl	a_num__ber__,%edi
+movl	%edi,-32(%ebp)
+movl	-32(%ebp),%ecx
+call printIntNumber
+jmp	label_9
+label_17:
 movl	$1,%eax
 movl	$0,%ebx
 int	$0x80
-giveTwenty:
-pushl %eax
-pushl %ecx
-pushl %edx
-pushl %edi
-pushl %esi
-pushl	%ebp
-movl	%esp,%ebp
-movl	a_num__ber__,%edi
-movl	%edi,-4(%ebp)
-movl	-4(%ebp),%ecx
-call printIntNumber
-movl	i_num__ber__,%edi
-movl	%edi,-8(%ebp)
-movl	$20,-12(%ebp)
-movl	-8(%ebp),%eax
-movl	-12(%ebp),%ebx
-cmpl	%eax,%ebx
-jle	label_13
-movl	$5,-16(%ebp)
-movl	i_num__ber__,%eax
-addl	-16(%ebp),%eax
-movl	%eax,i_num__ber__
-call giveTwenty
-jmp	label_21
-label_13:
-movl	$1,-20(%ebp)
-movl	a_num__ber__,%eax
-addl	-20(%ebp),%eax
-movl	%eax,a_num__ber__
-movl	a_num__ber__,%edi
-movl	%edi,-24(%ebp)
-movl	-24(%ebp),%ecx
-call printIntNumber
-movl	$4,%eax
-movl	$1,%ebx
-movl	$temp11,%ecx
-movl	$temp11_len,%edx
-int	$0x80
-label_21:
-movl	%ebp,%esp
-popl	%ebp
-popl %esi
-popl %edi
-popl %edx
-popl %ecx
-popl %eax
-ret
-movl	%ebp,%esp
-popl	%ebp
-popl %esi
-popl %edi
-popl %edx
-popl %ecx
-popl %eax
-ret
 
 
 
