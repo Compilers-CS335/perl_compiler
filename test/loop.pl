@@ -3,19 +3,22 @@
 $a = 10;
 
 # while loop execution
-while( $a < 20 ){
-   print "Value of a: $a\n";
-   next;
+while( $a < 20 )
+{
+  
+   
+   print "temp";
+   #next;
    $a = $a + 1;
 }
 
 # # until loop execution
 # until( $a > 10 ){
-#    printf "Value of a: $a\n";
+#    print "Value of a: $a\n";
 #    $a = $a + 1;
 # }
 
-# # for loop execution
+# # # for loop execution
 # for( $a = 10; $a < 20; $a = $a + 1 ){
 #     print "value of a: $a\n";
 # }
@@ -23,7 +26,7 @@ while( $a < 20 ){
 # $a = 0;
 # $b = 0;
 
-# # outer while loop
+# # # outer while loop
 # while($a < 3){
 #    $b = 0;
 #    # inner while loop
@@ -35,7 +38,7 @@ while( $a < 20 ){
 #    print "Value of a = $a\n\n";
 # }
 
-# #demostrating next
+# # #demostrating next
 # while( $a < 20 ){
 #    if( $a == 15)
 #    {
@@ -47,14 +50,14 @@ while( $a < 20 ){
 #    $a = $a + 1;
 # }
 
-# #demonstrating last
-# while( $a < 20 ){
-#    if( $a == 15)
-#    {
-#        # terminate the loop.
-#        $a = $a + 1;
-#        last;
-#    }
-#    print "value of a: $a\n";
-#    $a = $a + 1;
-# }
+# # #demonstrating last
+# 	while( $a < 20 ){
+# 	   if( $a == 15)
+# 	   {
+# 	       # terminate the loop.
+# 	       $a = $a + 1;
+# 	       last;
+# 	   }
+# 	   print "value of a: $a\n";
+# 	   $a = $a + 1;
+# 	}

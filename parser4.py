@@ -2,6 +2,11 @@ import yacc
 import symbolTable
 import tac
 
+import re
+
+import sys
+import os
+
 from lexer import tokens,lexer
 
 
@@ -16,6 +21,80 @@ from lexer import tokens,lexer
 symTable = symbolTable.SymbolTable()
 threeAddrCode = tac.Tac(symTable)
 switch_hash={}
+temp_line=0
+code_string=".section .text\n"
+code_string+="true:\nmovl\t$1,%eax\nret\n"
+code_string+=".globl _start"
+code_string+="\n"
+code_string+="_start:\n"
+data_string=".section .data\n"
+data_strings={}
+cod_strings={}
+temp_add={}
+global_vars={}
+function_list={}
+function_list[0]=['root1']
+function_list_linear={'root1':"VOID"}
+global_strings={}
+print_flag=0
+
+###############Print Number##############################################
+
+printIntCode = "\n\n\njmp EndPrintNum\n\
+printIntNumber:\n\
+	pushl %eax #save the  registers\n\
+	pushl %ebx\n\
+	pushl %ecx\n\
+	pushl %edx\n\
+	pushl %edi\n\
+	pushl %esi\n\
+	pushl %ebp\n\
+	\n\
+    movl %ecx, %eax #storing number in %eax to divide it by 10 and extract digits one by one\n\
+    movl %esp, %esi   #storing the initial position of the stack pointer in %esi register\n\
+    labl:\n\
+    #%eax has quotient after div and %edx has the remainder after division. div R1 does %eax / R1\n\
+    cdq    # preparing to divide\n\
+    movl $10, %ebx    # store 10 in %ebx register which is the divisor             \n\
+    idivl %ebx   #divide number by 10.remainder and quotient are stored in %edx and %eax resp. \n\
+                 #Remainder is the least significant digit of the current number \n\
+    pushl %edx   # pushing the least significant digit (remainder) into stack\n\
+    cmpl $0, %eax #comparing quotient with 0 to ascertain whether have we extracted all digits\n\
+    jne labl #If q not equal to zero,then we still need to continue extracting more digits,so\n\
+             # jump back to labl  \n\
+    jmp print_num   # if q=0, then jump to print_num\n\
+    \n\
+ print_num:\n\
+    popl %edx  # poping the topmost element from stack which would be the highest significant \n\
+               # digit of our number as it was pushed last into the stack\n\
+    addl $48, %edx  # converting the digit to ascii character by adding 48 to that digit \n\
+                   # as, 48 is the ascii code for digit 0, 49 for 1, 50 for 2 and so on...\n\
+    pushl %edx # s is randomly chosen memory location to store it\n\
+                      # we store it in a memory location to print it by using sytem call no.4 \n\
+    \n\
+    movl $4, %eax  # 4 is sys call number\n\
+    movl $1, %ebx  # 1 refers to stdout\n\
+    movl %esp, %ecx  # number+50 refers to location where the digit is stored in memory \n\
+    movl $1, %edx    # size of buffer =1, as we print one digit at a time \n\
+    int $0x80\n\
+    popl %edx       # Pop the digit on the top  \n\
+    cmp %esp, %esi   # checking if the current stack pointer has reached the initial postion\n\
+                     # of stack pointer which we stored in %esi at the beginning, before \n\
+                     # starting to push any value\n\
+    jne print_num   #if stack pointer has not reached the initial position of stack, we jump \n\
+                    #back to print_num label to pop more values and print them.\n\
+    popl %ebp #restore the registers\n\
+    popl %esi\n\
+    popl %edi\n\
+    popl %edx\n\
+    popl %ecx\n\
+    popl %ebx\n\
+    popl %eax\n\
+    ret  \n\
+    EndPrintNum:\n"
+
+
+
 def p_start(p):
     '''start : block
              | statements'''
@@ -63,6 +142,7 @@ def p_statment(p):
                  | lastStatement Marker
                  | nextStatement Marker
                  | ifthen Marker
+                 | unless Marker
                  | ifthenelse Marker
                  | useStatement Marker
                  | untillStatement Marker
@@ -92,24 +172,24 @@ def p_ternaryStatement(p):
 					 | expression QUESTION_MARK Marker_true Marker assignment COLON Marker_false assignment '''
 
 	if p[1]['type']!="BOOLEAN":
-		print "line "+str(p.lineno(1))+" : Expression in ternary statement is not boolean\n"
+		print "ERROR: line "+str(p.lineno(1))+" : Expression in ternary statement is not boolean\n"
 	else:
 		if p[5]['type']==p[8]['type']:
 			threeAddrCode.backpatch(p[3]['truelist'],p[4]['quad'])
 			threeAddrCode.backpatch(p[3]['falselist'],p[7]['quad'])
 			p[0]={'type':p[5]['type'], 'nextlist' : p[7]['nextlist']}
 		else:
-			print "line "+str(p.lineno(5))+" : The types of the expressions in ternary expression must be same..\n"
+			print "ERROR: line "+str(p.lineno(5))+" : The types of the expressions in ternary expression must be same..\n"
 
 	p[0]['beginlist']=[]
 	p[0]['endlist']=[]
-	print "as"+str(p[0]['nextlist'])
+	# print "as"+str(p[0]['nextlist'])
 
 def p_Marker_true(p):
 	'Marker_true : empty'
 	p[0]={}
 	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
-	threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
+	#threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
 	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
 
@@ -141,7 +221,7 @@ def p_switchStatement_paran(p):
 
 	check = symTable.getvalueofkey_variable('Switch', 'type')
 	if check==None:
-		print "line "+str(p.lineno(3))+" :'Switch' module not included\nYou might want to include command \"use Switch\" "
+		print "ERROR: line "+str(p.lineno(1))+" :'Switch' module not included\nYou might want to include command \"use Switch\" "
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type="VOID"
@@ -158,7 +238,7 @@ def p_switchStatement_paran(p):
 
 # 	check = symTable.getvalueofkey_variable('Switch', 'type')
 # 	if check==None:
-# 		print "line "+str(p.lineno(3))+" :'Switch' module not included\nYou might want to include command \"use Switch\" "
+# 		print "ERROR: line "+str(p.lineno(3))+" :'Switch' module not included\nYou might want to include command \"use Switch\" "
 # 		exp_type = "TYPE ERROR"
 # 	else:
 # 		exp_type="VOID"
@@ -185,6 +265,10 @@ def p_caselist_paran(p):
 
     p[0]={}
     threeAddrCode.backpatch(p[4]['falselist'], p[7]['quad'])
+    if p[4]['type']=="TYPE ERROR":
+    	print "ERROR: line "+str(p.lineno(1))+" : cannot compare\n"
+
+    
     # p[0]={'nextlist':[]}
     p[0]['nextlist']= threeAddrCode.merge(p[7]['nextlist'], p[8]['nextlist'])
     # print "\n hooooooooooo "
@@ -194,7 +278,7 @@ def p_caselist_paran(p):
 #     'caselist : CASE expression Marker_caselist block caselist'
 
     # if p[2]['type']!='NUMBER' or p[-1]['type']!='NUMBER' :
-    # 	print "line "+str(p.lineno(2))+" : cannot compare\n"
+    # 	print "ERROR: line "+str(p.lineno(2))+" : cannot compare\n"
     # else:
     # 	threeAddrCode.emit(symTable.newtmp(), p[2]['place'], '==', p[-1]['LHS'])
 
@@ -222,11 +306,13 @@ def p_Marker_caselist(p):
 	'Marker_caselist : empty'
 
 	global switch_hash
+	p[0]={'type':"VOID"}
 	if p[-1]['type']!='NUMBER' or switch_hash['type']!='NUMBER' :
-		print "line "+str(p.lineno(2))+" : cannot compare\n"
+		# print "ERROR: line "+str(temp_line)+" : cannot compare\n"
+		p[0]['type']="TYPE ERROR"
 	else:
-		threeAddrCode.emit(symTable.newtmp(), p[-1]['place'], '!=', switch_hash['LHS'])
-	p[0]={'falselist':[threeAddrCode.pointer_quad_next()]}
+		threeAddrCode.emit(symTable.newtmp(), p[-1]['place'], '==', switch_hash['LHS'])
+	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit('', '', 'GOTO_SWITCH', '-1')
 
 def p_marker_quit(p):
@@ -243,27 +329,50 @@ def p_inputStatement(p):
 	threeAddrCode.emit('','','INPUT','')
 
 
-
-def p_ifthen(p):
-	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block'
+def p_unless(p):
+	'unless : UNLESS OPEN_PARANTHESIS expression CLOSE_PARANTHESIS MarkerUnless Marker block'
 
 	if p[3]['type']!="BOOLEAN":
-		print "line "+str(p.lineno(3))+" :Expression is not of boolean type"
+		print "ERROR: line "+str(p.lineno(3))+" :Expression is not of boolean type"
 		exp_type="TYPE ERROR"
 	else:
 		exp_type="VOID"
 
 	threeAddrCode.backpatch(p[5]['truelist'],p[6]['quad'])
 	p[0]={'type':exp_type,'nextlist': threeAddrCode.merge(p[5].get('falselist',[]),p[6].get('nextlist',[]))}
-	p[0]['beginlist']=p[6].get('beginlist',[])
-	p[0]['endlist']=p[6].get('endlist',[])
+	p[0]['beginlist']=p[7].get('beginlist',[])
+	p[0]['endlist']=p[7].get('endlist',[])
+
+def p_MarkerUnless(p):
+	'MarkerUnless : empty'
+	p[0]={}
+	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
+	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
+	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
+	#threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
+	# print "hsjb"+str(p[0]['truelist'])
+	# print "hsjbf"+str(p[0]['falselist'])
+
+def p_ifthen(p):
+	'ifthen : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerif Marker block'
+
+	if p[3]['type']!="BOOLEAN":
+		print "ERROR: line "+str(p.lineno(3))+" :Expression is not of boolean type"
+		exp_type="TYPE ERROR"
+	else:
+		exp_type="VOID"
+
+	threeAddrCode.backpatch(p[5]['truelist'],p[6]['quad'])
+	p[0]={'type':exp_type,'nextlist': threeAddrCode.merge(p[5].get('falselist',[]),p[6].get('nextlist',[]))}
+	p[0]['beginlist']=p[7].get('beginlist',[])
+	p[0]['endlist']=p[7].get('endlist',[])
 
 
 def p_ifthenelse(p):
 	'ifthenelse : IF OPEN_PARANTHESIS expression CLOSE_PARANTHESIS  Markerif Marker block ELSE Markerelse block '
 
 	if p[3]['type']!="BOOLEAN":
-		print "line "+str(p.lineno(3))+" :Expression is not of boolean type"
+		print "ERROR: line "+str(p.lineno(3))+" :Expression is not of boolean type"
 		exp_type="TYPE ERROR"
 	else:
 		exp_type="VOID"
@@ -271,18 +380,18 @@ def p_ifthenelse(p):
 	threeAddrCode.backpatch(p[5]['truelist'],p[6]['quad'])
 	threeAddrCode.backpatch(p[5]['falselist'],p[9]['quad'])
 	p[0]={'type':exp_type, 'nextlist' : p[9]['nextlist']}
-	p[0]['beginlist']=threeAddrCode.merge( p[6].get('beginlist',[]), p[10].get('beginlist',[]))
-	p[0]['endlist']=threeAddrCode.merge( p[6].get('endlist',[]), p[10].get('endlist',[]))
+	p[0]['beginlist']=threeAddrCode.merge( p[7].get('beginlist',[]), p[10].get('beginlist',[]))
+	p[0]['endlist']=threeAddrCode.merge( p[7].get('endlist',[]), p[10].get('endlist',[]))
 
 def p_Markerif(p):
 	'Markerif : empty'
 	p[0]={}
 	p[0]['truelist']=[threeAddrCode.pointer_quad_next()]
-	threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
+	#threeAddrCode.emit(p[-2]['place'], '','TRUE_GOTO',-1)
 	p[0]['falselist']=[threeAddrCode.pointer_quad_next()]
 	threeAddrCode.emit(p[-2]['place'], '','FALSE_GOTO',-1)
-	print "hsjb"+str(p[0]['truelist'])
-	print "hsjbf"+str(p[0]['falselist'])
+	# print "hsjb"+str(p[0]['truelist'])
+	# print "hsjbf"+str(p[0]['falselist'])
 
 def p_Markerelse(p):
 	'Markerelse : empty'
@@ -306,6 +415,13 @@ def p_nextStatement(p):
 
 def p_functionStament(p):
 	'functionStatement : SUB IDENTIFIER Markerscope block'
+	global function_list_linear
+	global function_list
+	function_list_linear[p[2]]="VOID"
+	if  symTable.symbolTable['root'][p[2]]['scope_depth'] in function_list:
+		function_list[symTable.symbolTable['root'][p[2]]['scope_depth']].append(p[2])
+	else :
+		function_list[symTable.symbolTable['root'][p[2]]['scope_depth']]=[p[2]]
 	threeAddrCode.emit('','','JUMP_CALLING','')
 	symTable.deletescope(p[2])
 	p[0]={'beginlist':[], 'endlist':[]}
@@ -322,7 +438,7 @@ def p_Markerscope(p):
 		symTable.removehash(p[-1])
 		symTable.enterproc(p[-1])
 	threeAddrCode.createCode(p[-1])
-	threeAddrCode.emit('','',p[-1],'')
+	threeAddrCode.emit('','','FUNC_LABEL',p[-1])
 	
 
 def p_functionCall(p):
@@ -331,7 +447,7 @@ def p_functionCall(p):
 	p[0]={}
 
 	if symTable.ifexist(p[1])==0:
-		print "Function is not defined"
+		print "ERROR: line "+str(p.lineno(1))+" : Function is not defined"
 		p[0]['type']="TYPE ERROR"
 	else:
 		functiontype=symTable.getvalueofkey(p[1],'type')
@@ -339,7 +455,7 @@ def p_functionCall(p):
 			p[0]['type']=symTable.getvalueofkey(p[1],'returntype')
 			threeAddrCode.emit('','','GOTO_LABEL',p[1])
 		else:
-			print "This is not a function"
+			print "ERROR: line "+str(p.lineno(1))+" :This is not a function"
 		p[0]['place']=p[1]
 		p[0]['beginlist']=[]
 		p[0]['endlist']=[]
@@ -376,7 +492,11 @@ def p_return(p):
     'returnStatement : RETURN expression SEMICOLON'
 
     p[0]={'type': p[2]['type'],'beginlist':[], 'endlist':[]}
-    symTable.addintocurrentscope('returntype',p[2]['type'])
+    if p[2]['type']!="UNDEFINED":
+    	symTable.addintocurrentscope('returntype',p[2]['type'])
+    else:
+    	print "ERROR: You have returned a function from a function indirectly\n\tMake sure that it does not form infinite loop\n"
+    	print "\n\tHINT:: If there is no infinite loop, try placing the assignment \n\t\tstatement of returned variable with numerical or string value\n\t\t closer to the return statement than the assignment of \n\t\tthe returned variable to a function\n"
     threeAddrCode.emit(p[2]['place'],'',p[1],'')
     
 def p_assignment(p):
@@ -444,7 +564,7 @@ def p_assignment_adv(p):
 	else:
 		varType = symTable.getvalueofkey_variable(p[1], 'type')
 		if varType==None:
-			print "Variable does not exist\n"
+			print "ERROR: Variable does not exist\n"
 			exp_type_left = "TYPE ERROR"
 		else:
 			exp_type_left = varType
@@ -467,7 +587,7 @@ def p_assignment_adv(p):
 	if exp_type=="VOID":
 		threeAddrCode.emit(p[1]['place'], p[1]['place'], Adv_Op, p[3]['place'])
 	else:
-		print "Some error occured in advanced assignment\n"
+		print "Error: Some error occured in advanced assignment\n"
 	p[0] = {'type':exp_type, 'beginlist':[], 'endlist':[]}
 
 
@@ -475,7 +595,7 @@ def p_assignment_adv(p):
 def p_while(p):
 	'whileStatement : WHILE Marker OPEN_PARANTHESIS expression CLOSE_PARANTHESIS Markerwhile  block'
 	
-	p[0]={'nextlist':[],'type' : 'VOID', 'beginlist':[], 'endlist':[]}
+	p[0]={'nextlist':[],'type' : 'VOID', 'beginlist':p[7]['beginlist'], 'endlist':p[7]['endlist']}
 
 	
 
@@ -485,7 +605,7 @@ def p_while(p):
 		p[0]['nextlist']=threeAddrCode.merge(p[6].get('falselist',[]),p[0].get('nextlist',[]))
 		threeAddrCode.emit('','','GOTO',p[2]['quad'])
 	else:
-		print "line "+str(p.lineno(4))+" :Expression is not of boolean type"
+		print "ERROR: line "+str(p.lineno(4))+" :Expression is not of boolean type"
 
 def p_Markerwhile(p):
 	'Markerwhile : empty'
@@ -504,7 +624,7 @@ def p_dowhileStatement(p):
 		p[0]['nextlist']=threeAddrCode.merge(p[8].get('falselist',[]),p[0].get('nextlist',[]))	
 		threeAddrCode.emit('','','GOTO',p[4]['quad'])
 	else:
-		print "line "+str(p.lineno(6))+" :Expression is not of boolean type"
+		print "ERROR: line "+str(p.lineno(6))+" :Expression is not of boolean type"
 
 def p_markerdowhile(p):
 	'Markerdowhile : empty'
@@ -526,7 +646,7 @@ def p_untillStatement(p):
 		p[0]['nextlist']=threeAddrCode.merge(p[6].get('falselist',[]),p[0].get('nextlist',[]))
 		threeAddrCode.emit('','','GOTO',p[2]['quad'])
 	else:
-		print "line "+str(p.lineno(4))+" :Expression is not of boolean type"
+		print "ERROR: line "+str(p.lineno(4))+" :Expression is not of boolean type"
 
 def p_Markeruntil(p):
 	'Markeruntil : empty'
@@ -538,20 +658,20 @@ def p_for(p):
 	'forStatement : FOR  OPEN_PARANTHESIS assignment SEMICOLON  Marker  expression  SEMICOLON  Marker  VARIABLE ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
 	
 	p[0]={}
-	if p[5]['type']=="BOOLEAN":
-		threeAddrCode.backpatch(p[13]['beginlist'],p[4]['quad'])
+	if p[6]['type']=="BOOLEAN":
+		threeAddrCode.backpatch(p[14]['beginlist'],p[5]['quad'])
 		#threeAddrCode.backpatch(p[13]['endlist'],p[7]['quad'])
 		p[0]['nextlist']=threeAddrCode.merge(p[14].get('endlist',[]),p[14].get('nextlist',[]))
 		p[0]['nextlist']=threeAddrCode.merge(p[13].get('falselist',[]),p[0].get('nextlist',[]))	    	
 	    # add entry in the symbol table and fill in the type
 		
-		p[8]={'type':p[11]['type'], 'place':p[9]}
+		p[9]={'type':p[11]['type'], 'place':p[9]}
 		
 		symTable.newvariableentry(p[9]['place'], p[9]['type'], 0)
 		threeAddrCode.emit(p[9]['place'], '',p[10], p[11]['place'])
 		threeAddrCode.emit('','','GOTO',p[5]['quad'])
 	else:
-		print "line "+str(p.lineno(6))+" :Expression is not of boolean type"
+		print "ERROR: line "+str(p.lineno(6))+" :Expression is not of boolean type"
 	p[0]['beginlist']=[]
 	p[0]['endlist']=[]
 
@@ -560,7 +680,7 @@ def p_for_advass(p):
 	'forStatement : FOR  OPEN_PARANTHESIS assignment  SEMICOLON  Marker  expression  SEMICOLON  Marker  VARIABLE ADV_ASSIGNMENT_OP expression CLOSE_PARANTHESIS  Markerfor  block'
 	
 	p[0]={}
-	if p[5]['type']=="BOOLEAN":
+	if p[6]['type']=="BOOLEAN":
 		
 		threeAddrCode.backpatch(p[14]['beginlist'],p[5]['quad'])
 		threeAddrCode.backpatch(p[14]['endlist'],p[8]['quad'])
@@ -572,33 +692,29 @@ def p_for_advass(p):
 		exp_type = "VOID"
 		varType = symTable.getvalueofkey_variable(p[9], 'type')
 		if varType==None:
-			print  "line "+str(p.lineno(9))+" : Variable does not exist\n"
+			print  "ERROR: line "+str(p.lineno(9))+" : Variable does not exist\n"
 			exp_type_left = "TYPE ERROR"
 		else:
 			exp_type_left = varType
-		p[8] = {'place':p[9], 'type':exp_type_left}
+		p[9] = {'place':p[9], 'type':exp_type_left}
 		# Dealing with the binary operation
 		Adv_Op = p[10].split("=")[0]
 		
 		
 		if p[9]['type']!='NUMBER' or p[11]['type']!='NUMBER' :
-			print  "line "+str(p.lineno(10))+": cannot perform operation\n"
+			print  "ERROR: line "+str(p.lineno(10))+": cannot perform operation\n"
 			exp_type="TYPE ERROR"
 	
 		if exp_type=="VOID":
 			threeAddrCode.emit(p[9]['place'], p[9]['place'], Adv_Op, p[11]['place'])
 		else:
 
-			print  "line "+str(p.lineno(10))+" : Some error occured in advanced assignment\n"	
+			print  "ERROR: line "+str(p.lineno(10))+" : Some error occured in advanced assignment\n"	
 		threeAddrCode.emit('','','GOTO',p[5]['quad'])
 	else:
-		print "line "+str(p.lineno(6))+" :Expression is not of boolean type"
+		print "ERROR: line "+str(p.lineno(6))+" :Expression is not of boolean type"
 	p[0]['beginlist']=[]
 	p[0]['endlist']=[]
-
-
-def p_Markerfor2(p):
-	'Markerfor2 : empty'
 
 
 def p_Markerfor(p):
@@ -675,7 +791,12 @@ def p_decList_empty(p):
 
 def p_termfunction(p):
 	'term : functionCall'
-	p[0]=p[1]	
+
+	p[0] = p[1]
+	new_name = p[1]['place']
+	# print p[1]['place']
+	p[0]['place'] = symTable.newtmp()
+	threeAddrCode.emit(p[0]['place'], '', '=', new_name)
 	
 
 # def p_parameters(p):
@@ -741,6 +862,13 @@ precedence = (
 def p_string(p):
 	'string : STRING'
 
+	# print p[1]
+	# print "BBBBBBBBBBBBBBBBBBBBBBBBBB"
+	# print re.sub(r'\\', '\\\\', p[1])
+	# string_value = re.sub(r'\\', '\\\\', p[1])
+	# print string_value
+	# print "AAAAAAAAAAAAAAAAAAAAAAAAA"
+	# p[0] = {'type':'STRING', 'value':string_value}
 	p[0] = {'type':'STRING', 'value':p[1]}
 
 def p_res_string(p):
@@ -780,7 +908,7 @@ def p_term_var(p):
 
 	varType = symTable.getvalueofkey_variable(p[1], 'type')
 	if varType==None:
-		print "Variable does not exist\n"
+		print "ERROR: line "+str(p.lineno(1))+" :Variable"+p[1]+" does not exist\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = varType
@@ -797,17 +925,12 @@ def p_term_arr_element(p):
 
 	varType = symTable.getvalueofkey_array(p[1],p[3],'type')
 	if varType==None:
-		print "Array element does not exist\n"
+		print "ERROR: line "+str(p.lineno(1))+" :Array "+p[1]+" element does not exist\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = varType
 
 	p[0] = {'place':p[1], 'type':exp_type}
-
-# def p_type_var(p):
-# 	'type : variable'
-
-# 	p[0] = p[1]
 
 def p_array_assignment(p):
 	' array_assignment : ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression arrayList CLOSE_PARANTHESIS SEMICOLON'
@@ -828,7 +951,7 @@ def p_arrayList(p):
 	' arrayList : COMMA expression arrayList '
 
 	if p[2]['type']=="TYPE ERROR":
-		print "expression in array assignment has type error\n"
+		print "ERROR: line "+str(p.lineno(2))+" :expression in array assignment has type error\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = p[3]['type']
@@ -841,13 +964,9 @@ def p_arrayList_empty(p):
 
 	p[0]={'elements':[{'type':p[2]['type']}], 'type':'array'}
 	if p[2]['type']=="TYPE ERROR":
-		print "expression in array assignment has type error\n"
+		print "ERROR: line "+str(p.lineno(2))+" :expression in array assignment has type error\n"
 		p[0]['type']="TYPE ERROR"
 	
-
-####
-# def p_type(p):
-# 	' type : ARRAY'
 
 def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 	''' expression : PLUS_OP expression   %prec UPLUS
@@ -857,7 +976,7 @@ def p_expression_unary(p):								#INCREMENT_OP and DECREMENT_OP deleted
 	p[0] = {'place':symTable.newtmp()}
 
 	if p[2]['type']!='NUMBER' :
-		print "line "+str(p.lineno(2))+" : Type error.\n"
+		print "ERROR: line "+str(p.lineno(2))+" : Type error.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "NUMBER"
@@ -871,7 +990,7 @@ def p_expression_unary_notOp(p):
 	
 	p[0] = {'place':symTable.newtmp(), 'truelist':p[2]['falselist'], 'falselist':p[2]['truelist']}
 	if p[2]['type']!='BOOLEAN' :
-		print "line "+str(p.lineno(2))+" : Type error in expression.\n"
+		print "ERROR: line "+str(p.lineno(2))+" : Type error in expression.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
@@ -879,6 +998,20 @@ def p_expression_unary_notOp(p):
 
 	p[0]['type'] = exp_type
 	# p[0]['value']= str(p[1])+str(p[2]['value'])
+
+def p_expression_unary_notStrOp(p):
+	'expression : NOT_STR_OP expression'
+	
+	p[0] = {'place':symTable.newtmp(), 'truelist':p[2]['falselist'], 'falselist':p[2]['truelist']}
+	if p[2]['type']!='BOOLEAN' :
+		print "ERROR: line "+str(p.lineno(2))+" : Type error in expression.\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "BOOLEAN"
+		threeAddrCode.emit(p[0]['place'], '', p[1], p[2]['place'])
+
+	p[0]['type'] = exp_type
+
 
 # def p_expression(p):
 # 	''' expression : expression INCREMENT_OP
@@ -901,22 +1034,34 @@ def p_expression_term(p):
 	p[0] = p[1]
 	
 ## SAB KUCHH ACHCHHE SE DEKHO ISME
-def p_expression_bin_dig(p):
-	'''expression : expression OR_STR_OP expression
-					| expression XOR_STR_OP expression
-					| expression AND_STR_OP expression
-					| expression NOT_STR_OP expression
-					| expression COMPARE_OP expression
-					| expression BIT_OR expression
-					| expression BIT_XOR expression
-					| expression BIT_AND expression'''
+# def p_expression_bin_dig(p):
+# 	'''expression :  expression XOR_STR_OP expression
+# 					| expression COMPARE_OP expression
+# 					| expression BIT_OR expression
+# 					| expression BIT_XOR expression
+# 					| expression BIT_AND expression'''
+
+
+def p_exp_and_str_op(p):
+	'expression : expression AND_STR_OP Marker expression'
+
+	p[0] = {'place':symTable.newtmp(), 'falselist':threeAddrCode.merge(p[1]['falselist'], p[4]['falselist']), 'truelist':p[4]['truelist']}
+	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
+		print "ERROR: line "+str(p.lineno(2))+" : Illegal expression\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "BOOLEAN"
+		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[4]['place'])
+
+	threeAddrCode.backpatch(p[1]['truelist'], p[3]['quad'])
+	p[0]['type']=exp_type
 
 def p_exp_and_op(p):
 	'expression : expression AND_OP Marker expression'
 
 	p[0] = {'place':symTable.newtmp(), 'falselist':threeAddrCode.merge(p[1]['falselist'], p[4]['falselist']), 'truelist':p[4]['truelist']}
 	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
-		print "line "+str(p.lineno(2))+" : Illegal expression\n"
+		print "ERROR: line "+str(p.lineno(2))+" : Illegal expression\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
@@ -931,7 +1076,22 @@ def p_exp_or_op(p):
 
 	p[0] = {'place':symTable.newtmp(), 'truelist':threeAddrCode.merge(p[1]['truelist'], p[4]['truelist']), 'falselist':p[4]['falselist']}
 	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
-		print "line "+str(p.lineno(2))+" : Illegal expression\n"
+		print "ERROR: line "+str(p.lineno(2))+" : Illegal expression\n"
+		exp_type = "TYPE ERROR"
+	else:
+		exp_type = "BOOLEAN"
+		threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[4]['place'])
+
+	threeAddrCode.backpatch(p[1]['falselist'], p[3]['quad'])
+	p[0]['type']=exp_type
+	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[4]['value'])
+
+def p_exp_or_str_op(p):
+	'expression : expression OR_STR_OP Marker expression'
+
+	p[0] = {'place':symTable.newtmp(), 'truelist':threeAddrCode.merge(p[1]['truelist'], p[4]['truelist']), 'falselist':p[4]['falselist']}
+	if p[1]['type']!='BOOLEAN' or p[4]['type']!='BOOLEAN' :
+		print "ERROR: line "+str(p.lineno(2))+" : Illegal expression\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
@@ -950,12 +1110,12 @@ def p_expression_binary_relational(p):
 				  | expression LESS_EQUAL_OP expression'''
 
 	if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
-		print "line "+str(p.lineno(2))+" : cannot compare\n"
+		print "ERROR: line "+str(p.lineno(2))+" : cannot compare\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "BOOLEAN"
 
-	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[threeAddrCode.pointer_quad_next()], 'falselist':[1+threeAddrCode.pointer_quad_next()]}
+	p[0] = {'type' : exp_type, 'place':symTable.newtmp(), 'truelist':[], 'falselist':[]}
 	threeAddrCode.emit(p[0]['place'], p[1]['place'], p[2], p[3]['place'])
 	# p[0]['value']=str(p[1]['value'])+str(p[2])+str(p[3]['value'])
 
@@ -976,7 +1136,7 @@ def p_expression_math(p):
 
 	p[0] = {'place':symTable.newtmp()}
 	if p[1]['type']!='NUMBER' or p[3]['type']!='NUMBER' :
-		print "line "+str(p.lineno(2))+" : cannot perform operation\n"
+		print "ERROR: line "+str(p.lineno(2))+" : cannot perform operation\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "NUMBER"
@@ -1004,10 +1164,10 @@ def p_expression_repeatition(p):
 
  	p[0] = {'place':symTable.newtmp()}
 	if p[3]['type']!='NUMBER' :
-		print "line "+str(p.lineno(2))+" : How many times to repeat?.\n"
+		print "ERROR: line "+str(p.lineno(2))+" : How many times to repeat?.\n"
 		exp_type = "TYPE ERROR"
 	elif p[1]['type']!='STRING' :
-		print "line "+str(p.lineno(2))+" : You can only repeat a string.\n"
+		print "ERROR: line "+str(p.lineno(2))+" : You can only repeat a string.\n"
 		exp_type = "TYPE ERROR"
 	else:
 		exp_type = "STRING"
@@ -1171,22 +1331,530 @@ def p_error(p):
 
 
 
+
+
+
+
 parser = yacc.yacc(debug=1)
 
+
+def scopecode(name,taccode):
+	global code_string
+	global data_strings
+	global cod_strings
+	global global_vars
+	global print_flag
+	# print "cwjnewgjmn"
+	if name!="root1":
+		code_string+=name+":\n"
+		code_string+="pushl %eax\npushl %ecx\npushl %edx\npushl %edi\npushl %esi\n"
+	code_string+="pushl"+"\t"+"%ebp\n"
+	code_string+="movl"+"\t"+"%esp"+","+"%ebp\n"
+		
+	offset=0
+	for TAC in taccode[name]:
+		try:
+			code_string+= TAC[4]+":\n"
+		except IndexError:
+			code_string+= ""
+
+
+		if TAC[2]=="=":			
+			if type(TAC[3]) is int:
+				flag=0
+				offset=offset-4
+				code_string+= "movl"+"\t$"+str(TAC[3])+","+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
+				# print TAC[0]
+				# print temp_add[TAC[0]]
+				# num_value_temp=TAC[3]
+			elif re.match(r'"*"',TAC[3]):
+				flag=1
+				global_vars[TAC[0]]="STRING"
+				string_value_temp=".ascii\t"+TAC[3]+"\n"
+				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0] \
+					+"_len = . - "+TAC[0]
+				global_strings[TAC[0]] = re.match(r'\"(.*)\"',TAC[3]).group(1)
+				cod_strings[TAC[0]]=TAC[3]
+			elif re.match(r'\'(.*)\'',TAC[3]):
+				flag=1
+				global_vars[TAC[0]]="STRING"
+				string_value_temp=".ascii\t\""+re.match(r'\'(.*)\'',TAC[3]).group(1)+"\"\n"
+				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+					+"_len = . - "+TAC[0]
+				global_strings[TAC[0]]=re.match(r'\'(.*)\'',TAC[3]).group(1)
+				cod_strings[TAC[0]]=TAC[3]
+			elif re.match(r'\'*\'',TAC[3]):
+				flag=1
+				global_vars[TAC[0]]="STRING"
+				string_value_temp=".ascii\t\""+re.match(r'\'*\'',TAC[3]).group()+"\"\n"
+				data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+					+"_len = . - "+TAC[0]
+				global_strings[TAC[0]]=re.match(r'\'*\'',TAC[3]).group()
+				cod_strings[TAC[0]]=TAC[3]
+			elif function_list_linear.has_key(TAC[3]):
+				# print function_list_linear
+				temp12=function_list_linear[TAC[3]]
+				temp13=temp12.split('_')[0]
+				temp14="$"+temp13
+				# print temp14
+				# print TAC[0]
+				# print symTable.symbolTable['root'][TAC[3]]['returntype']
+				# print "WWWWWWWWWWWWWWWWWWQQQQQQQQQQQQQQQQQQQQQQ"
+				if global_vars.has_key(temp14):
+					# if global_vars[symTable.symbolTable['root'][TAC[3]]['returntype']]=="NUMBER":
+					if global_vars[temp14]=="NUMBER":
+						flag=0
+						offset=offset-4
+						code_string+= "movl\t"+function_list_linear[TAC[3]]+","+str(offset)+"(%ebp)\n"
+						temp_key=str(TAC[0])
+						temp_add[temp_key]=str(offset)+"(%ebp)"
+						# num_value_temp=TAC[3]
+					else:
+						flag=1
+						global_vars[TAC[0]]="STRING"
+						string_value_temp=".ascii\t\""+global_strings[function_list_linear[TAC[3]]]+"\"\n"
+						data_strings[TAC[0]]=TAC[0]+":\n"+string_value_temp+TAC[0]\
+							+"_len = . - "+TAC[0]
+						global_strings[TAC[0]]=global_strings[function_list_linear[TAC[3]]]
+						cod_strings[TAC[0]]="\'"+global_strings[function_list_linear[TAC[3]]]+"\'"
+				else:
+					flag=0
+					offset=offset-4
+					code_string+= "movl\t%ebx,"+str(offset)+"(%ebp)\n"
+					temp_key=str(TAC[0])
+					temp_add[temp_key]=str(offset)+"(%ebp)"
+					# print TAC[0]
+					# print temp_add[TAC[0]]
+					# num_value_temp=TAC[3]
+
+			elif re.match(r'\$.*',TAC[3]):
+				flag=0
+				offset=offset-4
+				code_string+= "movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%edi\n"
+				code_string+="movl\t%edi,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
+				# print TAC[0]
+				# print temp_add[TAC[0]]
+				# num_value_temp=TAC[3]
+
+			else:
+				if flag==0:
+					# print TAC[0]
+					data_strings[str(TAC[0].split('$')[1])+"_num__ber__"]=TAC[0].split('$')[1]+"_num__ber__:\n\t.long\t"+str(0)
+					global_vars[TAC[0]]="NUMBER"
+					get_offset=temp_add[str(TAC[3])]	
+					code_string+= "movl"+"\t"+get_offset+","+"%edi\n"
+					code_string+="movl\t%edi,"+TAC[0].split('$')[1]+"_num__ber__"+"\n"
+
+				else:
+					global_vars[TAC[0]]="STRING"
+					global_strings[TAC[0].split('$')[1]+"_str__ing__"]=string_value_temp
+					string_value_temp=TAC[0].split('$')[1]+"_str__ing__:\n"+string_value_temp+TAC[0].split('$')[1] \
+					+"_len = . - "+TAC[0].split('$')[1]+"_str__ing__"
+					data_strings[str(TAC[0].split('$')[1])+"_str__ing__"]=string_value_temp
+
+
+###################EXIT##############################################################
+
+		if TAC[2]=="EXIT":
+			code_string+="movl\t$1,%eax\nmovl\t$0,%ebx\nint\t$0x80\n"
+##################PRINT##############################################################
+		if TAC[2]=="print":
+			if TAC[0]=="NUMBER":###Deepak will give the function
+				print_flag=1
+				if re.match(r'\$.*', TAC[3]):
+					code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__,%ecx\n"
+					code_string+="call printIntNumber\n"
+				else:
+					get_offset=temp_add[str(TAC[3])]	
+					code_string+= "movl"+"\t"+get_offset+","+"%ecx\n"
+					code_string+="call printIntNumber\n"
+			elif TAC[0]=="STRING":
+				code_string+="movl\t$4,%eax\nmovl\t$1,%ebx\n"
+				# print "movl\t$4,%eax\nmovl\t$1,%ebx\n"
+				# print TAC[3]
+				# print "AAAAAAAAAAAAAAAAAAAAAAAAA"
+				if re.search(r'\$',TAC[3]):
+					code_string+="movl\t"+TAC[3].split('$')[1]+"_str__ing__"+",%ecx\n"
+					code_string+="movl\t"+TAC[3].split('$')[1]+"_len,%edx\n"
+					code_string+="int\t$0x80\n"
+				else:
+					code_string+="movl\t"+TAC[3]+",%ecx\n"
+					code_string+="movl\t"+TAC[3]+"_len,%edx\n"
+					code_string+="int\t$0x80\n"	
+			elif TAC[0]=="RES_STRING":
+				code_string+="movl\t$4,%eax\nmovl\t$1,%ebx\n"
+				# print "movl\t$4,%eax\nmovl\t$1,%ebx\n"
+				# print TAC[3]
+				# print "AAAAAAAAAAAAAAAAAAAAAAAAA"
+				if re.search(r'\$',TAC[3]):
+					code_string+="movl\t"+TAC[3].split('$')[1]+"_str__ing__"+",%ecx\n"
+					code_string+="movl\t"+TAC[3].split('$')[1]+"_len,%edx\n"
+					code_string+="int\t$0x80\n"
+				else:
+					code_string+="movl\t"+TAC[3]+",%ecx\n"
+					code_string+="movl\t"+TAC[3]+"_len,%edx\n"
+					code_string+="int\t$0x80\n"	
+			else:
+				print "ERROR: You are trying to print the UNPRINTABLE :D\n"
+#######################ADDITION######################################################
+
+		if TAC[2]=="+":
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="addl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="addl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[0]):
+				code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"_num__ber__"+"\n"
+			else:
+				offset=offset-4
+				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
+############################SUBTRACTION###############################################
+		
+		if TAC[2]=="-":
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="subl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="subl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[0]):
+				code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"_num__ber__"+"\n"
+			else:
+				offset=offset-4
+				code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+				temp_key=str(TAC[0])
+				temp_add[temp_key]=str(offset)+"(%ebp)"
+		
+######################################COMPARISON######################################
+		
+		if TAC[2]==">":
+			
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%ebx\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="movl\t"+get_offset+",%ebx\n"
+			temp_operator=TAC[2]
+			code_string+="cmpl\t%eax,%ebx\n"
+			#code_string+="jg\ttrue\n"
+			# if TAC[0] in global_vars:
+			# 	code_string+="movl\t"+"%eax,"+TAC[1].split('$')[1]+"\n"
+			# else:
+			# 	offset=offset-4
+			# 	code_string+= "movl"+"\t%eax,"+str(offset)+"(%ebp)\n"
+			# 	temp_key=str(TAC[0])
+			# 	temp_add[temp_key]=str(offset)+"(%ebp)"
+
+
+
+		if TAC[2]=="<":
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%ebx\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="movl\t"+get_offset+",%ebx\n"
+			temp_operator=TAC[2]
+			code_string+="cmpl\t%eax,%ebx\n"
+
+		if TAC[2]==">=":
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%ebx\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="movl\t"+get_offset+",%ebx\n"
+			temp_operator=TAC[2]
+			code_string+="cmpl\t%eax,%ebx\n"
+
+
+
+		if TAC[2]=="<=":
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%ebx\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="movl\t"+get_offset+",%ebx\n"
+			temp_operator=TAC[2]
+			code_string+="cmpl\t%eax,%ebx\n"
+
+
+
+		if TAC[2]=="==":
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%ebx\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="movl\t"+get_offset+",%ebx\n"
+			temp_operator=TAC[2]
+			code_string+="cmpl\t%eax,%ebx\n"
+
+
+		if TAC[2]=="!=":
+			if global_vars.has_key(TAC[1]):
+				code_string+="movl\t"+TAC[1].split('$')[1]+"_num__ber__"+",%eax\n"
+			else:
+				get_offset=temp_add[str(TAC[1])]
+				code_string+="movl\t"+get_offset+",%eax\n"
+			if global_vars.has_key(TAC[3]):
+				code_string+="movl\t"+TAC[3].split('$')[1]+"_num__ber__"+",%ebx\n"
+			else:
+				get_offset=temp_add[str(TAC[3])]
+				code_string+="movl\t"+get_offset+",%ebx\n"
+			temp_operator=TAC[2]
+			code_string+="cmpl\t%eax,%ebx\n"
+
+##################################CONDITIONALGOTO#####################################
+
+		if TAC[2]=="FALSE_GOTO":
+			if temp_operator==">":
+				code_string+= "jg\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="<":
+				code_string+= "jl\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator==">=":
+				code_string+= "jge\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="<=":
+				code_string+= "jle\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="==":
+				code_string+= "jne\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="!=":
+				code_string+= "je\t"+"label_"+str(TAC[3])+"\n"
+			else:
+				code_string+=""
+
+		if TAC[2]=="GOTO_MARK":
+			if temp_operator==">":
+				code_string+= "jg\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="<":
+				code_string+= "jl\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator==">=":
+				code_string+= "jge\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="<=":
+				code_string+= "jle\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="==":
+				code_string+= "jne\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="!=":
+				code_string+= "je\t"+"label_"+str(TAC[3])+"\n"
+			else:
+				code_string+=""
+
+
+		if TAC[2]=="GOTO_MARK2":
+			if temp_operator==">":
+				code_string+= "jle\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="<":
+				code_string+= "jge\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator==">=":
+				code_string+= "jl\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="<=":
+				code_string+= "jg\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="==":
+				code_string+= "je\t"+"label_"+str(TAC[3])+"\n"
+			elif temp_operator=="!=":
+				code_string+= "jne\t"+"label_"+str(TAC[3])+"\n"
+			else:
+				code_string+=""
+
+
+###############################GOTO####################################################
+
+		if TAC[2]=="GOTO":
+			code_string+="jmp\tlabel_"+str(TAC[3])+"\n"
+		if TAC[2]=="GOTO_END":
+			code_string+="jmp\tlabel_"+str(TAC[3])+"\n"
+
+################################FUNCTION###################################################
+
+
+		if TAC[2]=="GOTO_LABEL":
+			code_string+="call "+str(TAC[3])+"\n"
+
+		if TAC[2]=="return":
+			if global_vars.has_key(TAC[0]):
+				if global_vars[TAC[0]]=="NUMBER":
+					function_list_linear[name]=TAC[0].split('$')[1]+"_num__ber__"
+				else:
+					if re.match(r'\$.*', TAC[0]):
+						# print TAC[0]
+						# print "TTTTT"
+						function_list_linear[name]=TAC[0].split('$')[1]+"_str__ing__"
+					else:
+						function_list_linear[name]=TAC[0]
+
+			else:
+				get_offset=temp_add[str(TAC[0])]	
+				code_string+= "movl"+"\t"+get_offset+","+"%ebx\n"
+			code_string+="movl"+"\t"+"%ebp"+","+"%esp\n"
+			code_string+="popl\t%ebp\n"
+			code_string+="popl %esi\npopl %edi\npopl %edx\npopl %ecx\npopl %eax\nret\n"
+			
+			
+
+		if TAC[2]=="JUMP_CALLING":
+			# code_string+="pushl"+"\t"+"%ebp\n"
+			code_string+="movl"+"\t"+"%ebp"+","+"%esp\n"
+			code_string+="popl\t%ebp\n"
+			code_string+="popl %esi\npopl %edi\npopl %edx\npopl %ecx\npopl %eax\nret\n"
+
+			symTable.symbolTable['root'][name]['returntype']="VOID"
+			
+
+		# if TAC[2]=="FUNC_LABEL":
+		# 	code_string+=str(TAC[3])+":\n"
+
+def genasm(taccode):
+	
+	flag=0
+	# num_value_temp=0	
+	offset=0
+	temp_operator="=="
+	for item in function_list:
+		for i in function_list[item]:
+			scopecode(i,taccode)
+	
+def write_into_file(name, Str_to_write):
+	try:
+		myfile = open(name, 'w')
+		myfile.write(Str_to_write)
+		myfile.close()
+	except:
+		print "ERROR: Somehow the file"+str(name)+"could not be generated\n"
+		sys.exit(0)
+
 def runparser(inputfile):
+	global code_string
+	global data_string
+	global data_strings
+	global print_flag
 	program=open(inputfile).read()
-	result=parser.parse(program,lexer=lexer, debug=1)
+	result=parser.parse(program,lexer=lexer, debug=0)
 	# print result
-	# print "\nSymbol Table :-\n"
+	print "\nGenerating Symbol Table ...\n"
 	# print symTable.symbolTable
-	print "\nThree Address Code:-\n"
+	symbol_table_string = str(symTable.symbolTable)
+	write_into_file("symbolTable.gen", symbol_table_string)
+	print "\nGenerating Three Address Code...\n"
 	# print threeAddrCode.code
+	threeAddrCode_string = ""
 	for scopes in threeAddrCode.code:
 		count = 0
-		print "In the scope "+str(scopes)+" :-"
+		# print "In the scope "+str(scopes)+" :-"
+		threeAddrCode_string+= "In the scope "+str(scopes)+" :-\n"
+
 		for TAC in threeAddrCode.code[scopes]:
-			print "\t"+str(count)+"\t"+str(TAC)
+			# print "\t"+str(count)+"\t"+str(TAC)
+			threeAddrCode_string+= "\t"+str(count)+"\t"+str(TAC)+"\n"
 			count+=1
+	write_into_file("Three_Address_Code.gen", threeAddrCode_string)
+
+
+	for scopes in threeAddrCode.code:
+		count = 0
+		for TAC in threeAddrCode.code[scopes]:
+			if TAC[2]=="FALSE_GOTO":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_END":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_SWITCH":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_MARK":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="GOTO_MARK2":
+				temp=TAC[3]
+				temp1="label_"+str(temp)
+				threeAddrCode.code[scopes][temp].append(temp1)
+			if TAC[2]=="return":
+				temp = re.match(r'\$(.*)',TAC[0])
+				if temp:
+					if symTable.symbolTable['root'][scopes]['returntype']=="NUMBER":
+						function_list_linear[scopes]=str(temp.group(1))+"_num__ber__"
+					elif symTable.symbolTable['root'][scopes]['returntype']=="STRING":
+						function_list_linear[scopes]=str(temp.group(1))+"_str__ing__"
+					elif symTable.symbolTable['root'][scopes]['returntype']=="RES_STRING":
+						function_list_linear[scopes]=str(temp.group(1))+"_str__ing__"
+					else:
+						print "ERROR: You cannot return values in VOID functions\n\tYou returned value of type: "+symTable.symbolTable['root'][scopes]['returntype']+"\n"
+				else:
+					function_list_linear[scopes]=TAC[0]
+
+			count+=1
+
+	# for scopes in threeAddrCode.code:
+	# 	count = 0
+	# 	print "In the scope "+str(scopes)+" :-"
+
+	# 	for TAC in threeAddrCode.code[scopes]:
+	# 		print "\t"+str(count)+"\t"+str(TAC)
+	# 		count+=1
+
+	genasm(threeAddrCode.code)
+	print function_list
+	print function_list_linear
+	print "qwertyuiopasdfghjklzxcvbnm"
+	print global_vars
+	for item in data_strings:
+		code_string = data_strings[item]+"\n"+code_string
+	code_string = data_string+ code_string
+	if print_flag==1:
+		code_string += printIntCode  #Append the line to print the code of the printing number
+
+	print "\nGenerating x86 Assembly Code...\n"
+	# print code_string
+	write_into_file("output.s", code_string)
+
+	os.system("as -32 output.s -o output.o")
+	os.system("ld -m elf_i386 output.o -o output")
 
 if __name__=="__main__":
 	from sys import argv 

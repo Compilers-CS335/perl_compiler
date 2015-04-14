@@ -1,8 +1,9 @@
-sub parent{
+$tmp = 12;
+sub parent1{
     my $a = 10;
     sub child {
         $a = $a+1;
-        return $a;
+        return "SDSDSD";
     }
     print "\ninside and before:= ";
     print $a;
@@ -10,19 +11,22 @@ sub parent{
     print "\n inside and after:= ";
     print $a;
     $b = child();
-    $b = 10*$b;
+    # $b = 10*$b;
     return $b;
 }
 
 sub child2{
     $a = $a+1;
     return $a;
+    sub child45{
+        print "hello";
+    }
 }
 
-$tmp = 12;
-$ret = parent();
+
+$ret = parent1();
 $tmp = 25;
-$ret = parent();
+$ret = parent1();
 $ret2 = child();
 $ret3 = child2();
 print "\$tmp wala = ";

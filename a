@@ -1,6 +1,7 @@
 PLY: PARSE DEBUG START
 
 State  : 0
+<<<<<<< HEAD
 Stack  : . LexToken(SUB,'sub',1,0)
 Action : Shift and goto state 26
 
@@ -195,10 +196,154 @@ Result : <dict @ 0x7fac39ad5e88> ({'endlist': [], 'beginlist': [], 'type': ...)
 
 State  : 53
 Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement assignment . LexToken(SEMICOLON,';',3,52)
+=======
+Stack  : . LexToken(USE,'use',3,23)
+Action : Shift and goto state 47
+
+State  : 47
+Stack  : USE . LexToken(IDENTIFIER,'Switch',3,27)
+Action : Shift and goto state 125
+
+State  : 125
+Stack  : USE IDENTIFIER . LexToken(SEMICOLON,';',3,33)
+Action : Shift and goto state 188
+
+State  : 188
+Stack  : USE IDENTIFIER SEMICOLON . LexToken(VARIABLE,'$var',5,36)
+Action : Reduce rule [useStatement -> USE IDENTIFIER SEMICOLON] with ['use','Switch',';'] and goto state 31
+Result : <dict @ 0x7f106512d280> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 20
+Stack  : useStatement . LexToken(VARIABLE,'$var',5,36)
 Action : Reduce rule [empty -> <empty>] with [] and goto state 6
 Result : <NoneType @ 0x920190> (None)
 
+State  : 63
+Stack  : useStatement empty . LexToken(VARIABLE,'$var',5,36)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065129d70> ({'quad': 0})
+
+State  : 83
+Stack  : useStatement Marker . LexToken(VARIABLE,'$var',5,36)
+Action : Reduce rule [statement -> useStatement Marker] with [<dict @ 0x7f106512d280>,{'quad': 0}] and goto state 21
+Result : <dict @ 0x7f106512d4b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement . LexToken(VARIABLE,'$var',5,36)
+Action : Shift and goto state 57
+
+State  : 57
+Stack  : statement VARIABLE . LexToken(ASSIGNMENT_OP,'=',5,41)
+Action : Shift and goto state 136
+
+State  : 136
+Stack  : statement VARIABLE ASSIGNMENT_OP . LexToken(NUMBER,10,5,43)
+Action : Shift and goto state 49
+
+State  : 49
+Stack  : statement VARIABLE ASSIGNMENT_OP NUMBER . LexToken(SEMICOLON,';',5,45)
+Action : Reduce rule [number -> NUMBER] with [10] and goto state 80
+Result : <dict @ 0x7f106512d050> ({'type': 'NUMBER', 'value': 10})
+
+State  : 30
+Stack  : statement VARIABLE ASSIGNMENT_OP number . LexToken(SEMICOLON,';',5,45)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f106512d050>] and goto state 85
+Result : <dict @ 0x7f106512d050> ({'place': 'temp1', 'type': 'NUMBER', 'va ...)
+
+State  : 13
+Stack  : statement VARIABLE ASSIGNMENT_OP term . LexToken(SEMICOLON,';',5,45)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f106512d050>] and goto state 99
+Result : <dict @ 0x7f106512d050> ({'place': 'temp1', 'type': 'NUMBER', 'va ...)
+
+State  : 198
+Stack  : statement VARIABLE ASSIGNMENT_OP expression . LexToken(SEMICOLON,';',5,45)
+Action : Reduce rule [assignment -> VARIABLE ASSIGNMENT_OP expression] with ['$var','=',<dict @ 0x7f106512d050>] and goto state 57
+Result : <dict @ 0x7f106512da28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 56
+Stack  : statement assignment . LexToken(SEMICOLON,';',5,45)
+>>>>>>> 692a9eda001f7d85b0b03bcd1fa0df18dccc8ece
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement assignment empty . LexToken(SEMICOLON,';',5,45)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f106638de88> ({'quad': 2})
+
+State  : 132
+Stack  : statement assignment Marker . LexToken(SEMICOLON,';',5,45)
+Action : Shift and goto state 193
+
+State  : 193
+Stack  : statement assignment Marker SEMICOLON . LexToken(ARRAY,'@array',6,47)
+Action : Reduce rule [statement -> assignment Marker SEMICOLON] with [<dict @ 0x7f106512da28>,{'quad': 2},';'] and goto state 7
+Result : <dict @ 0x7f106512db40> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement . LexToken(ARRAY,'@array',6,47)
+Action : Shift and goto state 40
+
+State  : 40
+Stack  : statement statement ARRAY . LexToken(ASSIGNMENT_OP,'=',6,54)
+Action : Shift and goto state 120
+
+State  : 120
+Stack  : statement statement ARRAY ASSIGNMENT_OP . LexToken(OPEN_PARANTHESIS,'(',6,56)
+Action : Shift and goto state 184
+
+State  : 184
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS . LexToken(NUMBER,10,6,57)
+Action : Shift and goto state 49
+
+State  : 49
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS NUMBER . LexToken(COMMA,',',6,59)
+Action : Reduce rule [number -> NUMBER] with [10] and goto state 80
+Result : <dict @ 0x7f106512d910> ({'type': 'NUMBER', 'value': 10})
+
+State  : 30
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS number . LexToken(COMMA,',',6,59)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f106512d910>] and goto state 85
+Result : <dict @ 0x7f106512d910> ({'place': 'temp2', 'type': 'NUMBER', 'va ...)
+
+State  : 13
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS term . LexToken(COMMA,',',6,59)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f106512d910>] and goto state 99
+Result : <dict @ 0x7f106512d910> ({'place': 'temp2', 'type': 'NUMBER', 'va ...)
+
+State  : 222
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression . LexToken(COMMA,',',6,59)
+Action : Shift and goto state 247
+
+State  : 247
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA . LexToken(STRING,"'avi'",6,61)
+Action : Shift and goto state 55
+
+State  : 55
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA STRING . LexToken(COMMA,',',6,66)
+Action : Reduce rule [string -> STRING] with ["'avi'"] and goto state 78
+Result : <dict @ 0x7f106512da28> ({'type': 'STRING', 'value': "'avi'"})
+
+State  : 51
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA string . LexToken(COMMA,',',6,66)
+Action : Reduce rule [term -> string] with [<dict @ 0x7f106512da28>] and goto state 86
+Result : <dict @ 0x7f106512da28> ({'place': 'temp3', 'type': 'STRING', 'va ...)
+
+State  : 13
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA term . LexToken(COMMA,',',6,66)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f106512da28>] and goto state 99
+Result : <dict @ 0x7f106512da28> ({'place': 'temp3', 'type': 'STRING', 'va ...)
+
+State  : 263
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA expression . LexToken(COMMA,',',6,66)
+Action : Shift and goto state 247
+
+State  : 247
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA expression COMMA . LexToken(FLOAT,30.12,6,68)
+Action : Shift and goto state 60
+
 State  : 60
+<<<<<<< HEAD
 Stack  : SUB IDENTIFIER Markerscope BLOCK_BEGIN statement assignment empty . LexToken(SEMICOLON,';',3,52)
 Action : Reduce rule [Marker -> empty] with [None] and goto state 113
 Result : <dict @ 0x7fac39ad8050> ({'quad': 7})
@@ -1033,13 +1178,714 @@ State  : 37
 Stack  : statement . $end
 Action : Reduce rule [statements -> statement] with [<dict @ 0x7fac39ad84b0>] and goto state 5
 Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+=======
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA expression COMMA FLOAT . LexToken(CLOSE_PARANTHESIS,')',6,73)
+Action : Reduce rule [number -> FLOAT] with [30.12] and goto state 82
+Result : <dict @ 0x7f1065133168> ({'type': 'NUMBER', 'value': 30.12})
 
-State  : 25
-Stack  : statements . $end
-Action : Reduce rule [start -> statements] with [<dict @ 0x7fac39ad84b0>] and goto state 2
-Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+State  : 30
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA expression COMMA number . LexToken(CLOSE_PARANTHESIS,')',6,73)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f1065133168>] and goto state 85
+Result : <dict @ 0x7f1065133168> ({'place': 'temp4', 'type': 'NUMBER', 'va ...)
+
+State  : 13
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA expression COMMA term . LexToken(CLOSE_PARANTHESIS,')',6,73)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f1065133168>] and goto state 99
+Result : <dict @ 0x7f1065133168> ({'place': 'temp4', 'type': 'NUMBER', 'va ...)
+
+State  : 263
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA expression COMMA expression . LexToken(CLOSE_PARANTHESIS,')',6,73)
+Action : Reduce rule [arrayList -> COMMA expression] with [',',<dict @ 0x7f1065133168>] and goto state 92
+Result : <dict @ 0x7f10651335c8> ({'elements': [{'type': 'NUMBER'}], 'type ...)
+
+State  : 275
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression COMMA expression arrayList . LexToken(CLOSE_PARANTHESIS,')',6,73)
+Action : Reduce rule [arrayList -> COMMA expression arrayList] with [',',<dict @ 0x7f106512da28>,<dict @ 0x7f10651335c8>] and goto state 91
+Result : <dict @ 0x7f10651336e0> ({'elements': [{'type': 'STRING'}, {'type ...)
+
+State  : 248
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression arrayList . LexToken(CLOSE_PARANTHESIS,')',6,73)
+Action : Shift and goto state 264
+
+State  : 264
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression arrayList CLOSE_PARANTHESIS . LexToken(SEMICOLON,';',6,74)
+Action : Shift and goto state 276
+
+State  : 276
+Stack  : statement statement ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression arrayList CLOSE_PARANTHESIS SEMICOLON . LexToken(PRINT,'print',8,77)
+Action : Reduce rule [array_assignment -> ARRAY ASSIGNMENT_OP OPEN_PARANTHESIS expression arrayList CLOSE_PARANTHESIS SEMICOLON] with ['@array','=','(',<dict @ 0x7f106512d910>,<dict @ 0x7f10651336e0>,')',';'] and goto state 90
+Result : <dict @ 0x7f10651334b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 44
+Stack  : statement statement array_assignment . LexToken(PRINT,'print',8,77)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement array_assignment empty . LexToken(PRINT,'print',8,77)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065133168> ({'quad': 6})
+
+State  : 123
+Stack  : statement statement array_assignment Marker . LexToken(PRINT,'print',8,77)
+Action : Reduce rule [statement -> array_assignment Marker] with [<dict @ 0x7f10651334b0>,{'quad': 6}] and goto state 9
+Result : <dict @ 0x7f10651335c8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement . LexToken(PRINT,'print',8,77)
+Action : Shift and goto state 18
+
+State  : 18
+Stack  : statement statement statement PRINT . LexToken(VARIABLE,'$var',8,83)
+Action : Shift and goto state 67
+
+State  : 67
+Stack  : statement statement statement PRINT VARIABLE . LexToken(SEMICOLON,';',8,87)
+Action : Reduce rule [term -> VARIABLE] with ['$var'] and goto state 87
+Result : <dict @ 0x7f1065133b40> ({'type': 'NUMBER', 'place': '$var'})
+
+State  : 13
+Stack  : statement statement statement PRINT term . LexToken(SEMICOLON,';',8,87)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f1065133b40>] and goto state 99
+Result : <dict @ 0x7f1065133b40> ({'type': 'NUMBER', 'place': '$var'})
+
+State  : 82
+Stack  : statement statement statement PRINT expression . LexToken(SEMICOLON,';',8,87)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement PRINT expression SEMICOLON . LexToken(PRINT,'print',9,89)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f1065133b40>,';'] and goto state 55
+Result : <dict @ 0x7f1065129e88> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 21
+Stack  : statement statement statement printStatement . LexToken(PRINT,'print',9,89)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement printStatement empty . LexToken(PRINT,'print',9,89)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f106512dc58> ({'quad': 7})
+
+State  : 84
+Stack  : statement statement statement printStatement Marker . LexToken(PRINT,'print',9,89)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f1065129e88>,{'quad': 7}] and goto state 14
+Result : <dict @ 0x7f1065133168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement . LexToken(PRINT,'print',9,89)
+Action : Shift and goto state 18
+
+State  : 18
+Stack  : statement statement statement statement PRINT . LexToken(ARRAY,'@array',9,95)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement statement statement statement PRINT ARRAY . LexToken(OPEN_BRACKET,'[',9,101)
+Action : Shift and goto state 141
+
+State  : 141
+Stack  : statement statement statement statement PRINT ARRAY OPEN_BRACKET . LexToken(NUMBER,0,9,102)
+Action : Shift and goto state 202
+
+State  : 202
+Stack  : statement statement statement statement PRINT ARRAY OPEN_BRACKET NUMBER . LexToken(CLOSE_BRACKET,']',9,103)
+Action : Shift and goto state 231
+
+State  : 231
+Stack  : statement statement statement statement PRINT ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET . LexToken(SEMICOLON,';',9,104)
+Action : Reduce rule [term -> ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET] with ['@array','[',0,']'] and goto state 89
+Result : <dict @ 0x7f106512d050> ({'type': 'NUMBER', 'place': '@array'})
+
+State  : 13
+Stack  : statement statement statement statement PRINT term . LexToken(SEMICOLON,';',9,104)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f106512d050>] and goto state 99
+Result : <dict @ 0x7f106512d050> ({'type': 'NUMBER', 'place': '@array'})
+
+State  : 82
+Stack  : statement statement statement statement PRINT expression . LexToken(SEMICOLON,';',9,104)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement PRINT expression SEMICOLON . LexToken(PRINT,'print',10,106)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f106512d050>,';'] and goto state 55
+Result : <dict @ 0x7f1065133c58> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 21
+Stack  : statement statement statement statement printStatement . LexToken(PRINT,'print',10,106)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement statement printStatement empty . LexToken(PRINT,'print',10,106)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065133398> ({'quad': 8})
+
+State  : 84
+Stack  : statement statement statement statement printStatement Marker . LexToken(PRINT,'print',10,106)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f1065133c58>,{'quad': 8}] and goto state 14
+Result : <dict @ 0x7f1065133910> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement statement . LexToken(PRINT,'print',10,106)
+Action : Shift and goto state 18
+
+State  : 18
+Stack  : statement statement statement statement statement PRINT . LexToken(ARRAY,'@array',10,112)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement statement statement statement statement PRINT ARRAY . LexToken(OPEN_BRACKET,'[',10,118)
+Action : Shift and goto state 141
+
+State  : 141
+Stack  : statement statement statement statement statement PRINT ARRAY OPEN_BRACKET . LexToken(NUMBER,1,10,119)
+Action : Shift and goto state 202
+
+State  : 202
+Stack  : statement statement statement statement statement PRINT ARRAY OPEN_BRACKET NUMBER . LexToken(CLOSE_BRACKET,']',10,120)
+Action : Shift and goto state 231
+
+State  : 231
+Stack  : statement statement statement statement statement PRINT ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET . LexToken(SEMICOLON,';',10,121)
+Action : Reduce rule [term -> ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET] with ['@array','[',1,']'] and goto state 89
+Result : <dict @ 0x7f106512d910> ({'type': 'STRING', 'place': '@array'})
+
+State  : 13
+Stack  : statement statement statement statement statement PRINT term . LexToken(SEMICOLON,';',10,121)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f106512d910>] and goto state 99
+Result : <dict @ 0x7f106512d910> ({'type': 'STRING', 'place': '@array'})
+
+State  : 82
+Stack  : statement statement statement statement statement PRINT expression . LexToken(SEMICOLON,';',10,121)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement statement PRINT expression SEMICOLON . LexToken(PRINT,'print',11,123)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f106512d910>,';'] and goto state 55
+Result : <dict @ 0x7f1065133e88> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 21
+Stack  : statement statement statement statement statement printStatement . LexToken(PRINT,'print',11,123)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement statement statement printStatement empty . LexToken(PRINT,'print',11,123)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065133d70> ({'quad': 9})
+
+State  : 84
+Stack  : statement statement statement statement statement printStatement Marker . LexToken(PRINT,'print',11,123)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f1065133e88>,{'quad': 9}] and goto state 14
+Result : <dict @ 0x7f1065133a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement statement statement . LexToken(PRINT,'print',11,123)
+Action : Shift and goto state 18
+
+State  : 18
+Stack  : statement statement statement statement statement statement PRINT . LexToken(ARRAY,'@array',11,129)
+Action : Shift and goto state 64
+
+State  : 64
+Stack  : statement statement statement statement statement statement PRINT ARRAY . LexToken(OPEN_BRACKET,'[',11,135)
+Action : Shift and goto state 141
+
+State  : 141
+Stack  : statement statement statement statement statement statement PRINT ARRAY OPEN_BRACKET . LexToken(NUMBER,2,11,136)
+Action : Shift and goto state 202
+
+State  : 202
+Stack  : statement statement statement statement statement statement PRINT ARRAY OPEN_BRACKET NUMBER . LexToken(CLOSE_BRACKET,']',11,137)
+Action : Shift and goto state 231
+
+State  : 231
+Stack  : statement statement statement statement statement statement PRINT ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET . LexToken(SEMICOLON,';',11,138)
+Action : Reduce rule [term -> ARRAY OPEN_BRACKET NUMBER CLOSE_BRACKET] with ['@array','[',2,']'] and goto state 89
+Result : <dict @ 0x7f10651336e0> ({'type': 'NUMBER', 'place': '@array'})
+
+State  : 13
+Stack  : statement statement statement statement statement statement PRINT term . LexToken(SEMICOLON,';',11,138)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f10651336e0>] and goto state 99
+Result : <dict @ 0x7f10651336e0> ({'type': 'NUMBER', 'place': '@array'})
+
+State  : 82
+Stack  : statement statement statement statement statement statement PRINT expression . LexToken(SEMICOLON,';',11,138)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement statement statement PRINT expression SEMICOLON . LexToken(SWITCH,'switch',15,182)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f10651336e0>,';'] and goto state 55
+Result : <dict @ 0x7f1065136168> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 21
+Stack  : statement statement statement statement statement statement printStatement . LexToken(SWITCH,'switch',15,182)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement statement statement statement printStatement empty . LexToken(SWITCH,'switch',15,182)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065136050> ({'quad': 10})
+
+State  : 84
+Stack  : statement statement statement statement statement statement printStatement Marker . LexToken(SWITCH,'switch',15,182)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f1065136168>,{'quad': 10}] and goto state 14
+Result : <dict @ 0x7f106512d5c8> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement statement statement statement . LexToken(SWITCH,'switch',15,182)
+Action : Shift and goto state 35
 
 State  : 35
+Stack  : statement statement statement statement statement statement statement SWITCH . LexToken(OPEN_PARANTHESIS,'(',15,188)
+Action : Shift and goto state 2
+
+State  : 2
+Stack  : statement statement statement statement statement statement statement SWITCH OPEN_PARANTHESIS . LexToken(VARIABLE,'$var',15,189)
+Action : Shift and goto state 67
+
+State  : 67
+Stack  : statement statement statement statement statement statement statement SWITCH OPEN_PARANTHESIS VARIABLE . LexToken(CLOSE_PARANTHESIS,')',15,193)
+Action : Reduce rule [term -> VARIABLE] with ['$var'] and goto state 87
+Result : <dict @ 0x7f106512dc58> ({'type': 'NUMBER', 'place': '$var'})
+
+State  : 13
+Stack  : statement statement statement statement statement statement statement SWITCH OPEN_PARANTHESIS term . LexToken(CLOSE_PARANTHESIS,')',15,193)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f106512dc58>] and goto state 99
+Result : <dict @ 0x7f106512dc58> ({'type': 'NUMBER', 'place': '$var'})
+
+State  : 68
+Stack  : statement statement statement statement statement statement statement SWITCH OPEN_PARANTHESIS expression . LexToken(CLOSE_PARANTHESIS,')',15,193)
+Action : Shift and goto state 142
+
+State  : 142
+Stack  : statement statement statement statement statement statement statement SWITCH OPEN_PARANTHESIS expression CLOSE_PARANTHESIS . LexToken(BLOCK_BEGIN,'{',15,194)
+Action : Reduce rule [term -> OPEN_PARANTHESIS expression CLOSE_PARANTHESIS] with ['(',<dict @ 0x7f106512dc58>,')'] and goto state 88
+Result : <dict @ 0x7f106512dc58> ({'type': 'NUMBER', 'place': '$var'})
+
+State  : 13
+Stack  : statement statement statement statement statement statement statement SWITCH term . LexToken(BLOCK_BEGIN,'{',15,194)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f106512dc58>] and goto state 99
+Result : <dict @ 0x7f106512dc58> ({'type': 'NUMBER', 'place': '$var'})
+
+State  : 115
+Stack  : statement statement statement statement statement statement statement SWITCH expression . LexToken(BLOCK_BEGIN,'{',15,194)
+Action : Shift and goto state 181
+
+State  : 181
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN . LexToken(CASE,'case',16,199)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 218
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN empty . LexToken(CASE,'case',16,199)
+Action : Reduce rule [Marker_switch -> empty] with [None] and goto state 36
+Result : <dict @ 0x7f106638dc58> ({'quad': 10})
+
+State  : 219
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch . LexToken(CASE,'case',16,199)
+Action : Shift and goto state 244
+
+State  : 244
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE . LexToken(OPEN_PARANTHESIS,'(',16,204)
+Action : Shift and goto state 259
+
+State  : 259
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS . LexToken(NUMBER,10,16,205)
+Action : Shift and goto state 49
+
+State  : 49
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS NUMBER . LexToken(CLOSE_PARANTHESIS,')',16,207)
+Action : Reduce rule [number -> NUMBER] with [10] and goto state 80
+Result : <dict @ 0x7f1065136168> ({'type': 'NUMBER', 'value': 10})
+
+State  : 30
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS number . LexToken(CLOSE_PARANTHESIS,')',16,207)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f1065136168>] and goto state 85
+Result : <dict @ 0x7f1065136168> ({'place': 'temp5', 'type': 'NUMBER', 'va ...)
+
+State  : 13
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS term . LexToken(CLOSE_PARANTHESIS,')',16,207)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f1065136168>] and goto state 99
+Result : <dict @ 0x7f1065136168> ({'place': 'temp5', 'type': 'NUMBER', 'va ...)
+
+State  : 273
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression . LexToken(CLOSE_PARANTHESIS,')',16,207)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 284
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression empty . LexToken(CLOSE_PARANTHESIS,')',16,207)
+Action : Reduce rule [Marker_caselist -> empty] with [None] and goto state 40
+Result : <dict @ 0x7f10651365c8> ({'falselist': [12], 'type': 'VOID'})
+
+State  : 283
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist . LexToken(CLOSE_PARANTHESIS,')',16,207)
+Action : Shift and goto state 288
+
+State  : 288
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS . LexToken(BLOCK_BEGIN,'{',16,219)
+Action : Shift and goto state 50
+
+State  : 50
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN . LexToken(PRINT,'print',16,221)
+Action : Shift and goto state 18
+
+State  : 18
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT . LexToken(RES_STRING,'"number 100\\n"',16,227)
+Action : Shift and goto state 15
+
+State  : 15
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT RES_STRING . LexToken(SEMICOLON,';',16,241)
+Action : Reduce rule [string -> RES_STRING] with [<str @ 0x7f10663718f0>] and goto state 79
+Result : <dict @ 0x7f10651364b0> ({'type': 'RES_STRING', 'value': '"number ...)
+
+State  : 51
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT string . LexToken(SEMICOLON,';',16,241)
+Action : Reduce rule [term -> string] with [<dict @ 0x7f10651364b0>] and goto state 86
+Result : <dict @ 0x7f10651364b0> ({'place': 'temp7', 'type': 'RES_STRING', ...)
+
+State  : 13
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT term . LexToken(SEMICOLON,';',16,241)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f10651364b0>] and goto state 99
+Result : <dict @ 0x7f10651364b0> ({'place': 'temp7', 'type': 'RES_STRING', ...)
+
+State  : 82
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT expression . LexToken(SEMICOLON,';',16,241)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT expression SEMICOLON . LexToken(BLOCK_ENDS,'}',16,243)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f10651364b0>,';'] and goto state 55
+Result : <dict @ 0x7f1065137050> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 21
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN printStatement . LexToken(BLOCK_ENDS,'}',16,243)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN printStatement empty . LexToken(BLOCK_ENDS,'}',16,243)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065136d70> ({'quad': 15})
+
+State  : 84
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN printStatement Marker . LexToken(BLOCK_ENDS,'}',16,243)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f1065137050>,{'quad': 15}] and goto state 14
+Result : <dict @ 0x7f1065137398> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN statement . LexToken(BLOCK_ENDS,'}',16,243)
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7f1065137398>] and goto state 5
+Result : <dict @ 0x7f1065137398> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 128
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',16,243)
+Action : Shift and goto state 190
+
+State  : 190
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN statements BLOCK_ENDS . LexToken(CASE,'case',17,248)
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',<dict @ 0x7f1065137398>,'}'] and goto state 3
+Result : <dict @ 0x7f1065137398> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 293
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block . LexToken(CASE,'case',17,248)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 297
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block empty . LexToken(CASE,'case',17,248)
+Action : Reduce rule [Marker_quit -> empty] with [None] and goto state 41
+Result : <dict @ 0x7f1065136e88> ({'quad': 16, 'nextlist': [15]})
+
+State  : 298
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit . LexToken(CASE,'case',17,248)
+Action : Shift and goto state 301
+
+State  : 301
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE . LexToken(OPEN_PARANTHESIS,'(',17,253)
+Action : Shift and goto state 308
+
+State  : 308
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS . LexToken(NUMBER,12,17,254)
+Action : Shift and goto state 49
+
+State  : 49
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS NUMBER . LexToken(CLOSE_PARANTHESIS,')',17,256)
+Action : Reduce rule [number -> NUMBER] with [12] and goto state 80
+Result : <dict @ 0x7f1065137168> ({'type': 'NUMBER', 'value': 12})
+
+State  : 30
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS number . LexToken(CLOSE_PARANTHESIS,')',17,256)
+Action : Reduce rule [term -> number] with [<dict @ 0x7f1065137168>] and goto state 85
+Result : <dict @ 0x7f1065137168> ({'place': 'temp8', 'type': 'NUMBER', 'va ...)
+
+State  : 13
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS term . LexToken(CLOSE_PARANTHESIS,')',17,256)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f1065137168>] and goto state 99
+Result : <dict @ 0x7f1065137168> ({'place': 'temp8', 'type': 'NUMBER', 'va ...)
+
+State  : 313
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression . LexToken(CLOSE_PARANTHESIS,')',17,256)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 284
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression empty . LexToken(CLOSE_PARANTHESIS,')',17,256)
+Action : Reduce rule [Marker_caselist -> empty] with [None] and goto state 40
+Result : <dict @ 0x7f10651375c8> ({'falselist': [18], 'type': 'VOID'})
+
+State  : 315
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist . LexToken(CLOSE_PARANTHESIS,')',17,256)
+Action : Shift and goto state 316
+
+State  : 316
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS . LexToken(BLOCK_BEGIN,'{',17,267)
+Action : Shift and goto state 50
+
+State  : 50
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN . LexToken(PRINT,'print',17,269)
+Action : Shift and goto state 18
+
+State  : 18
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT . LexToken(RES_STRING,'"string a"',17,275)
+Action : Shift and goto state 15
+
+State  : 15
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT RES_STRING . LexToken(SEMICOLON,';',17,285)
+Action : Reduce rule [string -> RES_STRING] with ['"string a"'] and goto state 79
+Result : <dict @ 0x7f10651374b0> ({'type': 'RES_STRING', 'value': '"string ...)
+
+State  : 51
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT string . LexToken(SEMICOLON,';',17,285)
+Action : Reduce rule [term -> string] with [<dict @ 0x7f10651374b0>] and goto state 86
+Result : <dict @ 0x7f10651374b0> ({'place': 'temp10', 'type': 'RES_STRING' ...)
+
+State  : 13
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT term . LexToken(SEMICOLON,';',17,285)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f10651374b0>] and goto state 99
+Result : <dict @ 0x7f10651374b0> ({'place': 'temp10', 'type': 'RES_STRING' ...)
+
+State  : 82
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT expression . LexToken(SEMICOLON,';',17,285)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN PRINT expression SEMICOLON . LexToken(BLOCK_ENDS,'}',17,287)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f10651374b0>,';'] and goto state 55
+Result : <dict @ 0x7f1065139050> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 21
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN printStatement . LexToken(BLOCK_ENDS,'}',17,287)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN printStatement empty . LexToken(BLOCK_ENDS,'}',17,287)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065137d70> ({'quad': 21})
+
+State  : 84
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN printStatement Marker . LexToken(BLOCK_ENDS,'}',17,287)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f1065139050>,{'quad': 21}] and goto state 14
+Result : <dict @ 0x7f1065139398> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN statement . LexToken(BLOCK_ENDS,'}',17,287)
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7f1065139398>] and goto state 5
+Result : <dict @ 0x7f1065139398> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 128
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',17,287)
+Action : Shift and goto state 190
+
+State  : 190
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS BLOCK_BEGIN statements BLOCK_ENDS . LexToken(ELSE,'else',21,441)
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',<dict @ 0x7f1065139398>,'}'] and goto state 3
+Result : <dict @ 0x7f1065139398> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 317
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block . LexToken(ELSE,'else',21,441)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 297
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block empty . LexToken(ELSE,'else',21,441)
+Action : Reduce rule [Marker_quit -> empty] with [None] and goto state 41
+Result : <dict @ 0x7f1065137e88> ({'quad': 22, 'nextlist': [21]})
+
+State  : 318
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit . LexToken(ELSE,'else',21,441)
+Action : Shift and goto state 304
+
+State  : 304
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE . LexToken(BLOCK_BEGIN,'{',21,459)
+Action : Shift and goto state 50
+
+State  : 50
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN . LexToken(PRINT,'print',21,461)
+Action : Shift and goto state 18
+
+State  : 18
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN PRINT . LexToken(RES_STRING,'"previous case not true"',21,467)
+Action : Shift and goto state 15
+
+State  : 15
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN PRINT RES_STRING . LexToken(SEMICOLON,';',21,491)
+Action : Reduce rule [string -> RES_STRING] with [<str @ 0x7f106512a330>] and goto state 79
+Result : <dict @ 0x7f1065139168> ({'type': 'RES_STRING', 'value': '"previo ...)
+
+State  : 51
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN PRINT string . LexToken(SEMICOLON,';',21,491)
+Action : Reduce rule [term -> string] with [<dict @ 0x7f1065139168>] and goto state 86
+Result : <dict @ 0x7f1065139168> ({'place': 'temp11', 'type': 'RES_STRING' ...)
+
+State  : 13
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN PRINT term . LexToken(SEMICOLON,';',21,491)
+Action : Reduce rule [expression -> term] with [<dict @ 0x7f1065139168>] and goto state 99
+Result : <dict @ 0x7f1065139168> ({'place': 'temp11', 'type': 'RES_STRING' ...)
+
+State  : 82
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN PRINT expression . LexToken(SEMICOLON,';',21,491)
+Action : Shift and goto state 147
+
+State  : 147
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN PRINT expression SEMICOLON . LexToken(BLOCK_ENDS,'}',21,493)
+Action : Reduce rule [printStatement -> PRINT expression SEMICOLON] with ['print',<dict @ 0x7f1065139168>,';'] and goto state 55
+Result : <dict @ 0x7f10651396e0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 21
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN printStatement . LexToken(BLOCK_ENDS,'}',21,493)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN printStatement empty . LexToken(BLOCK_ENDS,'}',21,493)
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f10651394b0> ({'quad': 24})
+
+State  : 84
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN printStatement Marker . LexToken(BLOCK_ENDS,'}',21,493)
+Action : Reduce rule [statement -> printStatement Marker] with [<dict @ 0x7f10651396e0>,{'quad': 24}] and goto state 14
+Result : <dict @ 0x7f1065139a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN statement . LexToken(BLOCK_ENDS,'}',21,493)
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7f1065139a28>] and goto state 5
+Result : <dict @ 0x7f1065139a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 128
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN statements . LexToken(BLOCK_ENDS,'}',21,493)
+Action : Shift and goto state 190
+
+State  : 190
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE BLOCK_BEGIN statements BLOCK_ENDS . LexToken(BLOCK_ENDS,'}',22,495)
+Action : Reduce rule [block -> BLOCK_BEGIN statements BLOCK_ENDS] with ['{',<dict @ 0x7f1065139a28>,'}'] and goto state 3
+Result : <dict @ 0x7f1065139a28> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 310
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE block . LexToken(BLOCK_ENDS,'}',22,495)
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 297
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE block empty . LexToken(BLOCK_ENDS,'}',22,495)
+Action : Reduce rule [Marker_quit -> empty] with [None] and goto state 41
+Result : <dict @ 0x7f10651395c8> ({'quad': 25, 'nextlist': [24]})
+
+State  : 314
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit ELSE block Marker_quit . LexToken(BLOCK_ENDS,'}',22,495)
+Action : Reduce rule [caselist -> ELSE block Marker_quit] with ['else',<dict @ 0x7f1065139a28>,<dict @ 0x7f10651395c8>] and goto state 38
+Result : <dict @ 0x7f10651397f8> ({'nextlist': [24]})
+
+State  : 319
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit caselist . LexToken(BLOCK_ENDS,'}',22,495)
+Action : Reduce rule [caselist -> CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit caselist] with ['case','(',<dict @ 0x7f1065137168>,<dict @ 0x7f10651375c8>,')',<dict @ 0x7f1065139398>,<dict @ 0x7f1065137e88>,<dict @ 0x7f10651397f8>] and goto state 37
+Result : <dict @ 0x7f1065139280> ({'nextlist': [21, 24]})
+
+State  : 302
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit caselist . LexToken(BLOCK_ENDS,'}',22,495)
+Action : Shift and goto state 309
+
+State  : 309
+Stack  : statement statement statement statement statement statement statement SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit caselist BLOCK_ENDS . $end
+Action : Reduce rule [switchStatement -> SWITCH expression BLOCK_BEGIN Marker_switch CASE OPEN_PARANTHESIS expression Marker_caselist CLOSE_PARANTHESIS block Marker_quit caselist BLOCK_ENDS] with ['switch',<dict @ 0x7f106512dc58>,'{',{'quad': 10},'case','(',<dict @ 0x7f1065136168>,<dict @ 0x7f10651365c8>,')',<dict @ 0x7f1065137398>,<dict @ 0x7f1065136e88>,<dict @ 0x7f1065139280>,'}'] and goto state 35
+Result : <dict @ 0x7f1065137280> ({'beginlist': [], 'endlist': [], 'nextli ...)
+
+State  : 3
+Stack  : statement statement statement statement statement statement statement switchStatement . $end
+Action : Reduce rule [empty -> <empty>] with [] and goto state 6
+Result : <NoneType @ 0x920190> (None)
+
+State  : 63
+Stack  : statement statement statement statement statement statement statement switchStatement empty . $end
+Action : Reduce rule [Marker -> empty] with [None] and goto state 110
+Result : <dict @ 0x7f1065139910> ({'quad': 25})
+
+State  : 69
+Stack  : statement statement statement statement statement statement statement switchStatement Marker . $end
+Action : Reduce rule [statement -> switchStatement Marker] with [<dict @ 0x7f1065137280>,{'quad': 25}] and goto state 25
+Result : <dict @ 0x7f10651364b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 39
+Stack  : statement statement statement statement statement statement statement statement . $end
+Action : Reduce rule [statements -> statement] with [<dict @ 0x7f10651364b0>] and goto state 5
+Result : <dict @ 0x7f10651364b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+
+State  : 118
+Stack  : statement statement statement statement statement statement statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f106512d5c8>,<dict @ 0x7f10651364b0>] and goto state 4
+Result : <dict @ 0x7f1065133d70> ({'beginlist': [], 'endlist': []})
+
+State  : 118
+Stack  : statement statement statement statement statement statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f1065133a28>,<dict @ 0x7f1065133d70>] and goto state 4
+Result : <dict @ 0x7f1065133e88> ({'beginlist': [], 'endlist': []})
+
+State  : 118
+Stack  : statement statement statement statement statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f1065133910>,<dict @ 0x7f1065133e88>] and goto state 4
+Result : <dict @ 0x7f1065133c58> ({'beginlist': [], 'endlist': []})
+
+State  : 118
+Stack  : statement statement statement statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f1065133168>,<dict @ 0x7f1065133c58>] and goto state 4
+Result : <dict @ 0x7f1065129e88> ({'beginlist': [], 'endlist': []})
+
+State  : 118
+Stack  : statement statement statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f10651335c8>,<dict @ 0x7f1065129e88>] and goto state 4
+Result : <dict @ 0x7f10651334b0> ({'beginlist': [], 'endlist': []})
+
+State  : 118
+Stack  : statement statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f106512db40>,<dict @ 0x7f10651334b0>] and goto state 4
+Result : <dict @ 0x7f1065133280> ({'beginlist': [], 'endlist': []})
+
+State  : 118
+Stack  : statement statements . $end
+Action : Reduce rule [statements -> statement statements] with [<dict @ 0x7f106512d4b0>,<dict @ 0x7f1065133280>] and goto state 4
+Result : <dict @ 0x7f106512d280> ({'beginlist': [], 'endlist': []})
+>>>>>>> 692a9eda001f7d85b0b03bcd1fa0df18dccc8ece
+
+State  : 26
+Stack  : statements . $end
+<<<<<<< HEAD
+Action : Reduce rule [start -> statements] with [<dict @ 0x7fac39ad84b0>] and goto state 2
+Result : <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+=======
+Action : Reduce rule [start -> statements] with [<dict @ 0x7f106512d280>] and goto state 2
+Result : <dict @ 0x7f106512d280> ({'beginlist': [], 'endlist': []})
+>>>>>>> 692a9eda001f7d85b0b03bcd1fa0df18dccc8ece
+
+State  : 37
 Stack  : start . $end
+<<<<<<< HEAD
 Done   : Returning <dict @ 0x7fac39ad84b0> ({'endlist': [], 'beginlist': [], 'type': ...)
+=======
+Done   : Returning <dict @ 0x7f106512d280> ({'beginlist': [], 'endlist': []})
+>>>>>>> 692a9eda001f7d85b0b03bcd1fa0df18dccc8ece
 PLY: PARSE DEBUG END

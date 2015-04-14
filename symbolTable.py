@@ -39,13 +39,16 @@ class SymbolTable:
 		return self.entryscope[len(self.entryscope)-1]['scope']
 
 	def lookup(self,entry):
+
 		return self.lookup_scope(entry,len(self.entryscope)-1)
 
 	def lookup_scope(self,entry,location):
 		if location==-1:
+			
 			return None
 
 		scope_now=self.entryscope[location]
+		
 		if scope_now.has_key(entry):
 			return scope_now[entry]
 
@@ -57,6 +60,8 @@ class SymbolTable:
 		# name="\'"+name+"\'"
 		# print name
 		curr[name]=value
+		current=self.entryscope[0]
+		current[self.get_current_scope()][name]=value
 	
 
 	def ifexist(self,entry):
@@ -88,6 +93,8 @@ class SymbolTable:
 		self.entryscope.append(curr[name])	
 		self.proclist[name]=curr[name]
 		self.offset.append(0)
+		current=self.entryscope[0]
+		current[name]['scope_depth']=temp
 
 
 	def newvariableentry(self,varible,variabletype,isPrivate):
@@ -99,8 +106,8 @@ class SymbolTable:
 			curr=self.entryscope[0]
 			# print curr
 
-
-		if curr.has_key(varible)==0:
+		
+		if not (curr.has_key(varible)):
 			curr[varible]={}
 
 		if variabletype=="NUMBER":
@@ -116,7 +123,8 @@ class SymbolTable:
 		else :
 			tempwidth=0
 
-		curr[varible]['type']=variabletype
+		
+		curr[varible]['type']=str(variabletype)
 		curr[varible]['scope']=curr['scope']
 		curr[varible]['width']=tempwidth
 		curr[varible]['returntype']="UNDEFINED"

@@ -1,30 +1,30 @@
 #!/usr/bin/perl
 
 # SOME VARIABLES
-$x = 7;
+$x = 9;
 $y = 7;
 
 # TESTING...ONE, TWO...TESTING
-if ($x == 7) {
-	print '$x is equal to 7!';
-	print "\n";
-}
-$x=3;
-print $x;
-if (($x == 7) || ($y == 7)) {
-	print '$x or $y is equal to 7!';
-	print "\n";
-}
-if (($x == 7) && ($y == 7)) {
-	print '$x and $y are equal to 7!';
-	print "\n";
-}
+# if ($x > 7) {
+# 	print "$x is equal to 7!";
+# 	print "\n";
+# }
+# $x=3;
+# print $x;
+# if (($x == 7) || ($y == 7)) {
+# 	print '$x or $y is equal to 7!';
+# 	print "\n";
+# }
+# if (($x == 7) && ($y == 7)) {
+# 	print '$x and $y are equal to 7!';
+# 	print "\n";
+# }
 
-# SOME VARIABLES
-$name = "Sarah";
-$x = 5;
+# # SOME VARIABLES
+# $name = "Sarah";
+# $x = 5;
 
-# IF/ELSE STATEMENTS
+# # IF/ELSE STATEMENTS
 if ($x > 10) {
 	print "$x is greater than 10!";
 } else {
