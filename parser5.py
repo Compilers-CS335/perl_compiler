@@ -1435,7 +1435,7 @@ def scopecode(name,taccode):
 				else:
 					global_vars[TAC[0]]="STRING"
 					global_strings[TAC[0].split('$')[1]+"_str__ing__"]=string_value_temp
-					string_value_temp=TAC[0].split('$')[1]+"_str__ing__:\n"+string_value_temp+TAC[0].split('$')[1] \
+					string_value_temp=TAC[0].split('$')[1]+"_str__ing__:\n.ascii\t\""+string_value_temp+"\"\n"+TAC[0].split('$')[1] \
 					+"_len = . - "+TAC[0].split('$')[1]+"_str__ing__"
 					data_strings[str(TAC[0].split('$')[1])+"_str__ing__"]=string_value_temp
 
